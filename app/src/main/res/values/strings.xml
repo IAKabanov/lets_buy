@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LetsBuyka</string>
+    <string name="insert">insert</string>
+    <string name="refresh">refresh</string>
 </resources>

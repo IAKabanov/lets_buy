@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etDescr"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/etDescr"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etPhoto"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint="Description" />
+
+    <EditText
+        android:id="@+id/etPhoto"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/refresh"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint="Photo" />
+
+
+    <Button
+        android:id="@+id/insert"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insert" />
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/refresh" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvProductsList"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listItem = "@layout/recyclerview_products_list_item">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>
