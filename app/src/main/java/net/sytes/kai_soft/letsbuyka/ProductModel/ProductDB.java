@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class ProductDB extends SQLiteOpenHelper {
-    public static final String TABLE_NAME = "products";
-    public static final String TABLE_ID = "_ID";
-    public static final String TABLE_ITEM_NAME = "name";
-    public static final String TABLE_DESCRIPTION = "description";
-    public static final String TABLE_PHOTO = "photos";
+    static final String TABLE_NAME = "products";
+    static final String TABLE_ID = "_ID";
+    static final String TABLE_ITEM_NAME = "name";
+    static final String TABLE_DESCRIPTION = "description";
+    static final String TABLE_PHOTO = "photos";
 
 
-    public ProductDB(Context context) {
+    ProductDB(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 
@@ -35,11 +35,11 @@ public class ProductDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "("
-                + TABLE_ID + "integer primary key autoincrement,"
-                + TABLE_ITEM_NAME + "text,"
-                + TABLE_DESCRIPTION + "text,"
-                + TABLE_PHOTO + "text" + ");");
+        db.execSQL("create table " + TABLE_NAME + " ( "
+                + TABLE_ID + " integer primary key autoincrement, "
+                + TABLE_ITEM_NAME + " text, "
+                + TABLE_DESCRIPTION + " text, "
+                + TABLE_PHOTO + " text " + " ); ");
     }
 
     @Override
