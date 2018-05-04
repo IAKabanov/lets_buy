@@ -20,7 +20,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
     private ArrayList<Product> products;
 
 
-    AdapterProductsList(ArrayList<Product> products) {
+    public AdapterProductsList(ArrayList<Product> products) {
         this.products = products;
     }
 

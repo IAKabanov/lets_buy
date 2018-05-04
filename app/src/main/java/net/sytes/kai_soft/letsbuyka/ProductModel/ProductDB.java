@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class ProductDB extends SQLiteOpenHelper {
-    static final String TABLE_NAME = "products";
-    static final String TABLE_ID = "_ID";
-    static final String TABLE_ITEM_NAME = "name";
-    static final String TABLE_DESCRIPTION = "description";
-    static final String TABLE_PHOTO = "photos";
+    public static final String TABLE_NAME = "products";
+    public static final String TABLE_ID = "_ID";
+    public static final String TABLE_ITEM_NAME = "name";
+    public static final String TABLE_DESCRIPTION = "description";
+    public static final String TABLE_PHOTO = "photos";
 
 
-    ProductDB(Context context) {
+    public ProductDB(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etDescr"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/etDescr"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etPhoto"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint="Description" />
+
+    <EditText
+        android:id="@+id/etPhoto"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/backToList"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint="Photo" />
+
+
+    <Button
+        android:id="@+id/insert"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insert" />
+
+    <Button
+        android:id="@+id/backToList"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="back to list" />
+
+</RelativeLayout>
