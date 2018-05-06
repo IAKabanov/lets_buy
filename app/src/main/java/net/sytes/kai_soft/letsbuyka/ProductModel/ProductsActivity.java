@@ -1,16 +1,18 @@
 package net.sytes.kai_soft.letsbuyka.ProductModel;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import net.sytes.kai_soft.letsbuyka.DetailFragment;
 import net.sytes.kai_soft.letsbuyka.ListFragment;
 import net.sytes.kai_soft.letsbuyka.R;
 
-public class ProductsListActivity extends AppCompatActivity implements
-        IProductListActivityListContract, IProductListActivityDetailContract {
+public class ProductsActivity extends AppCompatActivity implements
+        IProductListActivityContract {
 
     DetailFragment detailFragment;
     ListFragment listFragment;
@@ -44,8 +46,6 @@ public class ProductsListActivity extends AppCompatActivity implements
         ft.add(R.id.activityProductsList, detailFragment, "detailFragment");
         // Подтверждаем операцию
         ft.commit();
-
-
     }
 
     @Override
@@ -57,6 +57,12 @@ public class ProductsListActivity extends AppCompatActivity implements
         ft.add(R.id.activityProductsList, listFragment, "listFragment");
         // Подтверждаем операцию
         ft.commit();
+    }
 
+
+    @Override
+    public void showAdapterToast(int position) {
+        Toast.makeText(this, "Pressed" + String.valueOf(position),
+                Toast.LENGTH_SHORT).show();
     }
 }

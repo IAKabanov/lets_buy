@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityDetailContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityListContract;
+import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductDB;
 
@@ -28,7 +27,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     Button Insert, BackToList;
     EditText etName, etDescr, etPhoto;
     ProductDB dbProduct;
-    IProductListActivityDetailContract IProductListActivityDetailContract;
+    IProductListActivityContract IProductListActivityContract;
 
     @Nullable
     @Override
@@ -54,14 +53,14 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IProductListActivityListContract) {
-            IProductListActivityDetailContract = (IProductListActivityDetailContract) context;
+        if (context instanceof IProductListActivityContract) {
+            IProductListActivityContract = (IProductListActivityContract) context;
         }
     }
 
     @Override
     public void onDetach() {
-        IProductListActivityDetailContract = null;
+        IProductListActivityContract = null;
         super.onDetach();
     }
 
@@ -86,7 +85,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 db.insert(ProductDB.TABLE_NAME, null, cv);
                 break;
             case (R.id.backToList):
-                IProductListActivityDetailContract.onDetailFragmentButtonClick();
+                IProductListActivityContract.onDetailFragmentButtonClick();
                 break;
         }
     }

@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityListContract;
+import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductDB;
 
@@ -30,7 +30,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     Button goToDetailBtn;
     ProductDB dbProduct;
     RecyclerView recyclerView;
-    IProductListActivityListContract iProductListActivityListContract;
+    IProductListActivityContract iProductListActivityContract;
 
     @Nullable
     @Override
@@ -51,14 +51,14 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IProductListActivityListContract){
-            iProductListActivityListContract = (IProductListActivityListContract) context;
+        if (context instanceof IProductListActivityContract){
+            iProductListActivityContract = (IProductListActivityContract) context;
         }
     }
 
     @Override
     public void onDetach() {
-        iProductListActivityListContract = null;
+        iProductListActivityContract = null;
         super.onDetach();
     }
 
@@ -92,8 +92,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     public void displayRW(ArrayList<Product> products){
 
-        AdapterProductsList adapter = new AdapterProductsList(products);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+        AdapterProductsList adapter = new AdapterProductsList(products, getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
         recyclerView.setAdapter(adapter);
@@ -108,7 +108,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
         switch (v.getId()){
             case (R.id.goToDetail):
-                iProductListActivityListContract.onListFragmentButtonClick();
+                iProductListActivityContract.onListFragmentButtonClick();
                 break;
         }
 
