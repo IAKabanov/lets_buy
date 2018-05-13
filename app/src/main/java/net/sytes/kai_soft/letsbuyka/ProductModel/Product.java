@@ -1,12 +1,13 @@
 package net.sytes.kai_soft.letsbuyka.ProductModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Лунтя on 07.04.2018.
  */
 
-public class Product {
+public class Product implements Serializable{
 
     private long id;
     private String itemName;

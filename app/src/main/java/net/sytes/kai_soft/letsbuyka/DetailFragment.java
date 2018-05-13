@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
-    Button Insert, BackToList;
+    Button insert, backToList;
     EditText etName, etDescr, etPhoto;
     ProductDB dbProduct;
     IProductListActivityContract IProductListActivityContract;
@@ -34,20 +34,47 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        Insert = rootView.findViewById(R.id.insert);
-        BackToList = rootView.findViewById(R.id.backToList);
+        insert = rootView.findViewById(R.id.insert);
+        backToList = rootView.findViewById(R.id.backToList);
 
         etName = rootView.findViewById(R.id.etName);
         etDescr = rootView.findViewById(R.id.etDescr);
         etPhoto = rootView.findViewById(R.id.etPhoto);
 
-        dbProduct = new ProductDB(this.getContext());
+        etName.setEnabled(true);
+        etDescr.setEnabled(true);
+        etPhoto.setEnabled(true);
 
-        Insert.setOnClickListener(this);
-        BackToList.setOnClickListener(this);
+        /*etName.setText("");
+        etDescr.setText("");
+        etPhoto.setText("");*/
+
+        //dbProduct = Application.getDB(); //new ProductDB(this.getContext());
+
+        Bundle bundle = getArguments();
+        if (bundle.getBoolean("editable")) {
+            insert.setOnClickListener(this);
+
+
+        } else {
+            Product product = (Product) bundle.getSerializable("product");
+            etName.setText(product.getItemName());
+            etDescr.setText(product.getDescription());
+            etPhoto.setText(product.getFirstImagePath());
+            etName.setEnabled(false);
+            etDescr.setEnabled(false);
+            etPhoto.setEnabled(false);
+            insert.setVisibility(View.GONE);
+        }
+        backToList.setOnClickListener(this);
 
         return rootView;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -71,6 +98,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         String name = etName.getText().toString();
         String descr = etDescr.getText().toString();
         String photo = etPhoto.getText().toString();
+
+        dbProduct = Application.getDB(); //new ProductDB(this.getContext());
 
         SQLiteDatabase db = dbProduct.getWritableDatabase();
 

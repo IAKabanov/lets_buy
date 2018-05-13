@@ -9,5 +9,5 @@ import android.content.Context;
 public interface IProductListActivityContract {
     void onListFragmentButtonClick();
     void onDetailFragmentButtonClick();
-    void showAdapterToast(int position);
+    void onListItemClick(Product product);
 }

@@ -14,9 +14,10 @@ public class ProductDB extends SQLiteOpenHelper {
     public static final String TABLE_ITEM_NAME = "name";
     public static final String TABLE_DESCRIPTION = "description";
     public static final String TABLE_PHOTO = "photos";
+    private static ProductDB instance;
 
 
-    public ProductDB(Context context) {
+    private ProductDB(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 
@@ -32,6 +33,12 @@ public class ProductDB extends SQLiteOpenHelper {
         return true;
     } */
 
+    public static ProductDB getInstance(Context context){
+        if (instance == null){
+            instance = new ProductDB(context);
+        }
+        return instance;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {

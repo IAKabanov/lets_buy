@@ -42,6 +42,12 @@ public class ProductsActivity extends AppCompatActivity implements
         FragmentTransaction ft = fragmentManager.beginTransaction();
         // Создаем и добавляем первый фрагмент
         ft.remove(listFragment);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("editable", true);
+        detailFragment.setArguments(bundle);
+        bundle = null;
+
         ft.add(R.id.activityProductsList, detailFragment, "detailFragment");
         // Подтверждаем операцию
         ft.commit();
@@ -60,8 +66,24 @@ public class ProductsActivity extends AppCompatActivity implements
 
 
     @Override
-    public void showAdapterToast(int position) {
-        Toast.makeText(this, "Pressed" + String.valueOf(position),
+    public void onListItemClick(Product product) {
+        // начинаем транзакцию
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        // Создаем и добавляем первый фрагмент
+        ft.remove(listFragment);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("editable", false);
+        bundle.putSerializable("product", product);
+        detailFragment.setArguments(bundle);
+        bundle = null;
+
+
+        ft.add(R.id.activityProductsList, detailFragment, "detailFragment");
+        // Подтверждаем операцию
+        ft.commit();
+
+        Toast.makeText(this, "Pressed " + product.getId() + " ID",
                 Toast.LENGTH_SHORT).show();
     }
 }

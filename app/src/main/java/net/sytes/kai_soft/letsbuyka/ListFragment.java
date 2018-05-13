@@ -41,7 +41,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         goToDetailBtn.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
-        dbProduct = new ProductDB(getActivity());
+        dbProduct = Application.getDB(); //new ProductDB(getActivity());
 
         refresh();
 

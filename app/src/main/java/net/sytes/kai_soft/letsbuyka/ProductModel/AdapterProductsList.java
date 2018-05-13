@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsList.MyViewHolder> {
 
-    private ArrayList<Product> products;
+    private static ArrayList<Product> products;
     static IProductListActivityContract iProductListActivityContract;
 
     public AdapterProductsList(ArrayList<Product> products, Context context) {
@@ -71,7 +71,8 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
 
         @Override
         public void onClick(View v) {
-            iProductListActivityContract.showAdapterToast(getAdapterPosition());
+            Product product = products.get(getAdapterPosition());
+            iProductListActivityContract.onListItemClick(product);
         }
     }
 }
