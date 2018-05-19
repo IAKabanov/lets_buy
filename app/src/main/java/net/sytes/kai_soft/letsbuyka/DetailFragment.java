@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
-    Button insert, backToList;
+    Button insertBtn, backToListBtn;
     EditText etName, etDescr, etPhoto;
     ProductDB dbProduct;
     IProductListActivityContract IProductListActivityContract;
@@ -34,47 +35,45 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        insert = rootView.findViewById(R.id.insert);
-        backToList = rootView.findViewById(R.id.backToList);
+        insertBtn = rootView.findViewById(R.id.insertBtn);
+        backToListBtn = rootView.findViewById(R.id.backToListBtn);
 
         etName = rootView.findViewById(R.id.etName);
         etDescr = rootView.findViewById(R.id.etDescr);
         etPhoto = rootView.findViewById(R.id.etPhoto);
 
-        etName.setEnabled(true);
-        etDescr.setEnabled(true);
-        etPhoto.setEnabled(true);
-
-        /*etName.setText("");
-        etDescr.setText("");
-        etPhoto.setText("");*/
 
         //dbProduct = Application.getDB(); //new ProductDB(this.getContext());
 
-        Bundle bundle = getArguments();
-        if (bundle.getBoolean("editable")) {
-            insert.setOnClickListener(this);
-
-
-        } else {
-            Product product = (Product) bundle.getSerializable("product");
-            etName.setText(product.getItemName());
-            etDescr.setText(product.getDescription());
-            etPhoto.setText(product.getFirstImagePath());
-            etName.setEnabled(false);
-            etDescr.setEnabled(false);
-            etPhoto.setEnabled(false);
-            insert.setVisibility(View.GONE);
-        }
-        backToList.setOnClickListener(this);
-
         return rootView;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        makeEditable(true);
+
+        emptyEditText();
+
+        insertBtn.setVisibility(View.VISIBLE);
+        backToListBtn.setOnClickListener(this);
+        insertBtn.setOnClickListener(this);
+
+        Bundle bundle = getArguments();
+
+        if (bundle.getBoolean("editable")) {
+            insertBtn.setText("Save");
+
+        } else {
+            Product product = (Product) bundle.getSerializable("product");
+            Log.e("detail fragment", product.getItemName());
+            etName.setText(product.getItemName());
+            etDescr.setText(product.getDescription());
+            etPhoto.setText(product.getFirstImagePath());
+            makeEditable(false);
+            insertBtn.setText("Edit");
+        }
     }
 
     @Override
@@ -93,30 +92,87 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.insertBtn):
+                insertBtn.setText("Save");
+                if (isEditable() == false) {
+                    makeEditable(true);
+                } else {
+                    if (isNew() == false) {
+                        Bundle bundle = getArguments();
+                        updateTable((Product) bundle.getSerializable("product"));
+                    } else {
+                        insertToTable();
+                    }
+                }
+
+                break;
+            case (R.id.backToListBtn):
+                IProductListActivityContract.onDetailFragmentButtonClick();
+                break;
+        }
+    }
+
+    private boolean isEditable() {
+        return etName.isEnabled();
+    }
+
+    private boolean isNew() {
+        Bundle bundle = getArguments();
+        if (bundle.getBoolean("editable") == true) {
+            return true;
+        }
+        return false;
+    }
+
+    private void makeEditable(boolean state) {
+        etName.setEnabled(state);
+        etDescr.setEnabled(state);
+        etPhoto.setEnabled(state);
+    }
+
+    private void emptyEditText() {
+        etName.setText("");
+        etDescr.setText("");
+        etPhoto.setText("");
+    }
+
+    private void insertToTable() {
         ContentValues cv = new ContentValues();
 
         String name = etName.getText().toString();
         String descr = etDescr.getText().toString();
         String photo = etPhoto.getText().toString();
 
-        dbProduct = Application.getDB(); //new ProductDB(this.getContext());
+        dbProduct = Application.getDB();
 
         SQLiteDatabase db = dbProduct.getWritableDatabase();
 
-        ArrayList<Product> products = new ArrayList<>();
+        cv.put(ProductDB.TABLE_ITEM_NAME, name);
+        cv.put(ProductDB.TABLE_DESCRIPTION, descr);
+        cv.put(ProductDB.TABLE_PHOTO, photo);
+        // вставляем запись и получаем ее ID
+        db.insert(ProductDB.TABLE_NAME, null, cv);
+    }
 
-        switch (v.getId()) {
-            case (R.id.insert):
-                cv.put(ProductDB.TABLE_ITEM_NAME, name);
-                cv.put(ProductDB.TABLE_DESCRIPTION, descr);
-                cv.put(ProductDB.TABLE_PHOTO, photo);
-                // вставляем запись и получаем ее ID
-                db.insert(ProductDB.TABLE_NAME, null, cv);
-                break;
-            case (R.id.backToList):
-                IProductListActivityContract.onDetailFragmentButtonClick();
-                break;
-        }
+    private void updateTable(Product product) {
+        ContentValues cv = new ContentValues();
+
+        String name = etName.getText().toString();
+        String descr = etDescr.getText().toString();
+        String photo = etPhoto.getText().toString();
+
+        dbProduct = Application.getDB();
+
+        SQLiteDatabase db = dbProduct.getWritableDatabase();
+
+        cv.put(ProductDB.TABLE_ITEM_NAME, name);
+        cv.put(ProductDB.TABLE_DESCRIPTION, descr);
+        cv.put(ProductDB.TABLE_PHOTO, photo);
+        // вставляем запись и получаем ее ID
+        //db.insert(ProductDB.TABLE_NAME, null, cv);
+        db.update(ProductDB.TABLE_NAME, cv, ProductDB.TABLE_ID + " = ?",
+                new String[]{String.valueOf(product.getId())});
     }
 
 

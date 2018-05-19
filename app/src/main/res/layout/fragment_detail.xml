@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint="Name" />
+        android:hint="@string/name" />
 
     <EditText
         android:id="@+id/etDescr"
@@ -21,33 +21,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint="Description" />
+        android:hint="@string/description" />
 
     <EditText
         android:id="@+id/etPhoto"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/backToList"
+        android:layout_above="@+id/backToListBtn"
         android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint="Photo" />
+        android:hint="@string/photo" />
 
 
     <Button
-        android:id="@+id/insert"
+        android:id="@+id/insertBtn"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/insert" />
+        android:text="@string/save" />
+
 
     <Button
-        android:id="@+id/backToList"
+        android:id="@+id/backToListBtn"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="back to list" />
+        android:text="@string/back_to_list" />
 
 </RelativeLayout>

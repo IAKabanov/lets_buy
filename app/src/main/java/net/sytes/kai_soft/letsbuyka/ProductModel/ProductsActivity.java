@@ -76,8 +76,6 @@ public class ProductsActivity extends AppCompatActivity implements
         bundle.putBoolean("editable", false);
         bundle.putSerializable("product", product);
         detailFragment.setArguments(bundle);
-        bundle = null;
-
 
         ft.add(R.id.activityProductsList, detailFragment, "detailFragment");
         // Подтверждаем операцию

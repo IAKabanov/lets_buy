@@ -37,7 +37,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        goToDetailBtn = rootView.findViewById(R.id.goToDetail);
+        goToDetailBtn = rootView.findViewById(R.id.addBtn);
         goToDetailBtn.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
@@ -107,7 +107,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
 
         switch (v.getId()){
-            case (R.id.goToDetail):
+            case (R.id.addBtn):
                 iProductListActivityContract.onListFragmentButtonClick();
                 break;
         }
