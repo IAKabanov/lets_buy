@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint="@string/name" />
+        android:hint="@string/name"
+        android:focusable="true"/>
 
     <EditText
         android:id="@+id/etDescr"
@@ -21,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint="@string/description" />
+        android:hint="@string/description"
+        android:focusable="true"/>
 
     <EditText
         android:id="@+id/etPhoto"
@@ -31,7 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint="@string/photo" />
+        android:hint="@string/photo"
+        android:focusable="true"/>
 
 
     <Button
@@ -41,6 +44,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save" />
+
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete" />
 
 
     <Button

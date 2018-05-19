@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
-    Button insertBtn, backToListBtn;
+    Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr, etPhoto;
     ProductDB dbProduct;
     IProductListActivityContract IProductListActivityContract;
@@ -37,6 +37,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
         insertBtn = rootView.findViewById(R.id.insertBtn);
         backToListBtn = rootView.findViewById(R.id.backToListBtn);
+        deleteBtn = rootView.findViewById(R.id.deleteBtn);
 
         etName = rootView.findViewById(R.id.etName);
         etDescr = rootView.findViewById(R.id.etDescr);
@@ -56,23 +57,28 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
         emptyEditText();
 
-        insertBtn.setVisibility(View.VISIBLE);
         backToListBtn.setOnClickListener(this);
         insertBtn.setOnClickListener(this);
+        deleteBtn.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
 
         if (bundle.getBoolean("editable")) {
-            insertBtn.setText("Save");
+            insertBtn.setText(R.string.save);
 
         } else {
             Product product = (Product) bundle.getSerializable("product");
-            Log.e("detail fragment", product.getItemName());
+
             etName.setText(product.getItemName());
             etDescr.setText(product.getDescription());
             etPhoto.setText(product.getFirstImagePath());
+
             makeEditable(false);
-            insertBtn.setText("Edit");
+
+            insertBtn.setText(R.string.edit);
+
+            deleteBtn.setOnClickListener(this);
+            deleteBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -94,20 +100,26 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.insertBtn):
-                insertBtn.setText("Save");
+                insertBtn.setText(R.string.save);
                 if (isEditable() == false) {
                     makeEditable(true);
                 } else {
                     if (isNew() == false) {
                         Bundle bundle = getArguments();
                         updateTable((Product) bundle.getSerializable("product"));
+                        IProductListActivityContract.onDetailFragmentButtonClick();
                     } else {
                         insertToTable();
+                        IProductListActivityContract.onDetailFragmentButtonClick();
                     }
                 }
-
                 break;
             case (R.id.backToListBtn):
+                IProductListActivityContract.onDetailFragmentButtonClick();
+                break;
+            case (R.id.deleteBtn):
+                Bundle bundle = getArguments();
+                deleteItem((Product) bundle.getSerializable("product"));
                 IProductListActivityContract.onDetailFragmentButtonClick();
                 break;
         }
@@ -175,5 +187,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 new String[]{String.valueOf(product.getId())});
     }
 
+    private void deleteItem(Product product){
+        dbProduct = Application.getDB();
+
+        SQLiteDatabase db = dbProduct.getWritableDatabase();
+
+        db.delete(ProductDB.TABLE_NAME,ProductDB.TABLE_ID + " = ?",
+                 new String[]{String.valueOf(product.getId())});
+    }
 
 }

@@ -9,4 +9,6 @@
     <string name="save">Save</string>
     <string name="back_to_list">back to list</string>
     <string name="Edit">edit</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>
