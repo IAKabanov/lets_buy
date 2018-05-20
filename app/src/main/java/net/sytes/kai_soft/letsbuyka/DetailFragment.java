@@ -1,23 +1,19 @@
 package net.sytes.kai_soft.letsbuyka;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import net.sytes.kai_soft.letsbuyka.ProductModel.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.ProductModel.DataBase;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
-import net.sytes.kai_soft.letsbuyka.ProductModel.ProductDB;
-
-import java.util.ArrayList;
 
 /**
  * Created by Лунтя on 30.04.2018.
@@ -27,7 +23,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
     Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr, etPhoto;
-    ProductDB dbProduct;
+    DataBase dbProduct;
     IProductListActivityContract IProductListActivityContract;
 
     @Nullable
@@ -44,7 +40,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         etPhoto = rootView.findViewById(R.id.etPhoto);
 
 
-        //dbProduct = Application.getDB(); //new ProductDB(this.getContext());
+        //dbProduct = Application.getDB(); //new DataBase(this.getContext());
 
         return rootView;
     }
@@ -105,11 +101,12 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                     makeEditable(true);
                 } else {
                     if (isNew() == false) {
-                        Bundle bundle = getArguments();
-                        updateTable((Product) bundle.getSerializable("product"));
+                        Product updateble = toUpdate();
+                        CRUDdb.updateTable(updateble);
                         IProductListActivityContract.onDetailFragmentButtonClick();
                     } else {
-                        insertToTable();
+                        CRUDdb.insertToTable(etName.getText().toString(),
+                        etDescr.getText().toString(), etPhoto.getText().toString());
                         IProductListActivityContract.onDetailFragmentButtonClick();
                     }
                 }
@@ -119,7 +116,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 break;
             case (R.id.deleteBtn):
                 Bundle bundle = getArguments();
-                deleteItem((Product) bundle.getSerializable("product"));
+                CRUDdb.deleteItem((Product) bundle.getSerializable("product"));
                 IProductListActivityContract.onDetailFragmentButtonClick();
                 break;
         }
@@ -149,51 +146,15 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         etPhoto.setText("");
     }
 
-    private void insertToTable() {
-        ContentValues cv = new ContentValues();
-
-        String name = etName.getText().toString();
-        String descr = etDescr.getText().toString();
-        String photo = etPhoto.getText().toString();
-
-        dbProduct = Application.getDB();
-
-        SQLiteDatabase db = dbProduct.getWritableDatabase();
-
-        cv.put(ProductDB.TABLE_ITEM_NAME, name);
-        cv.put(ProductDB.TABLE_DESCRIPTION, descr);
-        cv.put(ProductDB.TABLE_PHOTO, photo);
-        // вставляем запись и получаем ее ID
-        db.insert(ProductDB.TABLE_NAME, null, cv);
+    private Product toUpdate(){
+        Bundle bundle = getArguments();
+        Product fromBundle = (Product) bundle.getSerializable("product");
+        Product toUpdate = new Product(fromBundle.getId(),
+                etName.getText().toString(),
+                etDescr.getText().toString()
+                , etPhoto.getText().toString());
+        return toUpdate;
     }
 
-    private void updateTable(Product product) {
-        ContentValues cv = new ContentValues();
-
-        String name = etName.getText().toString();
-        String descr = etDescr.getText().toString();
-        String photo = etPhoto.getText().toString();
-
-        dbProduct = Application.getDB();
-
-        SQLiteDatabase db = dbProduct.getWritableDatabase();
-
-        cv.put(ProductDB.TABLE_ITEM_NAME, name);
-        cv.put(ProductDB.TABLE_DESCRIPTION, descr);
-        cv.put(ProductDB.TABLE_PHOTO, photo);
-        // вставляем запись и получаем ее ID
-        //db.insert(ProductDB.TABLE_NAME, null, cv);
-        db.update(ProductDB.TABLE_NAME, cv, ProductDB.TABLE_ID + " = ?",
-                new String[]{String.valueOf(product.getId())});
-    }
-
-    private void deleteItem(Product product){
-        dbProduct = Application.getDB();
-
-        SQLiteDatabase db = dbProduct.getWritableDatabase();
-
-        db.delete(ProductDB.TABLE_NAME,ProductDB.TABLE_ID + " = ?",
-                 new String[]{String.valueOf(product.getId())});
-    }
 
 }

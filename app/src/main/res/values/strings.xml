@@ -11,4 +11,210 @@
     <string name="Edit">edit</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+
+    <string-array name="productsList">
+        <item>"Абрикос"</item>
+        <item>"Авокадо"</item>
+        <item>"Ананас"</item>
+        <item>"Апельсины"</item>
+        <item>"Аптека"</item>
+        <item>"Арбуз"</item>
+        <item>"Базилик"</item>
+        <item>"Баклажаны"</item>
+        <item>"Бананы"</item>
+        <item>"Батарейки"</item>
+
+        <item>"Бекон"</item>
+        <item>"Бинт"</item>
+        <item>"Блок питания"</item>
+        <item>"Брокколи"</item>
+        <item>"Булка"</item>
+        <item>"Валерианка"</item>
+        <item>"Васаби"</item>
+        <item>"Ватные диски"</item>
+        <item>"Ватные палочки"</item>
+        <item>"Ветчина"</item>
+
+        <item>"Виноград"</item>
+        <item>"Влажные салфетки"</item>
+        <item>"Вода"</item>
+        <item>"Гель для душа"</item>
+        <item>"Говядина"</item>
+        <item>"Горох"</item>
+        <item>"Горчица"</item>
+        <item>"Грейпфрут"</item>
+        <item>"Гречка"</item>
+        <item>"Грибы"</item>
+
+        <item>"Груши"</item>
+        <item>"Губка"</item>
+        <item>"Дезодорант"</item>
+        <item>"Дрожжи"</item>
+        <item>"Дыня"</item>
+        <item>"Жевательная резинка"</item>
+        <item>"Замороженные овощи"</item>
+        <item>"Зелёный горошек"</item>
+        <item>"Зелень"</item>
+        <item>"Зубная паста"</item>
+
+        <item>"Зубная щётка"</item>
+        <item>"Зубочистки"</item>
+        <item>"Изюм"</item>
+        <item>"Икра"</item>
+        <item>"Имбирь"</item>
+        <item>"Индейка"</item>
+        <item>"Йогурт"</item>
+        <item>"Йод"</item>
+        <item>"К чаю"</item>
+        <item>"Кабачки"</item>
+
+        <item>"Капуста"</item>
+        <item>"Картофель"</item>
+        <item>"Каша"</item>
+        <item>"Квас"</item>
+        <item>"Кетчуп"</item>
+        <item>"Кефир"</item>
+        <item>"Кинза"</item>
+        <item>"Кокос"</item>
+        <item>"Колбаса"</item>
+        <item>"Конфеты"</item>
+
+        <item>"Кофе"</item>
+        <item>"Крабовые палочки"</item>
+        <item>"Креветки"</item>
+        <item>"Кресла"</item>
+        <item>"Кукуруза"</item>
+        <item>"Купаты"</item>
+        <item>"Курага"</item>
+        <item>"Курица"</item>
+        <item>"Лаваш"</item>
+        <item>"Лавровый лист"</item>
+
+        <item>"Лампочки"</item>
+        <item>"Лимон"</item>
+        <item>"Лимонад"</item>
+        <item>"Лук"</item>
+        <item>"Майонез"</item>
+        <item>"Макароны"</item>
+        <item>"Манго"</item>
+        <item>"Мандарины"</item>
+        <item>"Маслины"</item>
+        <item>"Масло растительное"</item>
+
+        <item>"Масло сливочное"</item>
+        <item>"Мёд"</item>
+        <item>"Молоко"</item>
+        <item>"Морковь"</item>
+        <item>"Мороженое"</item>
+        <item>"Моцарелла"</item>
+        <item>"Мука"</item>
+        <item>"Мыло"</item>
+        <item>"Мюсли"</item>
+        <item>"Мясо"</item>
+
+        <item>"Нектарины"</item>
+        <item>"Овощи"</item>
+        <item>"Овсянка"</item>
+        <item>"Огурцы"</item>
+        <item>"Оливки"</item>
+        <item>"Орехи"</item>
+        <item>"Освежитель воздуха"</item>
+        <item>"От комаров"</item>
+        <item>"Пакеты"</item>
+        <item>"Пармезан"</item>
+
+        <item>"Паштет"</item>
+        <item>"Пеотмени"</item>
+        <item>"Перец болгарский"</item>
+        <item>"Персики"</item>
+        <item>"Перчатки"</item>
+        <item>"Перчики"</item>
+        <item>"Песок"</item>
+        <item>"Петрушка"</item>
+        <item>"Печень"</item>
+        <item>"Печенье"</item>
+
+        <item>"Пирог"</item>
+        <item>"Пирожное"</item>
+        <item>"Пластырь"</item>
+        <item>"Плитка"</item>
+        <item>"Помидоры"</item>
+        <item>"Приправы"</item>
+        <item>"Прокладки"</item>
+        <item>"Простокваша"</item>
+        <item>"Пшено"</item>
+        <item>"Редис"</item>
+
+        <item>"Репа"</item>
+        <item>"Рис"</item>
+        <item>"Роллы"</item>
+        <item>"Руккола"</item>
+        <item>"Рыба"</item>
+        <item>"Ряженка"</item>
+        <item>"Салат"</item>
+        <item>"Салфетки"</item>
+        <item>"Сахар"</item>
+        <item>"Свёкла"</item>
+
+        <item>"Свинина"</item>
+        <item>"Сгущёное молоко"</item>
+        <item>"Сельдерей"</item>
+        <item>"Сельдь"</item>
+        <item>"Семечки"</item>
+        <item>"Сливки"</item>
+        <item>"Сливы"</item>
+        <item>"Сметана"</item>
+        <item>"Соевый соус"</item>
+        <item>"Сок"</item>
+
+        <item>"Соль"</item>
+        <item>"Сосиски"</item>
+        <item>"Специи"</item>
+        <item>"Средство для бритья"</item>
+        <item>"Средство для посуды"</item>
+        <item>"Средство для туалета"</item>
+        <item>"Средство после бритья"</item>
+        <item>"Стиральный порошок"</item>
+        <item>"Сухарики"</item>
+        <item>"Сухофрукты"</item>
+
+        <item>"Суши"</item>
+        <item>"Сыр"</item>
+        <item>"Сыр плавленый"</item>
+        <item>"Сырки"</item>
+        <item>"Творог"</item>
+        <item>"Томатная паста"</item>
+        <item>"Торт"</item>
+        <item>"Туалетная бумага"</item>
+        <item>"Укроп"</item>
+        <item>"Уксус"</item>
+
+        <item>"Уксус яблочный"</item>
+        <item>"Фарш"</item>
+        <item>"Фасоль"</item>
+        <item>"Фильтр для воды"</item>
+        <item>"Фисташки"</item>
+        <item>"Фольга"</item>
+        <item>"Фруктоза"</item>
+        <item>"Фрукты"</item>
+        <item>"Хлеб"</item>
+        <item>"Хлопья"</item>
+
+        <item>"Хрен"</item>
+        <item>"Хурма"</item>
+        <item>"Чай"</item>
+        <item>"Чернослив"</item>
+        <item>"Чеснок"</item>
+        <item>"Чечевица"</item>
+        <item>"Чизкейк"</item>
+        <item>"Чипсы"</item>
+        <item>"Шампиньоны"</item>
+        <item>"Шампунь"</item>
+
+        <item>"Шоколад"</item>
+        <item>"Шпроты"</item>
+        <item>"Яблоки"</item>
+        <item>"Ягоды"</item>
+        <item>"Яйца"</item>
+    </string-array>
 </resources>

@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
+import net.sytes.kai_soft.letsbuyka.ProductModel.DataBase;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
-import net.sytes.kai_soft.letsbuyka.ProductModel.ProductDB;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class ListFragment extends Fragment implements View.OnClickListener{
 
     Button goToDetailBtn;
-    ProductDB dbProduct;
+    DataBase dbProduct;
     RecyclerView recyclerView;
     IProductListActivityContract iProductListActivityContract;
 
@@ -41,7 +41,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         goToDetailBtn.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
-        dbProduct = Application.getDB(); //new ProductDB(getActivity());
+        dbProduct = Application.getDB(); //new DataBase(getActivity());
 
         refresh();
 
@@ -66,15 +66,15 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         SQLiteDatabase db = dbProduct.getWritableDatabase();
         ArrayList<Product> products = new ArrayList<>();
 
-        Cursor c = db.query(ProductDB.TABLE_NAME, null, null,
-                null, null, null, null);
+        Cursor c = db.query(DataBase.TABLE_NAME_PRODUCTS_LIST, null, null,
+                null, null, null, DataBase.tableProducts.TABLE_ITEM_NAME);
         if (c.moveToFirst()) {
 
             // определяем номера столбцов по имени в выборке
-            int idColIndex = c.getColumnIndex(ProductDB.TABLE_ID);
-            int nameColIndex = c.getColumnIndex(ProductDB.TABLE_ITEM_NAME);
-            int descColIndex = c.getColumnIndex(ProductDB.TABLE_DESCRIPTION);
-            int photoColIndex = c.getColumnIndex(ProductDB.TABLE_PHOTO);
+            int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
+            int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
+            int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+            int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
 
 
             do {

@@ -12,6 +12,8 @@ import android.widget.Toast;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Лунтя on 07.04.2018.
