@@ -16,8 +16,6 @@ import android.widget.Button;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
-import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -30,19 +28,19 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
 
     private Button goToDetailBtn;
     private RecyclerView recyclerView;
-    private DataBase dbProduct;
+    private DataBase db;
     IListsListActivityContract iListsListActivityContract;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_lists_list, container, false);
 
         goToDetailBtn = rootView.findViewById(R.id.addBtn);
         goToDetailBtn.setOnClickListener(this);
 
-        recyclerView = rootView.findViewById(R.id.rvProductsList);
-        dbProduct = Application.getDB(); //new DataBase(getActivity());
+        recyclerView = rootView.findViewById(R.id.rvListsList);
+        db = Application.getDB(); //new DataBase(getActivity());
 
         refresh();
 
@@ -64,11 +62,11 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
     }
 
     private void refresh(){
-        SQLiteDatabase db = dbProduct.getWritableDatabase();
+        SQLiteDatabase db = this.db.getWritableDatabase();
         ArrayList<List> lists = new ArrayList<>();
 
         Cursor c = db.query(DataBase.TABLE_NAME_LISTS_LIST, null, null,
-                null, null, null, DataBase.tableProducts.TABLE_ITEM_NAME);
+                null, null, null, DataBase.tableLists.TABLE_ITEM_NAME);
         if (c.moveToFirst()) {
 
             // определяем номера столбцов по имени в выборке
@@ -103,7 +101,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
 
         switch (v.getId()){
             case (R.id.addBtn):
-                iListsListActivityContract.onListFragmentButtonClick();
+                iListsListActivityContract.onListListFragmentButtonClick();
                 break;
         }
 

@@ -11,7 +11,7 @@ import android.util.Log;
  */
 
 public class DataBase extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "LetsBuyka.db";
+    public static final String DATABASE_NAME = "LetsBuyka1.db";
 
     public static final String TABLE_NAME_PRODUCTS_LIST = "products";
     public static final String TABLE_NAME_LISTS_LIST = "lists";
@@ -48,11 +48,13 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.e("DB", "created");
 
         DataBase.tableProducts.createTableProducts(db);
+        Log.e("DB", "products created");
         DataBase.tableLists.createTableList(db);
+        Log.e("DB", "lists created");
         DataBase.tableCustomList.createTableCustomList(db);
+        Log.e("DB", "cust list created");
 
 
     }

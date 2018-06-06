@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.Application;
+import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.R;
 
 /**
@@ -100,10 +101,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 } else {
                     if (isNew() == false) {
                         Product updateble = toUpdate();
-                        Application.CRUDdb.updateTable(updateble);
+                        CRUDdb.updateTableProducts(updateble);
                         IProductListActivityContract.onDetailFragmentButtonClick();
                     } else {
-                        Application.CRUDdb.insertToTable(etName.getText().toString(),
+                        CRUDdb.insertToTableProducts(etName.getText().toString(),
                         etDescr.getText().toString(), etPhoto.getText().toString());
                         IProductListActivityContract.onDetailFragmentButtonClick();
                     }
@@ -114,7 +115,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 break;
             case (R.id.deleteBtn):
                 Bundle bundle = getArguments();
-                Application.CRUDdb.deleteItem((Product) bundle.getSerializable("product"));
+                CRUDdb.deleteItemProducts((Product) bundle.getSerializable("product"));
                 IProductListActivityContract.onDetailFragmentButtonClick();
                 break;
         }

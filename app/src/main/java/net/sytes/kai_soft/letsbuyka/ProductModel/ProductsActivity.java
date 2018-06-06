@@ -62,7 +62,6 @@ public class ProductsActivity extends AppCompatActivity implements
         ft.commit();
     }
 
-
     @Override
     public void onListItemClick(Product product) {
         // начинаем транзакцию

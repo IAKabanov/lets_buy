@@ -66,7 +66,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
         @Override
         public void onClick(View v) {
             List list = lists.get(getAdapterPosition());
-            iListsListActivityContract.onListItemClick(list);
+            iListsListActivityContract.onListListItemClick(list);
         }
     }
 
