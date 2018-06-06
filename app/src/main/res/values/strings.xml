@@ -11,6 +11,9 @@
     <string name="Edit">edit</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="id">ID</string>
+    <string name="list">List</string>
+    <string name="namelist">name list</string>
 
     <string-array name="productsList">
         <item>"Абрикос"</item>

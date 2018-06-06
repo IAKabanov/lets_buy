@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="donut">
-        <activity android:name=".ProductModel.ProductsActivity">
+        <activity android:name=".Lists.ListsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

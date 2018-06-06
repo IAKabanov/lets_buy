@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka;
+package net.sytes.kai_soft.letsbuyka.ProductModel;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import net.sytes.kai_soft.letsbuyka.ProductModel.CRUDdb;
-import net.sytes.kai_soft.letsbuyka.ProductModel.DataBase;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
+import net.sytes.kai_soft.letsbuyka.Application;
+import net.sytes.kai_soft.letsbuyka.R;
 
 /**
  * Created by Лунтя on 30.04.2018.
@@ -23,7 +21,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
     Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr, etPhoto;
-    DataBase dbProduct;
+    //DataBase dbProduct;
     IProductListActivityContract IProductListActivityContract;
 
     @Nullable
@@ -102,10 +100,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 } else {
                     if (isNew() == false) {
                         Product updateble = toUpdate();
-                        CRUDdb.updateTable(updateble);
+                        Application.CRUDdb.updateTable(updateble);
                         IProductListActivityContract.onDetailFragmentButtonClick();
                     } else {
-                        CRUDdb.insertToTable(etName.getText().toString(),
+                        Application.CRUDdb.insertToTable(etName.getText().toString(),
                         etDescr.getText().toString(), etPhoto.getText().toString());
                         IProductListActivityContract.onDetailFragmentButtonClick();
                     }
@@ -116,7 +114,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 break;
             case (R.id.deleteBtn):
                 Bundle bundle = getArguments();
-                CRUDdb.deleteItem((Product) bundle.getSerializable("product"));
+                Application.CRUDdb.deleteItem((Product) bundle.getSerializable("product"));
                 IProductListActivityContract.onDetailFragmentButtonClick();
                 break;
         }

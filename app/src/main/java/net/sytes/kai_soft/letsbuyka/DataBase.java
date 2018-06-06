@@ -1,12 +1,10 @@
-package net.sytes.kai_soft.letsbuyka.ProductModel;
+package net.sytes.kai_soft.letsbuyka;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import net.sytes.kai_soft.letsbuyka.R;
 
 /**
  * Created by Лунтя on 14.04.2018.
@@ -53,6 +51,8 @@ public class DataBase extends SQLiteOpenHelper {
         Log.e("DB", "created");
 
         DataBase.tableProducts.createTableProducts(db);
+        DataBase.tableLists.createTableList(db);
+        DataBase.tableCustomList.createTableCustomList(db);
 
 
     }
@@ -81,6 +81,32 @@ public class DataBase extends SQLiteOpenHelper {
                 cv.put(DataBase.tableProducts.TABLE_ITEM_NAME, aProductsArr);
                 db.insert(TABLE_NAME_PRODUCTS_LIST, null, cv);
             }
+        }
+
+    }
+
+    public static class tableLists{
+        public static final String TABLE_ID = "_ID";
+        public static final String TABLE_ITEM_NAME = "name";
+
+        private static void createTableList(SQLiteDatabase db){
+            db.execSQL("create table " + TABLE_NAME_LISTS_LIST + " ( "
+                    + DataBase.tableLists.TABLE_ID + " integer primary key autoincrement, "
+                    + DataBase.tableLists.TABLE_ITEM_NAME + " text "+ " ); ");
+        }
+
+    }
+
+    public static class tableCustomList{
+        public static final String TABLE_ID = "_id";
+        public static final String TABLE_ID_PRODUCT = "id_product";
+        public static final String TABLE_ID_LIST = "id_list";
+
+        private static void createTableCustomList(SQLiteDatabase db){
+            db.execSQL("create table " + TABLE_NAME_CUSTOM_LIST + " ( "
+                    + DataBase.tableCustomList.TABLE_ID + " integer primary key autoincrement, "
+                    + DataBase.tableCustomList.TABLE_ID_PRODUCT + " text, "
+                    + DataBase.tableCustomList.TABLE_ID_LIST + " text " + " ); ");
         }
 
     }

@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import net.sytes.kai_soft.letsbuyka.DetailFragment;
-import net.sytes.kai_soft.letsbuyka.ListFragment;
 import net.sytes.kai_soft.letsbuyka.R;
 
 public class ProductsActivity extends AppCompatActivity implements

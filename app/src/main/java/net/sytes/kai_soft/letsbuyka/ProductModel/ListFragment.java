@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka;
+package net.sytes.kai_soft.letsbuyka.ProductModel;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,10 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
-import net.sytes.kai_soft.letsbuyka.ProductModel.DataBase;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
+import net.sytes.kai_soft.letsbuyka.Application;
+import net.sytes.kai_soft.letsbuyka.DataBase;
+import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <LinearLayout
+        android:id="@+id/recyclerViewListsListItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:background="@drawable/item_background">
+
+        <TextView
+            android:id="@+id/tvIDList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/id"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvNameList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/list"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
