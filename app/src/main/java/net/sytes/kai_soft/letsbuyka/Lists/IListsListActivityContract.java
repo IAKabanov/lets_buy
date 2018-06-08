@@ -10,5 +10,5 @@ public interface IListsListActivityContract {
     void onListListFragmentButtonClick();
     void onListDetailFragmentButtonClick();
     void onListListItemClick(List list);
-    void onListListItemLongClick(List list);
+    void onListListItemLongClick(long position);
 }

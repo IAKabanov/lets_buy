@@ -19,6 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CustomList.CustomActivity"
+            android:label="custom">
+        </activity>
+        <activity android:name=".ProductModel.ProductsActivity"
+            android:label="product">
+        </activity>
     </application>
 
 </manifest>

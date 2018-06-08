@@ -49,9 +49,11 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
         return this.lists.size();
     }
 
-    static class  MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class  MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener{
         private TextView tvID;
         private TextView tvName;
+        private boolean longClicked = false;
 
         private LinearLayout llItem;
 
@@ -61,12 +63,23 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
             tvName = itemView.findViewById(R.id.tvNameList);
             llItem = itemView.findViewById(R.id.recyclerViewListsListItem);
             llItem.setOnClickListener(this);
+            llItem.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            List list = lists.get(getAdapterPosition());
-            iListsListActivityContract.onListListItemClick(list);
+            if (longClicked == false) {
+                List list = lists.get(getAdapterPosition());
+                iListsListActivityContract.onListListItemClick(list);
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            longClicked = true;
+            long pos = lists.get(getAdapterPosition()).getId();
+            iListsListActivityContract.onListListItemLongClick(pos);
+            return false;
         }
     }
 

@@ -1,5 +1,6 @@
 package net.sytes.kai_soft.letsbuyka.Lists;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -87,8 +89,11 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
     }
 
     @Override
-    public void onListListItemLongClick(List list) {
-        Toast.makeText(this, "Pressed " + list.getId() + "",
-                Toast.LENGTH_SHORT).show();
+    public void onListListItemLongClick(long position) {
+        Intent intent = new Intent(ListsListActivity.this, CustomActivity.class);
+
+        intent.putExtra("pos", position);
+        startActivity(intent);
+
     }
 }
