@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 /**
@@ -11,7 +12,7 @@ import android.util.Log;
  */
 
 public class DataBase extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "LetsBuyka1.db";
+    public static final String DATABASE_NAME = "LetsBuyka2.db";
 
     public static final String TABLE_NAME_PRODUCTS_LIST = "products";
     public static final String TABLE_NAME_LISTS_LIST = "lists";
@@ -84,7 +85,16 @@ public class DataBase extends SQLiteOpenHelper {
                 db.insert(TABLE_NAME_PRODUCTS_LIST, null, cv);
             }
         }
+        public static void a1(DataBase db){
+            SQLiteDatabase bd = db.getWritableDatabase();
+            for (int i = 0; i < 5; i++) {
+                ContentValues cv = new ContentValues();
+                cv.put(tableCustomList.TABLE_ID_LIST, 1);
+                cv.put(tableCustomList.TABLE_ID_PRODUCT, i+1);
+                bd.insert(TABLE_NAME_CUSTOM_LIST, null, cv);
+            }
 
+        }
     }
 
     public static class tableLists{

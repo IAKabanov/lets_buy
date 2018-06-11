@@ -5,4 +5,5 @@ package net.sytes.kai_soft.letsbuyka.CustomList;
  */
 
 public class AdapterListCustom {
+
 }

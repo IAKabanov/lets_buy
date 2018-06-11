@@ -15,7 +15,7 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         dataBase = DataBase.getInstance(getApplicationContext());
-
+        //DataBase.tableProducts.a1(dataBase);
         super.onCreate();
     }
 

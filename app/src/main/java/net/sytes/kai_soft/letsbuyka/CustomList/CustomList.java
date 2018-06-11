@@ -8,6 +8,4 @@ import java.io.Serializable;
 
 public class CustomList implements Serializable {
     private long id, id_product, id_list;
-
-
 }

@@ -1,10 +1,14 @@
 package net.sytes.kai_soft.letsbuyka.CustomList;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +17,8 @@ import android.widget.Button;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
+import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
+import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -26,7 +32,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     Button goToDetailBtn;
     DataBase dbProduct;
     RecyclerView recyclerView;
-    ICustomListActivityContract iCustomListActivityContract;
+    IProductListActivityContract iCustomListActivityContract;
 
     @Nullable
     @Override
@@ -39,21 +45,37 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         dbProduct = Application.getDB(); //new DataBase(getActivity());
 
-        refresh(getArguments().getLong("pos", 0));
+        refresh((getArguments().getLong("pos", 0)));
 
         return rootView;
     }
 
-    private void refresh(long pos) {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IProductListActivityContract){
+            iCustomListActivityContract = (IProductListActivityContract) context;
+        }
+    }
 
+    @Override
+    public void onDetach() {
+        iCustomListActivityContract = null;
+        super.onDetach();
+    }
+
+    private void refresh(long pos) {
 
         SQLiteDatabase db = dbProduct.getWritableDatabase();
         ArrayList<Product> products = new ArrayList<>();
+        //String selection = DataBase.tableProducts.TABLE_ID + " = ?";
+        String selectionArgs = getIDForList(pos, db);
+        //String[] selec = new String[]{"1"};
 
+        Cursor c = db.rawQuery("select * from "
+                + DataBase.TABLE_NAME_PRODUCTS_LIST + " where _id in " + selectionArgs + " order by " +
+                DataBase.tableProducts.TABLE_ITEM_NAME + " asc", null);
 
-        Cursor c = db.query(DataBase.TABLE_NAME_PRODUCTS_LIST, null,
-                DataBase.tableProducts.TABLE_ID + " = ?",
-                getIDForList(pos,db), null, null, DataBase.tableProducts.TABLE_ITEM_NAME);
 
         if (c.moveToFirst()) {
 
@@ -70,14 +92,14 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
                 // переход на следующую строку
                 // а если следующей нет (текущая - последняя), то false - выходим из цикла
             } while (c.moveToNext());
-            //displayRW(products);
+            displayRW(products);
 
 
         } else
             c.close();
     }
 
-    private String[] getIDForList(long id_list, SQLiteDatabase db) {
+    private String getIDForList(long id_list, SQLiteDatabase db) {
         Cursor c = db.query(DataBase.TABLE_NAME_CUSTOM_LIST,
                 new String[]{DataBase.tableCustomList.TABLE_ID_PRODUCT},
                 DataBase.tableCustomList.TABLE_ID_LIST + " = ?",
@@ -85,27 +107,40 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
 
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
-            ArrayList<Long> id = new ArrayList<>();
-
+            StringBuffer id = new StringBuffer();
+            ArrayList<Long> _id = new ArrayList<>();
+            id.append("(");
             do {
-                id.add(c.getLong(idColIndex));
+                id.append(c.getLong(idColIndex));
+                id.append(",");
             } while (c.moveToNext());
-            String[] idString = new String[id.size()];
-            for (int i = 0; i < id.size(); i++){
-               idString[i] = String.valueOf(id.get(i));
-            }
+            id.deleteCharAt(id.lastIndexOf(","));
+            id.append(")");
 
             c.close();
-            return idString;
+            return id.toString();
 
         } else
             c.close();
 
-        return new String[0];
+        return "";
+    }
+
+    public void displayRW(ArrayList<Product> products){
+
+        AdapterProductsList adapter = new AdapterProductsList(products, getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+
+        recyclerView.setAdapter(adapter);
+        //recyclerView.setHasFixedSize(true); // необязательно
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // необязательно
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(itemAnimator);
     }
 
     @Override
     public void onClick(View v) {
-
+        iCustomListActivityContract.onListFragmentButtonClick();
     }
 }
