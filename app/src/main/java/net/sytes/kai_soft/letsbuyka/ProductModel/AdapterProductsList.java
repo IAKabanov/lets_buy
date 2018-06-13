@@ -1,6 +1,9 @@
 package net.sytes.kai_soft.letsbuyka.ProductModel;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Paint;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.sytes.kai_soft.letsbuyka.CustomList.CustomList;
+import net.sytes.kai_soft.letsbuyka.CustomList.IListFragment;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -22,11 +27,28 @@ import java.util.List;
 public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsList.MyViewHolder> {
 
     private static ArrayList<Product> products;
+    private static ArrayList<Integer> deprecatedList;
     static IProductListActivityContract iProductListActivityContract;
+    private static String className;
+    static IListFragment iListFragment;
 
-    public AdapterProductsList(ArrayList<Product> products, Context context) {
+
+    public AdapterProductsList(ArrayList<Product> products,
+                               @Nullable ArrayList<Integer> deprecatedList,
+                               Context context, android.support.v4.app.Fragment fragment, String className) {
         this.products = products;
-        iProductListActivityContract = (IProductListActivityContract) context;
+        this.className = className;
+        this.deprecatedList = deprecatedList;
+        if (context instanceof IProductListActivityContract) {
+            iProductListActivityContract = (IProductListActivityContract) context;
+        }
+
+        if (fragment != null) {
+            if (fragment instanceof IListFragment) {
+                iListFragment = (IListFragment) fragment;
+            }
+        }
+
     }
 
     @Override
@@ -46,6 +68,18 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
         holder.tvName.setText(product.getItemName());
         holder.tvDesc.setText(product.getDescription());
         holder.tvImage.setText(product.getFirstImagePath());
+        if (deprecatedList != null) {
+            if (deprecatedList.size() > 0) {
+                for (int i = 0; i < deprecatedList.size(); i++) {
+                    if (deprecatedList.get(i) == Integer.parseInt(holder.tvID.getText().toString())) {
+                        holder.tvName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
+                }
+            }
+        }
+
+        //Integer deprecated = deprecatedList.get(position);
+
     }
 
     @Override
@@ -54,12 +88,14 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
     }
 
 
-    static class  MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
         private TextView tvID;
         private TextView tvName;
         private TextView tvDesc;
         private TextView tvImage;
         private LinearLayout llItem;
+        private boolean longClicked = false;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -69,12 +105,44 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
             tvImage = itemView.findViewById(R.id.tvImagePathProduct);
             llItem = itemView.findViewById(R.id.recyclerViewListItem);
             llItem.setOnClickListener(this);
+            llItem.setOnLongClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-            Product product = products.get(getAdapterPosition());
-            iProductListActivityContract.onListItemClick(product);
+            if (longClicked == false) {
+                switch (v.getId()) {
+                    case (R.id.recyclerViewListItem):
+                        Product product = products.get(getAdapterPosition());
+                        if (iProductListActivityContract != null) {
+                            iProductListActivityContract.onListItemClick(product, className);
+                        }
+                        if (iListFragment != null) {
+                            iListFragment.onItemClick();
+                        }
+
+                }
+            }
+            longClicked = false;
+
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            longClicked = true;
+            switch (v.getId()) {
+                case (R.id.recyclerViewListItem):
+                    Product product = products.get(getAdapterPosition());
+                    if (iProductListActivityContract != null) {
+                        iProductListActivityContract.onLongListItemClick(product, className);
+                    }
+                    if (iListFragment != null) {
+                        iListFragment.onItemClick();
+                    }
+
+            }
+            return false;
         }
     }
 }

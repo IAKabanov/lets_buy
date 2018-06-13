@@ -12,7 +12,7 @@ import android.util.Log;
  */
 
 public class DataBase extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "LetsBuyka2.db";
+    public static final String DATABASE_NAME = "LetsBuyka6.db";
 
     public static final String TABLE_NAME_PRODUCTS_LIST = "products";
     public static final String TABLE_NAME_LISTS_LIST = "lists";
@@ -113,12 +113,14 @@ public class DataBase extends SQLiteOpenHelper {
         public static final String TABLE_ID = "_id";
         public static final String TABLE_ID_PRODUCT = "id_product";
         public static final String TABLE_ID_LIST = "id_list";
+        public static final String TABLE_DEPRECATED = "deprecated";
 
         private static void createTableCustomList(SQLiteDatabase db){
             db.execSQL("create table " + TABLE_NAME_CUSTOM_LIST + " ( "
                     + DataBase.tableCustomList.TABLE_ID + " integer primary key autoincrement, "
                     + DataBase.tableCustomList.TABLE_ID_PRODUCT + " text, "
-                    + DataBase.tableCustomList.TABLE_ID_LIST + " text " + " ); ");
+                    + DataBase.tableCustomList.TABLE_ID_LIST + " text, " +
+                    tableCustomList.TABLE_DEPRECATED + " integer " + " ); ");
         }
 
     }

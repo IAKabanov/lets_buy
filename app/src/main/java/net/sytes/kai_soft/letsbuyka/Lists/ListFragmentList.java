@@ -66,7 +66,8 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
         ArrayList<List> lists = new ArrayList<>();
 
         Cursor c = db.query(DataBase.TABLE_NAME_LISTS_LIST, null, null,
-                null, null, null, DataBase.tableLists.TABLE_ITEM_NAME);
+                null, null, null,
+                DataBase.tableLists.TABLE_ID+ " asc");
         if (c.moveToFirst()) {
 
             // определяем номера столбцов по имени в выборке

@@ -63,7 +63,7 @@ public class ProductsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onListItemClick(Product product) {
+    public void onListItemClick(Product product, String className) {
         // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         // Создаем и добавляем первый фрагмент
@@ -80,5 +80,10 @@ public class ProductsActivity extends AppCompatActivity implements
 
         Toast.makeText(this, "Pressed " + product.getId() + " ID",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLongListItemClick(Product product, String className) {
+
     }
 }

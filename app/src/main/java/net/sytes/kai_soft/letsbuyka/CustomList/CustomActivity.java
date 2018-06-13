@@ -23,6 +23,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     ListCustomFragment listFragment;          //Фрагмент списка
     ListFragment listProduct;
     FragmentManager fragmentManager;    //Фрагмент менеджер
+    long id_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,10 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
         //Создали фрагменты
         fragmentManager = getSupportFragmentManager();
-        //detailFragment = new DetailCustomFragment();
         listFragment = new ListCustomFragment();
 
         listFragment.setArguments(getIntent().getExtras());
-
+        id_list = getIntent().getExtras().getLong("pos", 1);
         //Начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         //Создаем и добавляем первый фрагмент
@@ -54,7 +54,8 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         //Начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         //Создаем и добавляем первый фрагмент
-        ft.add(R.id.activityCustomList, listProduct, "listProduct");
+        ft.replace(R.id.activityCustomList, listProduct, "listProduct");
+        //(R.id.activityCustomList, listProduct, "listProduct");
         //Подтверждаем операцию
         ft.commit();
     }
@@ -65,7 +66,34 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     }
 
     @Override
-    public void onListItemClick(Product product) {
-        //CRUDdb.
+    public void onListItemClick(Product product, String className) {
+
+        if (className.equals(ListFragment.class.getName())){
+            CRUDdb.insertToTableCustomList(id_list, product.getId());
+
+            fragmentManager = getSupportFragmentManager();
+            //detailFragment = new DetailCustomFragment();
+            listFragment = new ListCustomFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putLong("pos", id_list);
+            listFragment.setArguments(bundle);
+            //Начинаем транзакцию
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            //Создаем и добавляем первый фрагмент
+            ft.replace(R.id.activityCustomList, listFragment, "listFragment");
+            //Подтверждаем операцию
+            ft.commit();
+        } else if (className.equals(ListCustomFragment.class.getName())){
+            long id = CRUDdb.findIdByListProduct(id_list, product.getId());
+            CRUDdb.makeDeprecated(id);
+        }
+    }
+    @Override
+    public void onLongListItemClick(Product product, String className) {
+        if (className.equals(ListCustomFragment.class.getName())) {
+            long id = CRUDdb.findIdByListProduct(id_list, product.getId());
+            CRUDdb.deleteItemCustomList(id);
+        }
     }
 }

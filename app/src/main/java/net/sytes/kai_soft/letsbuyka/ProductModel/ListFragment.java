@@ -30,6 +30,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     DataBase dbProduct;
     RecyclerView recyclerView;
     IProductListActivityContract iProductListActivityContract;
+    public final String CLASS_NAME = getClass().getName();
 
     @Nullable
     @Override
@@ -91,7 +92,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     public void displayRW(ArrayList<Product> products){
 
-        AdapterProductsList adapter = new AdapterProductsList(products, getActivity());
+        AdapterProductsList adapter = new AdapterProductsList(products,null, getActivity(), null, CLASS_NAME);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 

@@ -12,18 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="donut">
-        <activity android:name=".Lists.ListsListActivity">
+        <activity android:name=".ChooseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".CustomList.CustomActivity"
             android:label="custom">
         </activity>
+
         <activity android:name=".ProductModel.ProductsActivity"
             android:label="product">
+        </activity>
+
+        <activity android:name=".Lists.ListsListActivity"
+            android:label="list">
         </activity>
     </application>
 

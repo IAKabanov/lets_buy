@@ -7,5 +7,7 @@ import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
  */
 
 public interface ICustomListActivityContract {
-
+    void onListFragmentButtonClick();
+    void onDetailFragmentButtonClick();
+    void onListItemClick(Product product, String className);
 }
