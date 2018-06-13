@@ -71,6 +71,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         SQLiteDatabase db = dbProduct.getWritableDatabase();
         ArrayList<Product> products = new ArrayList<>();
         String selectionArgs = getIDForList(pos, db);
+        ArrayList<Integer> deprecatedList = getDeprecatedForList(pos, db);
         if (selectionArgs.length() > 0) {
 
             Cursor c = db.rawQuery("select * from "
@@ -92,13 +93,11 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
                     // переход на следующую строку
                     // а если следующей нет (текущая - последняя), то false - выходим из цикла
                 } while (c.moveToNext());
-                ArrayList<Integer> deprecatedList = getDeprecatedForList(pos, db);//getDeprecatedForList(pos, db);
-                displayRW(products, deprecatedList);
-
-
+                //getDeprecatedForList(pos, db);
             } else
                 c.close();
         }
+        displayRW(products, deprecatedList);
     }
 
     public void displayRW(ArrayList<Product> products, ArrayList<Integer> deprecatedList){

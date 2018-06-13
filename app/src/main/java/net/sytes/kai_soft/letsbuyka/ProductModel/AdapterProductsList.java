@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomList;
 import net.sytes.kai_soft.letsbuyka.CustomList.IListFragment;
+import net.sytes.kai_soft.letsbuyka.CustomList.ListCustomFragment;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -105,7 +106,11 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
             tvImage = itemView.findViewById(R.id.tvImagePathProduct);
             llItem = itemView.findViewById(R.id.recyclerViewListItem);
             llItem.setOnClickListener(this);
-            llItem.setOnLongClickListener(this);
+
+            if (className.equals(ListCustomFragment.class.getName())) {
+                llItem.setOnLongClickListener(this);
+            }
+
 
         }
 
@@ -133,14 +138,15 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
             longClicked = true;
             switch (v.getId()) {
                 case (R.id.recyclerViewListItem):
-                    Product product = products.get(getAdapterPosition());
-                    if (iProductListActivityContract != null) {
-                        iProductListActivityContract.onLongListItemClick(product, className);
+                    if (products.size() > 0) {
+                        Product product = products.get(getAdapterPosition());
+                        if (iProductListActivityContract != null) {
+                            iProductListActivityContract.onLongListItemClick(product, className);
+                        }
+                        if (iListFragment != null) {
+                            iListFragment.onItemClick();
+                        }
                     }
-                    if (iListFragment != null) {
-                        iListFragment.onItemClick();
-                    }
-
             }
             return false;
         }
