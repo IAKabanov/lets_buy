@@ -5,13 +5,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <EditText
+        android:id="@+id/findElement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:hint="@string/search" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvProductsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/addBtn"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/findElement"
         android:scrollbars="vertical"
         tools:listItem="@layout/recyclerview_products_list_item"/>
 
