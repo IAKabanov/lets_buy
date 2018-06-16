@@ -221,4 +221,10 @@
         <item>"Ягоды"</item>
         <item>"Яйца"</item>
     </string-array>
+
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+
 </resources>

@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toolbar;
 
-import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -18,12 +18,14 @@ import net.sytes.kai_soft.letsbuyka.R;
  * Created by Лунтя on 30.04.2018.
  */
 
-public class DetailFragment extends Fragment implements View.OnClickListener {
+public class DetailFragment extends Fragment implements IActivityProductListContract {
 
     Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr, etPhoto;
-    //DataBase dbProduct;
+
     IProductListActivityContract IProductListActivityContract;
+
+
 
     @Nullable
     @Override
@@ -39,6 +41,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         etPhoto = rootView.findViewById(R.id.etPhoto);
 
 
+
+
         //dbProduct = Application.getDB(); //new DataBase(this.getContext());
 
         return rootView;
@@ -52,8 +56,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
         emptyEditText();
 
-        backToListBtn.setOnClickListener(this);
-        insertBtn.setOnClickListener(this);
+        //backToListBtn.setOnClickListener(this);
+        //insertBtn.setOnClickListener(this);
         deleteBtn.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
@@ -72,7 +76,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
             insertBtn.setText(R.string.edit);
 
-            deleteBtn.setOnClickListener(this);
+            //deleteBtn.setOnClickListener(this);
             deleteBtn.setVisibility(View.VISIBLE);
         }
     }
@@ -91,41 +95,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         super.onDetach();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case (R.id.insertBtn):
-                insertBtn.setText(R.string.save);
-                if (isEditable() == false) {
-                    makeEditable(true);
-                } else {
-                    if (isNew() == false) {
-                        Product updateble = toUpdate();
-                        CRUDdb.updateTableProducts(updateble);
-                        IProductListActivityContract.onDetailFragmentButtonClick();
-                    } else {
-                        CRUDdb.insertToTableProducts(etName.getText().toString(),
-                        etDescr.getText().toString(), etPhoto.getText().toString());
-                        IProductListActivityContract.onDetailFragmentButtonClick();
-                    }
-                }
-                break;
-            case (R.id.backToListBtn):
-                IProductListActivityContract.onDetailFragmentButtonClick();
-                break;
-            case (R.id.deleteBtn):
-                Bundle bundle = getArguments();
-                CRUDdb.deleteItemProducts((Product) bundle.getSerializable("product"));
-                IProductListActivityContract.onDetailFragmentButtonClick();
-                break;
-        }
-    }
-
     private boolean isEditable() {
         return etName.isEnabled();
     }
 
-    private boolean isNew() {
+    private boolean isNewProduct() {
         Bundle bundle = getArguments();
         if (bundle.getBoolean("editable") == true) {
             return true;
@@ -156,4 +130,38 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    @Override
+    public void savePressed() {
+
+        if (isNewProduct() == false) {
+            Product updateble = toUpdate();
+            CRUDdb.updateTableProducts(updateble);
+            IProductListActivityContract.onDetailFragmentButtonClick();
+        } else {
+            CRUDdb.insertToTableProducts(etName.getText().toString(),
+                    etDescr.getText().toString(), etPhoto.getText().toString());
+            IProductListActivityContract.onDetailFragmentButtonClick();
+        }
+    }
+
+    @Override
+    public void deletePressed(){
+        Bundle bundle = getArguments();
+        if (isNewProduct() == false) {
+            CRUDdb.deleteItemProducts((Product) bundle.getSerializable("product"));
+            IProductListActivityContract.onDetailFragmentButtonClick();
+        }
+    }
+
+    @Override
+    public void editPressed(){
+        if (isEditable() == false) {
+            makeEditable(true);
+        }
+    }
+
+    @Override
+    public boolean isNew(){
+        return isNewProduct();
+    }
 }
