@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 
 import net.sytes.kai_soft.letsbuyka.R;
@@ -106,6 +107,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionSearch.setVisible(false);
         actionSearch.collapseActionView();
         //searchView.setVisibility(View.GONE);
+        toolBar.requestFocus();
 
         toolBar.setTitle(R.string.emptyProduct);
 
@@ -133,6 +135,9 @@ public class ProductsActivity extends AppCompatActivity implements
         actionSearch.setVisible(true);
         //searchView.setVisibility(View.VISIBLE);
         toolBar.setTitle(R.string.products);
+
+        toolBar.requestFocus();
+
         //onBackPressed();
     }
 
@@ -172,6 +177,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
         toolBar.setTitle(product.getItemName());
 
+        toolBar.requestFocus();
+
         //Toast.makeText(this, "Pressed " + product.getId() + " ID",
         //        Toast.LENGTH_SHORT).show();
     }
@@ -188,12 +195,13 @@ public class ProductsActivity extends AppCompatActivity implements
                     if (detailFragment instanceof IProductDetailContract) {
                         iProductDetailContract = (IProductDetailContract) detailFragment;
                         detailFragment.savePressed();
+                        onBackPressed();
                     }
                 }
                 return true;
 
             case R.id.action_cancel:
-                onDetailFragmentButtonClick();
+                onBackPressed();
                 return true;
 
             case R.id.action_delete:
@@ -201,6 +209,7 @@ public class ProductsActivity extends AppCompatActivity implements
                     if (detailFragment instanceof IProductDetailContract) {
                         iProductDetailContract = (IProductDetailContract) detailFragment;
                         detailFragment.deletePressed();
+                        onBackPressed();
                     }
                 }
                 return true;

@@ -25,7 +25,7 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:src="@drawable/ic_add_black_24dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/colorFabBG"
         android:background="@color/colorPrimaryDark"
         app:layout_behavior="@string/fab_behavior_name" />
 </android.support.design.widget.CoordinatorLayout>

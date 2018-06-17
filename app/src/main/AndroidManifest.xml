@@ -22,12 +22,15 @@
         </activity>
 
         <activity android:name=".CustomList.CustomActivity"
-            android:label="custom">
+            android:label="custom"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity android:name=".ProductModel.ProductsActivity"
             android:label="product"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -38,7 +41,8 @@
         </activity>
 
         <activity android:name=".Lists.ListsListActivity"
-            android:label="list">
+            android:label="list"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
     </application>
 

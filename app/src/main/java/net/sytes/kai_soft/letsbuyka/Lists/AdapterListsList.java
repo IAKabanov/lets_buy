@@ -40,7 +40,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         List list = lists.get(position);
 
-        holder.tvID.setText(String.valueOf(list.getId()));
+        //holder.tvID.setText(String.valueOf(list.getId()));
         holder.tvName.setText(list.getItemName());
     }
 
@@ -51,7 +51,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
 
     static class  MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener{
-        private TextView tvID;
+       // private TextView tvID;
         private TextView tvName;
         private boolean longClicked = false;
 
@@ -59,7 +59,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
 
         MyViewHolder(View itemView) {
             super(itemView);
-            tvID = itemView.findViewById(R.id.tvIDList);
+            //tvID = itemView.findViewById(R.id.tvIDList);
             tvName = itemView.findViewById(R.id.tvNameList);
             llItem = itemView.findViewById(R.id.recyclerViewListsListItem);
             llItem.setOnClickListener(this);

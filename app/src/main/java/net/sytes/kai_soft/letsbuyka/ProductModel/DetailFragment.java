@@ -134,11 +134,11 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
         if (isNewProduct() == false) {
             Product updateble = toUpdate();
             CRUDdb.updateTableProducts(updateble);
-            IProductListActivityContract.onDetailFragmentButtonClick();
+            //IProductListActivityContract.onDetailFragmentButtonClick();
         } else {
             CRUDdb.insertToTableProducts(etName.getText().toString(),
                     etDescr.getText().toString());
-            IProductListActivityContract.onDetailFragmentButtonClick();
+            //IProductListActivityContract.onDetailFragmentButtonClick();
         }
     }
 
@@ -147,7 +147,7 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
         Bundle bundle = getArguments();
         if (isNewProduct() == false) {
             CRUDdb.deleteItemProducts((Product) bundle.getSerializable("product"));
-            IProductListActivityContract.onDetailFragmentButtonClick();
+            //IProductListActivityContract.onDetailFragmentButtonClick();
         }
     }
 

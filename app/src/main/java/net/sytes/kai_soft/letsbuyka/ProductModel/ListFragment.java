@@ -44,6 +44,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
 
         fabAdd = rootView.findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
+        fabAdd.requestFocus();
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         dbProduct = Application.getDB(); //new DataBase(getActivity());
@@ -121,6 +122,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
         switch (v.getId()) {
             case (R.id.fabAdd):
                 iProductListActivityContract.onListFragmentButtonClick();
+                fabAdd.requestFocus();
                 break;
         }
     }
