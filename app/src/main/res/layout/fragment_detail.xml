@@ -1,73 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundAdapter">
+    android:background="@color/backgroundAdapter"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etName"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp">
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:hint="@string/name"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textSize="15sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilDescr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:hint="@string/name"
-        android:focusable="true"
-        android:imeOptions="actionNext"
-        android:singleLine="true"/>
-
-    <EditText
-        android:id="@+id/etDescr"
+        android:layout_below="@+id/tilName"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/etName"
         android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:hint="@string/description"
-        android:focusable="true"
-        android:imeOptions="actionNext"
-        android:singleLine="true"/>
+        android:layout_marginTop="15dp">
 
-   <!-- <EditText
-        android:id="@+id/etPhoto"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:hint="@string/photo"
-        android:focusable="true"
-        android:imeOptions="actionDone"
-        android:singleLine="true"/> -->
+        <EditText
+            android:id="@+id/etDescr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:hint="@string/description"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textSize="15sp" />
+
+    </android.support.design.widget.TextInputLayout>
 
 
-<!--    <Button
-        android:id="@+id/insertBtn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:focusable="true"/>
 
-    <Button
-        android:id="@+id/deleteBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete" />
+    <!-- <EditText
+         android:id="@+id/etPhoto"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentBottom="true"
+         android:layout_marginBottom="15dp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textSize="15sp"
+         android:hint="@string/photo"
+         android:focusable="true"
+         android:imeOptions="actionDone"
+         android:singleLine="true"/> -->
 
 
-    <Button
-        android:id="@+id/backToListBtn"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back_to_list" /> -->
+    <!--    <Button
+            android:id="@+id/insertBtn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:focusable="true"/>
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete" />
+
+
+        <Button
+            android:id="@+id/backToListBtn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back_to_list" /> -->
 
 </RelativeLayout>

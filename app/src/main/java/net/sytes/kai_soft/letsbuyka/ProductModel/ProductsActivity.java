@@ -20,7 +20,7 @@ public class ProductsActivity extends AppCompatActivity implements
     ListFragment listFragment;          //Фрагмент списка
     FragmentManager fragmentManager;    //Фрагмент менеджер
     Toolbar toolBar;
-    MenuItem actionSave, actionCancel, actionDelete, actionEdit, actionSearch;
+    MenuItem actionSave, actionCancel, actionDelete, actionSearch;//, actionEdit;
     SearchView searchView;
     IProductDetailContract iProductDetailContract;
     IProductListContract iProductListContract;
@@ -32,7 +32,7 @@ public class ProductsActivity extends AppCompatActivity implements
         toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDetailFragmentButtonClick();
+                onBackPressed();
             }
         });
 
@@ -40,7 +40,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionSave = menu.findItem(R.id.action_save);
         actionCancel = menu.findItem(R.id.action_cancel);
         actionDelete = menu.findItem(R.id.action_delete);
-        actionEdit = menu.findItem(R.id.action_edit);
+        //actionEdit = menu.findItem(R.id.action_edit);
         actionSearch = menu.findItem(R.id.action_search);
         searchView = (SearchView) actionSearch.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -59,7 +59,15 @@ public class ProductsActivity extends AppCompatActivity implements
                 return false;
             }
         });
+        searchView.setVisibility(View.VISIBLE);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        onDetailFragmentButtonClick();
+        super.onBackPressed();
+
     }
 
     @Override
@@ -90,11 +98,14 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onListFragmentButtonClick() {
 
+
         actionSave.setVisible(true);
         actionCancel.setVisible(true);
         actionDelete.setVisible(false);
-        actionEdit.setVisible(false);
+        //actionEdit.setVisible(false);
         actionSearch.setVisible(false);
+        actionSearch.collapseActionView();
+        //searchView.setVisibility(View.GONE);
 
         toolBar.setTitle(R.string.emptyProduct);
 
@@ -118,11 +129,11 @@ public class ProductsActivity extends AppCompatActivity implements
         actionSave.setVisible(false);
         actionCancel.setVisible(false);
         actionDelete.setVisible(false);
-        actionEdit.setVisible(false);
+        //actionEdit.setVisible(false);
         actionSearch.setVisible(true);
+        //searchView.setVisibility(View.VISIBLE);
         toolBar.setTitle(R.string.products);
-        onBackPressed();
-
+        //onBackPressed();
     }
 
 
@@ -150,12 +161,16 @@ public class ProductsActivity extends AppCompatActivity implements
 
         if (detailFragment.isNew()){
             actionDelete.setVisible(false);
-            actionEdit.setVisible(false);
+            //actionEdit.setVisible(false);
         }else{
             actionDelete.setVisible(true);
-            actionEdit.setVisible(true);
+           // actionEdit.setVisible(true);
         }
         actionSearch.setVisible(false);
+        actionSearch.collapseActionView();
+        //searchView.setVisibility(View.GONE);
+
+        toolBar.setTitle(product.getItemName());
 
         //Toast.makeText(this, "Pressed " + product.getId() + " ID",
         //        Toast.LENGTH_SHORT).show();
@@ -190,10 +205,10 @@ public class ProductsActivity extends AppCompatActivity implements
                 }
                 return true;
 
-            case R.id.action_edit:
+            /*case R.id.action_edit:
                 detailFragment.editPressed();
                 actionEdit.setVisible(false);
-                return true;
+                return true;*/
 
             default:
                 return super.onOptionsItemSelected(item);

@@ -3,7 +3,7 @@
     <string name="insert">insert</string>
     <string name="refresh">refresh</string>
     <string name="add">Add</string>
-    <string name="name">Name</string>
+    <string name="name">Название</string>
     <string name="photo">Photo</string>
     <string name="save">Save</string>
     <string name="back_to_list">back to list</string>
@@ -19,8 +19,8 @@
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
     <string name="fab_behavior_name">net.sytes.kai_soft.letsbuyka.FABHideOnScroll</string>
-    <string name="product">Product</string>
-    <string name="description">Description</string>
+    <string name="product">Название</string>
+    <string name="description">Комментарий</string>
     <string name="products">Продукты</string>
     <string name="emptyProduct">Новый продукт</string>
 
