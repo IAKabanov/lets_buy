@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,14 +14,16 @@ import android.view.View;
 import net.sytes.kai_soft.letsbuyka.R;
 
 public class ProductsActivity extends AppCompatActivity implements
-        IProductListActivityContract {
+        IProductListActivityContract{
 
     DetailFragment detailFragment;      //Фрагмент детализации
     ListFragment listFragment;          //Фрагмент списка
     FragmentManager fragmentManager;    //Фрагмент менеджер
     Toolbar toolBar;
-    MenuItem actionSave, actionCancel, actionDelete, actionEdit;
-    IActivityProductListContract iActivityProductListContract;
+    MenuItem actionSave, actionCancel, actionDelete, actionEdit, actionSearch;
+    SearchView searchView;
+    IProductDetailContract iProductDetailContract;
+    IProductListContract iProductListContract;
 
 
     @Override
@@ -38,7 +41,24 @@ public class ProductsActivity extends AppCompatActivity implements
         actionCancel = menu.findItem(R.id.action_cancel);
         actionDelete = menu.findItem(R.id.action_delete);
         actionEdit = menu.findItem(R.id.action_edit);
+        actionSearch = menu.findItem(R.id.action_search);
+        searchView = (SearchView) actionSearch.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (listFragment instanceof IProductListContract) {
+                    iProductListContract = (IProductListContract) listFragment;
+                    listFragment.onFilterMake(newText);
+                }
+
+                return false;
+            }
+        });
         return true;
     }
 
@@ -73,6 +93,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionCancel.setVisible(true);
         actionDelete.setVisible(false);
         actionEdit.setVisible(false);
+        actionSearch.setVisible(false);
 
         // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -95,6 +116,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionCancel.setVisible(false);
         actionDelete.setVisible(false);
         actionEdit.setVisible(false);
+        actionSearch.setVisible(true);
         onBackPressed();
 
     }
@@ -129,7 +151,7 @@ public class ProductsActivity extends AppCompatActivity implements
             actionDelete.setVisible(true);
             actionEdit.setVisible(true);
         }
-
+        actionSearch.setVisible(false);
 
         //Toast.makeText(this, "Pressed " + product.getId() + " ID",
         //        Toast.LENGTH_SHORT).show();
@@ -144,8 +166,8 @@ public class ProductsActivity extends AppCompatActivity implements
         switch (id) {
             case R.id.action_save:
                 if (detailFragment != null) {
-                    if (detailFragment instanceof IActivityProductListContract) {
-                        iActivityProductListContract = (IActivityProductListContract) detailFragment;
+                    if (detailFragment instanceof IProductDetailContract) {
+                        iProductDetailContract = (IProductDetailContract) detailFragment;
                         detailFragment.savePressed();
                     }
                 }
@@ -157,8 +179,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
             case R.id.action_delete:
                 if (detailFragment != null) {
-                    if (detailFragment instanceof IActivityProductListContract) {
-                        iActivityProductListContract = (IActivityProductListContract) detailFragment;
+                    if (detailFragment instanceof IProductDetailContract) {
+                        iProductDetailContract = (IProductDetailContract) detailFragment;
                         detailFragment.deletePressed();
                     }
                 }

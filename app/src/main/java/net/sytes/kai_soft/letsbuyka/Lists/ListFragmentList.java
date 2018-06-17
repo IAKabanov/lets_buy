@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
     private Button goToDetailBtn;
     private RecyclerView recyclerView;
     private DataBase db;
+    private FloatingActionButton fabAdd;
     IListsListActivityContract iListsListActivityContract;
 
     @Nullable
@@ -36,8 +38,10 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lists_list, container, false);
 
-        goToDetailBtn = rootView.findViewById(R.id.addBtn);
-        goToDetailBtn.setOnClickListener(this);
+        //goToDetailBtn = rootView.findViewById(R.id.addBtn);
+        //goToDetailBtn.setOnClickListener(this);
+        fabAdd = rootView.findViewById(R.id.fabAddList);
+        fabAdd.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvListsList);
         db = Application.getDB(); //new DataBase(getActivity());
@@ -101,7 +105,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         switch (v.getId()){
-            case (R.id.addBtn):
+            case (R.id.fabAddList):
                 iListsListActivityContract.onListListFragmentButtonClick();
                 break;
         }

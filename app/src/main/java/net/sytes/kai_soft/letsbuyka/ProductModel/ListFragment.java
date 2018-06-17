@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,13 +28,13 @@ import java.util.ArrayList;
  * Created by Лунтя on 07.04.2018.
  */
 
-public class ListFragment extends Fragment implements View.OnClickListener {
+public class ListFragment extends Fragment implements View.OnClickListener, IProductListContract {
 
-    Button goToDetailBtn;
-    EditText filter;
+   // EditText filter;
     DataBase dbProduct;
     RecyclerView recyclerView;
     IProductListActivityContract iProductListActivityContract;
+    FloatingActionButton fabAdd;
     public final String CLASS_NAME = getClass().getName();
 
     @Nullable
@@ -41,11 +42,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        goToDetailBtn = rootView.findViewById(R.id.addBtn);
-        goToDetailBtn.setOnClickListener(this);
-
-        filter = rootView.findViewById(R.id.findElement);
-        initFilter();
+        fabAdd = rootView.findViewById(R.id.fabAdd);
+        fabAdd.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         dbProduct = Application.getDB(); //new DataBase(getActivity());
@@ -120,15 +118,47 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-            case (R.id.addBtn):
+            case (R.id.fabAdd):
                 iProductListActivityContract.onListFragmentButtonClick();
                 break;
         }
     }
 
-    private void initFilter() {
+    private void setFilter(String s){
+        if (s.length() == 0) {
+            refresh(null);
+        } else {
+            SQLiteDatabase db = dbProduct.getWritableDatabase();
+            ArrayList<Product> products = new ArrayList<>();
+
+            Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_PRODUCTS_LIST +
+                            " where " + DataBase.tableProducts.TABLE_ITEM_NAME + " like '%"
+                            + s + "%'",
+                    null);
+            if (c.moveToFirst()) {
+
+                // определяем номера столбцов по имени в выборке
+                int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
+                int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+
+
+                do {
+                    products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
+                            c.getString(descColIndex), c.getString(photoColIndex)));
+                    // переход на следующую строку
+                    // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                } while (c.moveToNext());
+
+
+            }
+            refresh(products);
+        }
+    }
+
+   /* private void initFilter() {
         filter.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
@@ -177,5 +207,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
 
 
+    }
+*/
+    @Override
+    public void onFilterMake(String s) {
+        setFilter(s);
     }
 }

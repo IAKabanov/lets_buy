@@ -226,5 +226,6 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
+    <string name="fab_behavior_name">net.sytes.kai_soft.letsbuyka.FABHideOnScroll</string>
 
 </resources>

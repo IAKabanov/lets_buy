@@ -40,8 +40,8 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_custom_list, container, false);
 
-        goToDetailBtn = rootView.findViewById(R.id.addBtn);
-        goToDetailBtn.setOnClickListener(this);
+        //goToDetailBtn = rootView.findViewById(R.id.addBtn);
+        //goToDetailBtn.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         dbProduct = Application.getDB();

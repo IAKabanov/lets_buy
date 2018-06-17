@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toolbar;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.R;
@@ -18,9 +17,9 @@ import net.sytes.kai_soft.letsbuyka.R;
  * Created by Лунтя on 30.04.2018.
  */
 
-public class DetailFragment extends Fragment implements IActivityProductListContract {
+public class DetailFragment extends Fragment implements IProductDetailContract {
 
-    Button insertBtn, backToListBtn, deleteBtn;
+    //Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr, etPhoto;
 
     IProductListActivityContract IProductListActivityContract;
@@ -32,9 +31,9 @@ public class DetailFragment extends Fragment implements IActivityProductListCont
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        insertBtn = rootView.findViewById(R.id.insertBtn);
-        backToListBtn = rootView.findViewById(R.id.backToListBtn);
-        deleteBtn = rootView.findViewById(R.id.deleteBtn);
+        //insertBtn = rootView.findViewById(R.id.insertBtn);
+        //backToListBtn = rootView.findViewById(R.id.backToListBtn);
+        //deleteBtn = rootView.findViewById(R.id.deleteBtn);
 
         etName = rootView.findViewById(R.id.etName);
         etDescr = rootView.findViewById(R.id.etDescr);
@@ -58,12 +57,12 @@ public class DetailFragment extends Fragment implements IActivityProductListCont
 
         //backToListBtn.setOnClickListener(this);
         //insertBtn.setOnClickListener(this);
-        deleteBtn.setVisibility(View.GONE);
+        //deleteBtn.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
 
         if (bundle.getBoolean("editable")) {
-            insertBtn.setText(R.string.save);
+            //insertBtn.setText(R.string.save);
 
         } else {
             Product product = (Product) bundle.getSerializable("product");
@@ -74,10 +73,10 @@ public class DetailFragment extends Fragment implements IActivityProductListCont
 
             makeEditable(false);
 
-            insertBtn.setText(R.string.edit);
+            //insertBtn.setText(R.string.edit);
 
             //deleteBtn.setOnClickListener(this);
-            deleteBtn.setVisibility(View.VISIBLE);
+            //deleteBtn.setVisibility(View.VISIBLE);
         }
     }
 

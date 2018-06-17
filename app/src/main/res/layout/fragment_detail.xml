@@ -32,7 +32,7 @@
     <EditText
         android:id="@+id/etPhoto"
         android:layout_alignParentLeft="true"
-        android:layout_above="@+id/backToListBtn"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:singleLine="true"/>
 
 
-    <Button
+<!--    <Button
         android:id="@+id/insertBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -67,6 +67,6 @@
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_list" />
+        android:text="@string/back_to_list" /> -->
 
 </RelativeLayout>

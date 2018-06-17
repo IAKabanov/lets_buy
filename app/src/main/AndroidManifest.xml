@@ -26,7 +26,15 @@
         </activity>
 
         <activity android:name=".ProductModel.ProductsActivity"
-            android:label="product">
+            android:label="product"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
         </activity>
 
         <activity android:name=".Lists.ListsListActivity"
