@@ -8,6 +8,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:fitsSystemWindows="false">
 
 
@@ -16,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
+        android:background="@color/backgroundAdapter"
         tools:listItem="@layout/recyclerview_products_list_item"/>
 
 
@@ -26,8 +28,8 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:src="@drawable/ic_add_black_24dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:background="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorFabBG"
+        android:background="@color/colorFabBG"
         app:layout_behavior="@string/fab_behavior_name" />
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>

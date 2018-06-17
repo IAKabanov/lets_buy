@@ -68,6 +68,7 @@ public class ProductsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_products_list);
 
         toolBar = findViewById(R.id.toolbarProduct);
+        toolBar.setTitle(R.string.products);
         setSupportActionBar(toolBar);
 
 
@@ -95,6 +96,8 @@ public class ProductsActivity extends AppCompatActivity implements
         actionEdit.setVisible(false);
         actionSearch.setVisible(false);
 
+        toolBar.setTitle(R.string.emptyProduct);
+
         // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         // Создаем и добавляем первый фрагмент
@@ -117,6 +120,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionDelete.setVisible(false);
         actionEdit.setVisible(false);
         actionSearch.setVisible(true);
+        toolBar.setTitle(R.string.products);
         onBackPressed();
 
     }

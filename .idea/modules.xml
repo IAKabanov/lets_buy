@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LetsBuyka.iml" filepath="$PROJECT_DIR$/LetsBuyka.iml" />
+      <module fileurl="file://C:\AndroidProjects\letsbuyka\LetsBuyka.iml" filepath="C:\AndroidProjects\letsbuyka\LetsBuyka.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/letsbuyka.iml" filepath="$PROJECT_DIR$/letsbuyka.iml" />
     </modules>
   </component>
 </project>

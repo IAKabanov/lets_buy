@@ -89,7 +89,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
 
                 do {
                     products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
-                            c.getString(descColIndex), c.getString(photoColIndex)));
+                            c.getString(descColIndex)));
                     // переход на следующую строку
                     // а если следующей нет (текущая - последняя), то false - выходим из цикла
                 } while (c.moveToNext());

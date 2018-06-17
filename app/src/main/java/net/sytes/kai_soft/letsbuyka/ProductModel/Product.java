@@ -14,7 +14,7 @@ public class Product implements Serializable{
     private String description;
     private String imagePaths;
 
-    public Product(long id, String itemName, String description, String imagePaths){
+    public Product(long id, String itemName, String description){
         this.id = id;
         this.itemName = itemName;
         this.description = description;

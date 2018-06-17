@@ -65,14 +65,20 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Product product = products.get(position);
 
-        holder.tvID.setText(String.valueOf(product.getId()));
+       // holder.tvID.setText(String.valueOf(product.getId()));
         holder.tvName.setText(product.getItemName());
-        holder.tvDesc.setText(product.getDescription());
-        holder.tvImage.setText(product.getFirstImagePath());
+        if (product.getDescription() != null && product.getDescription().length() !=0){
+            holder.tvDesc.setVisibility(View.VISIBLE);
+            holder.tvDesc.setText(product.getDescription());
+        }else{
+            holder.tvDesc.setVisibility(View.GONE);
+        }
+
+       // holder.tvImage.setText(product.getFirstImagePath());
         if (deprecatedList != null) {
             if (deprecatedList.size() > 0) {
                 for (int i = 0; i < deprecatedList.size(); i++) {
-                    if (deprecatedList.get(i) == Integer.parseInt(holder.tvID.getText().toString())) {
+                    if (deprecatedList.get(i) == product.getId()) {
                         holder.tvName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     }
                 }
@@ -91,19 +97,19 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
 
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
-        private TextView tvID;
+        //private TextView tvID;
         private TextView tvName;
         private TextView tvDesc;
-        private TextView tvImage;
+        //private TextView tvImage;
         private LinearLayout llItem;
         private boolean longClicked = false;
 
         MyViewHolder(View itemView) {
             super(itemView);
-            tvID = itemView.findViewById(R.id.tvIDProduct);
+           // tvID = itemView.findViewById(R.id.tvIDProduct);
             tvName = itemView.findViewById(R.id.tvNameProduct);
             tvDesc = itemView.findViewById(R.id.tvDescProduct);
-            tvImage = itemView.findViewById(R.id.tvImagePathProduct);
+           // tvImage = itemView.findViewById(R.id.tvImagePathProduct);
             llItem = itemView.findViewById(R.id.recyclerViewListItem);
             llItem.setOnClickListener(this);
 

@@ -81,12 +81,12 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
                 int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
                 int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
                 int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
-                int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+                //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
 
 
                 do {
                     products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
-                            c.getString(descColIndex), c.getString(photoColIndex)));
+                            c.getString(descColIndex)));
                     // переход на следующую строку
                     // а если следующей нет (текущая - последняя), то false - выходим из цикла
                 } while (c.moveToNext());
@@ -142,12 +142,12 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
                 int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
                 int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
                 int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
-                int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+                //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
 
 
                 do {
                     products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
-                            c.getString(descColIndex), c.getString(photoColIndex)));
+                            c.getString(descColIndex)));
                     // переход на следующую строку
                     // а если следующей нет (текущая - последняя), то false - выходим из цикла
                 } while (c.moveToNext());

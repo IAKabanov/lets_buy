@@ -15,7 +15,7 @@ import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 public class CRUDdb {
     private static DataBase db = Application.getDB();
 
-    public static void insertToTableProducts(String name, String descr, String photo) {
+    public static void insertToTableProducts(String name, String descr) {
         ContentValues cv = new ContentValues();
 
         db = Application.getDB();
@@ -24,7 +24,7 @@ public class CRUDdb {
 
         cv.put(DataBase.tableProducts.TABLE_ITEM_NAME, name);
         cv.put(DataBase.tableProducts.TABLE_DESCRIPTION, descr);
-        cv.put(DataBase.tableProducts.TABLE_PHOTO, photo);
+        //cv.put(DataBase.tableProducts.TABLE_PHOTO, photo);
         // вставляем запись и получаем ее ID
         db.insert(DataBase.TABLE_NAME_PRODUCTS_LIST, null, cv);
     }

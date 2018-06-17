@@ -20,7 +20,7 @@ import net.sytes.kai_soft.letsbuyka.R;
 public class DetailFragment extends Fragment implements IProductDetailContract {
 
     //Button insertBtn, backToListBtn, deleteBtn;
-    EditText etName, etDescr, etPhoto;
+    EditText etName, etDescr;//, etPhoto;
 
     IProductListActivityContract IProductListActivityContract;
 
@@ -37,7 +37,7 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
 
         etName = rootView.findViewById(R.id.etName);
         etDescr = rootView.findViewById(R.id.etDescr);
-        etPhoto = rootView.findViewById(R.id.etPhoto);
+//        etPhoto = rootView.findViewById(R.id.etPhoto);
 
 
 
@@ -69,9 +69,9 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
 
             etName.setText(product.getItemName());
             etDescr.setText(product.getDescription());
-            etPhoto.setText(product.getFirstImagePath());
+  //          etPhoto.setText(product.getFirstImagePath());
 
-            makeEditable(false);
+            //makeEditable(false);
 
             //insertBtn.setText(R.string.edit);
 
@@ -109,13 +109,13 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
     private void makeEditable(boolean state) {
         etName.setEnabled(state);
         etDescr.setEnabled(state);
-        etPhoto.setEnabled(state);
+//        etPhoto.setEnabled(state);
     }
 
     private void emptyEditText() {
         etName.setText("");
         etDescr.setText("");
-        etPhoto.setText("");
+//        etPhoto.setText("");
     }
 
     private Product toUpdate(){
@@ -123,8 +123,7 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
         Product fromBundle = (Product) bundle.getSerializable("product");
         Product toUpdate = new Product(fromBundle.getId(),
                 etName.getText().toString(),
-                etDescr.getText().toString()
-                , etPhoto.getText().toString());
+                etDescr.getText().toString());
         return toUpdate;
     }
 
@@ -138,7 +137,7 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
             IProductListActivityContract.onDetailFragmentButtonClick();
         } else {
             CRUDdb.insertToTableProducts(etName.getText().toString(),
-                    etDescr.getText().toString(), etPhoto.getText().toString());
+                    etDescr.getText().toString());
             IProductListActivityContract.onDetailFragmentButtonClick();
         }
     }
