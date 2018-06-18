@@ -1,10 +1,9 @@
 package net.sytes.kai_soft.letsbuyka.CustomList;
 
 /**
- * Created by Лунтя on 12.06.2018.
+ * Created by Лунтя on 18.06.2018.
  */
 
-public interface IListFragment {
-    void onItemClick();
+public interface ICustListListContract {
     void onFilterMake(String newFilter);
 }

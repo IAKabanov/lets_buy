@@ -155,4 +155,19 @@ public class CRUDdb {
         long id = c.getLong(idColIndex);
         return id;
     }
+
+    public static String readListName(long id){
+        ContentValues cv = new ContentValues();
+
+        db = Application.getDB();
+
+        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+
+        Cursor c = db.rawQuery("Select * from "
+                + DataBase.TABLE_NAME_LISTS_LIST + " where " + DataBase.tableLists.TABLE_ID + " = "
+                + String.valueOf(id), null);
+        int nameIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+        c.moveToFirst();
+        return c.getString(nameIndex);
+    }
 }

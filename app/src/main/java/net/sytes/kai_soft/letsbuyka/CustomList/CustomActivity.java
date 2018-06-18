@@ -1,63 +1,162 @@
 package net.sytes.kai_soft.letsbuyka.CustomList;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.Lists.IListsListContract;
+import net.sytes.kai_soft.letsbuyka.Lists.List;
+import net.sytes.kai_soft.letsbuyka.ProductModel.DetailFragment;
+import net.sytes.kai_soft.letsbuyka.ProductModel.IProductDetailContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
+import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ListFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
+
+import java.util.Stack;
 
 /**
  * Created by Лунтя on 06.06.2018.
  */
 
-public class CustomActivity extends AppCompatActivity implements IProductListActivityContract {
+public class CustomActivity extends AppCompatActivity implements IProductListActivityContract,
+        ICustomListActivityContract {
 
     //DetailCustomFragment detailFragment;      //Фрагмент детализации
     ListCustomFragment listFragment;          //Фрагмент списка
     ListFragment listProduct;
+    DetailFragment detailProduct;
     FragmentManager fragmentManager;    //Фрагмент менеджер
+    Toolbar toolBar;
+    MenuItem actionSave, actionCancel, actionDelete, actionSearch;//, actionEdit;
+    SearchView searchView;
+    Stack<String> nameFragment;
+    IListFragment iListFragment;
+    IProductDetailContract iProductDetailContract;
+    IProductListContract iProductListContract;
+
+
     long id_list;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        getMenuInflater().inflate(R.menu.save_menu, menu);
+        actionSave = menu.findItem(R.id.action_save);
+        actionCancel = menu.findItem(R.id.action_cancel);
+        actionDelete = menu.findItem(R.id.action_delete);
+        //actionEdit = menu.findItem(R.id.action_edit);
+        actionSearch = menu.findItem(R.id.action_search);
+        searchView = (SearchView) actionSearch.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (nameFragment.peek().equals("listProduct")){
+                    if (listProduct instanceof IProductListContract) {
+                        iProductListContract = (IProductListContract) listProduct;
+                        iProductListContract.onFilterMake(newText);
+                    }
+                }
+                if (nameFragment.peek().equals("listFragment")){
+                    if (listFragment instanceof IListFragment) {
+                        iListFragment = (IListFragment) listFragment;
+                        iListFragment.onFilterMake(newText);
+                    }
+                }
+
+
+
+
+                return false;
+            }
+        });
+        searchView.setVisibility(View.VISIBLE);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        nameFragment.pop();
+        refreshToolbar();
+        //onListDetailFragmentButtonClick();
+        hideKeyboard();
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_list);
 
+
         //Создали фрагменты
         fragmentManager = getSupportFragmentManager();
         listFragment = new ListCustomFragment();
+        detailProduct = new DetailFragment();
 
         listFragment.setArguments(getIntent().getExtras());
         id_list = getIntent().getExtras().getLong("pos", 1);
+
         //Начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         //Создаем и добавляем первый фрагмент
         ft.add(R.id.activityCustomList, listFragment, "listFragment");
+        //ft.addToBackStack("listFragment");
         //Подтверждаем операцию
         ft.commit();
+
+        toolBar = findViewById(R.id.toolbarProduct);
+        toolBar.setTitle(CRUDdb.readListName(id_list));
+        setSupportActionBar(toolBar);
+
+        nameFragment = new Stack<>();
+        nameFragment.push("listFragment");
+
     }
 
     @Override
     public void onListFragmentButtonClick() {
-        fragmentManager = getSupportFragmentManager();
-        //detailFragment = new DetailCustomFragment();
-        listProduct = new ListFragment();
+        nameFragment.push("detailProduct");
+        refreshToolbar();
+        //toolBar.setTitle(R.string.emptyProduct);
 
-
-        //Начинаем транзакцию
+        // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        //Создаем и добавляем первый фрагмент
-        ft.replace(R.id.activityCustomList, listProduct, "listProduct");
-        //(R.id.activityCustomList, listProduct, "listProduct");
-        //Подтверждаем операцию
+        // Создаем и добавляем первый фрагмент
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("editable", true);
+        detailProduct.setArguments(bundle);
+
+        ft.replace(R.id.activityCustomList, detailProduct, "detailProduct");
+        // Подтверждаем операцию
+        ft.addToBackStack("detailProduct");
         ft.commit();
+
     }
 
     @Override
@@ -67,11 +166,10 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
     @Override
     public void onListItemClick(Product product, String className) {
-
-        if (className.equals(ListFragment.class.getName())){
+        if (className.equals(ListFragment.class.getName())) {
             CRUDdb.insertToTableCustomList(id_list, product.getId());
 
-            fragmentManager = getSupportFragmentManager();
+            /*fragmentManager = getSupportFragmentManager();
             //detailFragment = new DetailCustomFragment();
             listFragment = new ListCustomFragment();
 
@@ -83,17 +181,139 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
             //Создаем и добавляем первый фрагмент
             ft.replace(R.id.activityCustomList, listFragment, "listFragment");
             //Подтверждаем операцию
-            ft.commit();
-        } else if (className.equals(ListCustomFragment.class.getName())){
+            ft.commit();*/
+            onBackPressed();
+
+        } else if (className.equals(ListCustomFragment.class.getName())) {
             long id = CRUDdb.findIdByListProduct(id_list, product.getId());
             CRUDdb.makeDeprecated(id);
         }
     }
+
     @Override
     public void onLongListItemClick(Product product, String className) {
         if (className.equals(ListCustomFragment.class.getName())) {
             long id = CRUDdb.findIdByListProduct(id_list, product.getId());
             CRUDdb.deleteItemCustomList(id);
+        }
+    }
+
+    public void refreshToolbar() {
+        String actualFragment;
+        if (nameFragment.size() != 0) {
+            actualFragment = nameFragment.peek();
+
+        } else {
+            actualFragment = "listFragment";
+        }
+
+        switch (actualFragment) {
+
+            case "listFragment":
+                actionSave.setVisible(false);
+                actionCancel.setVisible(false);
+                actionDelete.setVisible(false);
+                actionSearch.setVisible(true);
+                actionSearch.collapseActionView();
+                toolBar.requestFocus();
+                toolBar.setTitle(CRUDdb.readListName(id_list));
+                break;
+
+            case "listProduct":
+                actionSave.setVisible(false);
+                actionCancel.setVisible(false);
+                actionDelete.setVisible(false);
+                actionSearch.setVisible(true);
+                actionSearch.collapseActionView();
+                toolBar.requestFocus();
+                toolBar.setTitle(R.string.products);
+                break;
+
+            case "detailProduct":
+                actionSave.setVisible(true);
+                actionCancel.setVisible(true);
+                actionDelete.setVisible(false);
+                actionSearch.setVisible(false);
+                actionSearch.collapseActionView();
+                toolBar.setTitle(R.string.emptyProduct);
+                toolBar.requestFocus();
+                break;
+
+        }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(toolBar.getWindowToken(), 0);
+    }
+
+
+    @Override
+    public void onCustomListFragmentButtonClick() {
+
+        fragmentManager = getSupportFragmentManager();
+        //detailFragment = new DetailCustomFragment();
+        listProduct = new ListFragment();
+        //Начинаем транзакцию
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        //Создаем и добавляем первый фрагмент
+        ft.replace(R.id.activityCustomList, listProduct, "listProduct");
+        ft.addToBackStack("listProduct");
+        //(R.id.activityCustomList, listProduct, "listProduct");
+        //Подтверждаем операцию
+        ft.commit();
+
+        nameFragment.push("listProduct");
+        refreshToolbar();
+    }
+
+    @Override
+    public void onCustomDetailFragmentButtonClick() {
+
+    }
+
+    @Override
+    public void onCustomListItemClick(Product product, String className) {
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // получим идентификатор выбранного пункта меню
+        int id = item.getItemId();
+        // Операции для выбранного пункта меню
+        switch (id) {
+            case R.id.action_save:
+                if (detailProduct != null) {
+                    if (detailProduct instanceof IProductDetailContract) {
+                        iProductDetailContract = (IProductDetailContract) detailProduct;
+                        detailProduct.savePressed();
+                        onBackPressed();
+                    }
+                }
+                return true;
+
+            case R.id.action_cancel:
+                onBackPressed();
+                return true;
+
+            case R.id.action_delete:
+                if (detailProduct != null) {
+                    if (detailProduct instanceof IProductDetailContract) {
+                        iProductDetailContract = (IProductDetailContract) detailProduct;
+                        detailProduct.deletePressed();
+                        onBackPressed();
+                    }
+                }
+                return true;
+
+            /*case R.id.action_edit:
+                detailFragment.editPressed();
+                actionEdit.setVisible(false);
+                return true;*/
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,10 +29,10 @@ import java.util.ArrayList;
  */
 
 public class ListCustomFragment extends Fragment implements View.OnClickListener, IListFragment {
-    Button goToDetailBtn;
+    FloatingActionButton fabAdd;
     DataBase dbProduct;
     RecyclerView recyclerView;
-    IProductListActivityContract iCustomListActivityContract;
+    ICustomListActivityContract iCustomListActivityContract;
     long currentListID;
     public final String CLASS_NAME = getClass().getName();
 
@@ -40,14 +41,16 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_custom_list, container, false);
 
+        fabAdd = rootView.findViewById(R.id.fabAddCustomList);
+        fabAdd.setOnClickListener(this);
         //goToDetailBtn = rootView.findViewById(R.id.addBtn);
         //goToDetailBtn.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         dbProduct = Application.getDB();
 
-        currentListID =getArguments().getLong("pos", 0);
-        refresh(currentListID);
+        currentListID = getArguments().getLong("pos", 0);
+        refresh(currentListID, null);
 
         return rootView;
     }
@@ -55,8 +58,8 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IProductListActivityContract){
-            iCustomListActivityContract = (IProductListActivityContract) context;
+        if (context instanceof ICustomListActivityContract) {
+            iCustomListActivityContract = (ICustomListActivityContract) context;
         }
     }
 
@@ -66,41 +69,45 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         super.onDetach();
     }
 
-    private void refresh(long pos) {
-
+    private void refresh(long pos, ArrayList<Product> newProducts) {
         SQLiteDatabase db = dbProduct.getWritableDatabase();
-        ArrayList<Product> products = new ArrayList<>();
-        String selectionArgs = getIDForList(pos, db);
         ArrayList<Integer> deprecatedList = getDeprecatedForList(pos, db);
-        if (selectionArgs.length() > 0) {
 
-            Cursor c = db.rawQuery("select * from "
-                    + DataBase.TABLE_NAME_PRODUCTS_LIST + " where _id in " + selectionArgs, null);
+        if (newProducts == null) {
+            ArrayList<Product> products = new ArrayList<>();
+            String selectionArgs = getIDForList(pos, db);
+            if (selectionArgs.length() > 0) {
 
-
-            if (c.moveToFirst()) {
-
-                // определяем номера столбцов по имени в выборке
-                int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
-                int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
-                int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
-                int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+                Cursor c = db.rawQuery("select * from "
+                        + DataBase.TABLE_NAME_PRODUCTS_LIST + " where _id in " + selectionArgs, null);
 
 
-                do {
-                    products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
-                            c.getString(descColIndex)));
-                    // переход на следующую строку
-                    // а если следующей нет (текущая - последняя), то false - выходим из цикла
-                } while (c.moveToNext());
-                //getDeprecatedForList(pos, db);
-            } else
-                c.close();
+                if (c.moveToFirst()) {
+
+                    // определяем номера столбцов по имени в выборке
+                    int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
+                    int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
+                    int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                    //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+
+
+                    do {
+                        products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
+                                c.getString(descColIndex)));
+                        // переход на следующую строку
+                        // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                    } while (c.moveToNext());
+                    //getDeprecatedForList(pos, db);
+                } else
+                    c.close();
+            }
+            displayRW(products, deprecatedList);
+        } else {
+            displayRW(newProducts, deprecatedList);
         }
-        displayRW(products, deprecatedList);
     }
 
-    public void displayRW(ArrayList<Product> products, ArrayList<Integer> deprecatedList){
+    public void displayRW(ArrayList<Product> products, ArrayList<Integer> deprecatedList) {
 
         AdapterProductsList adapter = new AdapterProductsList(products, deprecatedList, getActivity(), this, CLASS_NAME);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -118,7 +125,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
                 new String[]{DataBase.tableCustomList.TABLE_ID_PRODUCT},
                 DataBase.tableCustomList.TABLE_ID_LIST + " = ?",
                 new String[]{String.valueOf(id_list)}, null, null,
-                DataBase.tableCustomList.TABLE_ID_PRODUCT+" asc");
+                DataBase.tableCustomList.TABLE_ID_PRODUCT + " asc");
 
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
@@ -144,8 +151,8 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     private ArrayList<Integer> getDeprecatedForList(long id_list, SQLiteDatabase db) {
         Cursor c = db.rawQuery("select * from " +
                 DataBase.TABLE_NAME_CUSTOM_LIST + " where " + DataBase.tableCustomList.TABLE_ID_LIST +
-        " = " + String.valueOf(id_list) + " and "+ DataBase.tableCustomList.TABLE_DEPRECATED + " = " +
-        String.valueOf(CustomList.DEPRECATED_TRUE), null);
+                " = " + String.valueOf(id_list) + " and " + DataBase.tableCustomList.TABLE_DEPRECATED + " = " +
+                String.valueOf(CustomList.DEPRECATED_TRUE), null);
 
         if (c.moveToFirst()) {
             int deprColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
@@ -165,14 +172,52 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     }
 
 
-
     @Override
     public void onClick(View v) {
-        iCustomListActivityContract.onListFragmentButtonClick();
+        iCustomListActivityContract.onCustomListFragmentButtonClick();
     }
 
     @Override
     public void onItemClick() {
-        refresh(currentListID);
+        refresh(currentListID, null);
+    }
+
+    private void setFilter(String s) {
+        if (s.length() == 0) {
+            refresh(currentListID, null);
+        } else {
+            SQLiteDatabase db = dbProduct.getWritableDatabase();
+            ArrayList<Product> products = new ArrayList<>();
+            String selectionArgs = getIDForList(currentListID, db);
+
+            Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_PRODUCTS_LIST +
+                            " where " + DataBase.tableProducts.TABLE_ITEM_NAME + " like '%"
+                            + s + "%' and " + DataBase.tableProducts.TABLE_ID +" in " + selectionArgs,
+                    null);
+            if (c.moveToFirst()) {
+
+                // определяем номера столбцов по имени в выборке
+                int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
+                int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+
+
+                do {
+                    products.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
+                            c.getString(descColIndex)));
+                    // переход на следующую строку
+                    // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                } while (c.moveToNext());
+
+
+            }
+            refresh(currentListID, products);
+        }
+    }
+
+    @Override
+    public void onFilterMake(String newFilter) {
+        setFilter(newFilter);
     }
 }
