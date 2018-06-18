@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
@@ -30,8 +31,9 @@ import java.util.ArrayList;
 
 public class ListCustomFragment extends Fragment implements View.OnClickListener, IListFragment {
     FloatingActionButton fabAdd;
+    TextView emptyListNow;
     DataBase dbProduct;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, recyclerViewDeprecated;
     ICustomListActivityContract iCustomListActivityContract;
     long currentListID;
     public final String CLASS_NAME = getClass().getName();
@@ -43,14 +45,18 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
 
         fabAdd = rootView.findViewById(R.id.fabAddCustomList);
         fabAdd.setOnClickListener(this);
+        emptyListNow = rootView.findViewById(R.id.emptyList);
         //goToDetailBtn = rootView.findViewById(R.id.addBtn);
         //goToDetailBtn.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
+        recyclerViewDeprecated = rootView.findViewById(R.id.rvDeprecatedProductsList);
         dbProduct = Application.getDB();
 
         currentListID = getArguments().getLong("pos", 0);
-        refresh(currentListID, null);
+        //refresh(currentListID, null);
+        refreshProductRW(currentListID, null);
+        refreshDeprecatedRW(currentListID, null);
 
         return rootView;
     }
@@ -70,16 +76,21 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     }
 
     private void refresh(long pos, ArrayList<Product> newProducts) {
-        SQLiteDatabase db = dbProduct.getWritableDatabase();
-        ArrayList<Integer> deprecatedList = getDeprecatedForList(pos, db);
+        refreshProductRW(pos, newProducts);
+        refreshDeprecatedRW(pos, newProducts);
 
+    }
+
+    private void refreshProductRW(long pos, ArrayList<Product> newProducts){
+        SQLiteDatabase db = dbProduct.getWritableDatabase();
         if (newProducts == null) {
             ArrayList<Product> products = new ArrayList<>();
             String selectionArgs = getIDForList(pos, db);
             if (selectionArgs.length() > 0) {
-
                 Cursor c = db.rawQuery("select * from "
-                        + DataBase.TABLE_NAME_PRODUCTS_LIST + " where _id in " + selectionArgs, null);
+                        + DataBase.TABLE_NAME_PRODUCTS_LIST + " where "
+                        + DataBase.tableProducts.TABLE_ID
+                        + " in " + selectionArgs, null);
 
 
                 if (c.moveToFirst()) {
@@ -101,31 +112,102 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
                 } else
                     c.close();
             }
-            displayRW(products, deprecatedList);
-        } else {
-            displayRW(newProducts, deprecatedList);
+            if (products.size() == 0){
+                emptyListNow.setVisibility(View.VISIBLE);
+            } else {
+                emptyListNow.setVisibility(View.GONE);
+            }
+            displayRW(products, null, recyclerView);
+        }else {
+            displayRW(newProducts, null, recyclerView);
         }
     }
 
-    public void displayRW(ArrayList<Product> products, ArrayList<Integer> deprecatedList) {
+    private void refreshDeprecatedRW(long pos, ArrayList<Product> newProducts){
+        SQLiteDatabase db = dbProduct.getWritableDatabase();
+        ArrayList<Integer> deprecatedList = getDeprecatedForList(pos, db);
+        if (newProducts == null) {
+            ArrayList<Product> deprecatedProduct = new ArrayList<>();
+            String selectionArgsDeprec = getIDDeprecatedForList(pos, db);
+            if (selectionArgsDeprec.length() > 0) {
+                Cursor c = db.rawQuery("select * from "
+                        + DataBase.TABLE_NAME_PRODUCTS_LIST + " where "
+                        + DataBase.tableProducts.TABLE_ID
+                        + " in " + selectionArgsDeprec, null);
 
-        AdapterProductsList adapter = new AdapterProductsList(products, deprecatedList, getActivity(), this, CLASS_NAME);
+
+                if (c.moveToFirst()) {
+
+                    // определяем номера столбцов по имени в выборке
+                    int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
+                    int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
+                    int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                    //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
+
+
+                    do {
+                        deprecatedProduct.add(new Product(c.getInt(idColIndex), c.getString(nameColIndex),
+                                c.getString(descColIndex)));
+                        // переход на следующую строку
+                        // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                    } while (c.moveToNext());
+                    //getDeprecatedForList(pos, db);
+                } else
+                    c.close();
+            }
+            displayRW(deprecatedProduct, deprecatedList, recyclerViewDeprecated);
+        } else {
+            displayRW(newProducts, deprecatedList, recyclerView);
+        }
+    }
+
+    public void displayRW(ArrayList<Product> products, ArrayList<Integer> deprecatedList,
+                          RecyclerView rv) {
+
+        AdapterProductsList adapter = new AdapterProductsList(products, deprecatedList,
+                getActivity(), this, CLASS_NAME);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
-        recyclerView.setAdapter(adapter);
+        rv.setAdapter(adapter);
         //recyclerView.setHasFixedSize(true); // необязательно
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // необязательно
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setItemAnimator(itemAnimator);
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setItemAnimator(itemAnimator);
     }
 
     private String getIDForList(long id_list, SQLiteDatabase db) {
-        Cursor c = db.query(DataBase.TABLE_NAME_CUSTOM_LIST,
-                new String[]{DataBase.tableCustomList.TABLE_ID_PRODUCT},
-                DataBase.tableCustomList.TABLE_ID_LIST + " = ?",
-                new String[]{String.valueOf(id_list)}, null, null,
-                DataBase.tableCustomList.TABLE_ID_PRODUCT + " asc");
+        Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_CUSTOM_LIST + " where "
+                        + DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list)
+                + " and " + DataBase.tableCustomList.TABLE_DEPRECATED + " = "
+                + String.valueOf(CustomList.DEPRECATED_FALSE), null);
+
+        if (c.moveToFirst()) {
+            int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
+            StringBuffer id = new StringBuffer();
+            ArrayList<Long> _id = new ArrayList<>();
+            id.append("(");
+            do {
+                id.append(c.getLong(idColIndex));
+                id.append(",");
+            } while (c.moveToNext());
+            id.deleteCharAt(id.lastIndexOf(","));
+            id.append(")");
+
+            c.close();
+            return id.toString();
+
+        } else
+            c.close();
+
+        return "";
+    }
+
+    private String getIDDeprecatedForList(long id_list, SQLiteDatabase db) {
+        Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_CUSTOM_LIST + " where "
+                + DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list)
+                + " and " + DataBase.tableCustomList.TABLE_DEPRECATED + " = "
+                + String.valueOf(CustomList.DEPRECATED_TRUE), null);
 
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);

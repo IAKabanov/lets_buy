@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
@@ -32,6 +33,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
 
    // EditText filter;
     DataBase dbProduct;
+    TextView emptyList;
     RecyclerView recyclerView;
     IProductListActivityContract iProductListActivityContract;
     FloatingActionButton fabAdd;
@@ -45,6 +47,8 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
         fabAdd = rootView.findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(this);
         fabAdd.requestFocus();
+
+        emptyList = rootView.findViewById(R.id.emptyList);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         dbProduct = Application.getDB(); //new DataBase(getActivity());
@@ -94,6 +98,11 @@ public class ListFragment extends Fragment implements View.OnClickListener, IPro
 
             } else {
                 c.close();
+            }
+            if (products.size() == 0){
+                emptyList.setVisibility(View.VISIBLE);
+            }else{
+                emptyList.setVisibility(View.GONE);
             }
             displayRW(products);
         } else {

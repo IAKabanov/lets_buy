@@ -10,17 +10,57 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="false">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvProductsList"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:background="@color/backgroundAdapter"
-            tools:listItem="@layout/recyclerview_products_list_item" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/emptyList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/backgroundAdapter"
+                android:padding="5dp"
+                android:text="@string/emptyListNow"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="vertical"
+                android:weightSum="202">
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvProductsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="2"
+                    android:background="@color/backgroundAdapter"
+                    android:scrollbars="vertical"
+                    tools:listItem="@layout/recyclerview_products_list_item" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvDeprecatedProductsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="200"
+                    android:background="@color/backgroundAdapter"
+                    android:scrollbars="vertical"
+                    tools:listItem="@layout/recyclerview_products_list_item" />
+            </LinearLayout>
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddCustomList"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/activity_horizontal_margin"
@@ -28,5 +68,6 @@
             android:src="@drawable/ic_add_black_24dp"
             app:layout_behavior="@string/fab_behavior_name" />
     </android.support.design.widget.CoordinatorLayout>
+
 
 </FrameLayout>

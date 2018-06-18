@@ -27,7 +27,7 @@ import java.util.List;
 
 public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsList.MyViewHolder> {
 
-    private static ArrayList<Product> products;
+    private ArrayList<Product> products;
     private static ArrayList<Integer> deprecatedList;
     static IProductListActivityContract iProductListActivityContract;
     private static String className;
@@ -95,7 +95,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
     }
 
 
-    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
         //private TextView tvID;
         private TextView tvName;

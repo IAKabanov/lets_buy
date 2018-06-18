@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
@@ -29,6 +30,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener, 
 
     //private Button goToDetailBtn;
     private RecyclerView recyclerView;
+    private TextView emptyList;
     private DataBase dbList;
     private FloatingActionButton fabAdd;
     IListsListActivityContract iListsListActivityContract;
@@ -42,6 +44,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener, 
         //goToDetailBtn.setOnClickListener(this);
         fabAdd = rootView.findViewById(R.id.fabAddList);
         fabAdd.setOnClickListener(this);
+        emptyList = rootView.findViewById(R.id.emptyList);
 
         recyclerView = rootView.findViewById(R.id.rvListsList);
         dbList = Application.getDB(); //new DataBase(getActivity());
@@ -87,6 +90,11 @@ public class ListFragmentList extends Fragment implements View.OnClickListener, 
                 } while (c.moveToNext());
             } else {
                 c.close();
+            }
+            if (lists.size() == 0){
+                emptyList.setVisibility(View.VISIBLE);
+            }else{
+                emptyList.setVisibility(View.GONE);
             }
             displayRW(lists);
         } else {

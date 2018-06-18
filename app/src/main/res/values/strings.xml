@@ -25,6 +25,7 @@
     <string name="emptyProduct">Новый продукт</string>
     <string name="lists">Мои списки</string>
     <string name="emptyList">Новый список</string>
+    <string name="emptyListNow">Список пока пуст.</string>
 
     <string-array name="productsList">
         <item>"Абрикос"</item>
