@@ -70,7 +70,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
         public void onClick(View v) {
             if (longClicked == false) {
                 long pos = lists.get(getAdapterPosition()).getId();
-                iListsListActivityContract.onListListItemLongClick(pos);
+                iListsListActivityContract.onListListItemClick(pos);
 
             }
             longClicked = false;
@@ -80,7 +80,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
         public boolean onLongClick(View v) {
             longClicked = true;
             List list = lists.get(getAdapterPosition());
-            iListsListActivityContract.onListListItemClick(list);
+            iListsListActivityContract.onListListItemLongClick(list);
             return false;
         }
     }

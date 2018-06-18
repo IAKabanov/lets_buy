@@ -2,14 +2,14 @@
     <string name="app_name">LetsBuyka</string>
     <string name="insert">insert</string>
     <string name="refresh">refresh</string>
-    <string name="add">Add</string>
+    <string name="add">Добавить</string>
     <string name="name">Название</string>
     <string name="photo">Photo</string>
-    <string name="save">Save</string>
-    <string name="back_to_list">back to list</string>
-    <string name="Edit">edit</string>
+    <string name="save">Сохранить</string>
+    <string name="back_to_list">Назад</string>
+    <string name="Edit">Редактирование</string>
     <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
+    <string name="delete">Удалить</string>
     <string name="id">ID</string>
     <string name="list">List</string>
     <string name="namelist">name list</string>
@@ -23,6 +23,8 @@
     <string name="description">Комментарий</string>
     <string name="products">Продукты</string>
     <string name="emptyProduct">Новый продукт</string>
+    <string name="lists">Мои списки</string>
+    <string name="emptyList">Новый список</string>
 
     <string-array name="productsList">
         <item>"Абрикос"</item>

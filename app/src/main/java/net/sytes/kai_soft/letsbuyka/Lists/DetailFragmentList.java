@@ -20,10 +20,11 @@ import net.sytes.kai_soft.letsbuyka.R;
  * Created by Лунтя on 06.06.2018.
  */
 
-public class DetailFragmentList  extends Fragment implements View.OnClickListener{
+public class DetailFragmentList extends Fragment implements IListsDetailContract {
 
-    Button insertBtn, backToListBtn, deleteBtn;
+    //Button insertBtn, backToListBtn, deleteBtn;
     EditText etName;
+    List list;
     //DataBase dbProduct;
     IListsListActivityContract iListsListActivityContract;
 
@@ -32,9 +33,9 @@ public class DetailFragmentList  extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lists_detail, container, false);
 
-        insertBtn = rootView.findViewById(R.id.insertListBtn);
+        /*insertBtn = rootView.findViewById(R.id.insertListBtn);
         backToListBtn = rootView.findViewById(R.id.backToListListBtn);
-        deleteBtn = rootView.findViewById(R.id.deleteListBtn);
+        deleteBtn = rootView.findViewById(R.id.deleteListBtn);*/
 
         etName = rootView.findViewById(R.id.etNameList);
 
@@ -52,27 +53,27 @@ public class DetailFragmentList  extends Fragment implements View.OnClickListene
 
         emptyEditText();
 
-        backToListBtn.setOnClickListener(this);
+        /*backToListBtn.setOnClickListener(this);
         insertBtn.setOnClickListener(this);
-        deleteBtn.setVisibility(View.GONE);
+        deleteBtn.setVisibility(View.GONE);*/
 
         Bundle bundle = getArguments();
 
         if (bundle.getBoolean("editable")) {
-            insertBtn.setText(R.string.save);
+            //insertBtn.setText(R.string.save);
 
         } else {
-            List list = (List) bundle.getSerializable("list");
+            list = (List) bundle.getSerializable("list");
 
             etName.setText(list.getItemName());
 
 
-            makeEditable(false);
+            makeEditable(true);
 
-            insertBtn.setText(R.string.edit);
+            /*insertBtn.setText(R.string.edit);
 
             deleteBtn.setOnClickListener(this);
-            deleteBtn.setVisibility(View.VISIBLE);
+            deleteBtn.setVisibility(View.VISIBLE);*/
         }
     }
 
@@ -91,15 +92,15 @@ public class DetailFragmentList  extends Fragment implements View.OnClickListene
         super.onDetach();
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case (R.id.insertListBtn):
-                insertBtn.setText(R.string.save);
+           case (R.id.insertListBtn):
+                //insertBtn.setText(R.string.save);
                 if (isEditable() == false) {
                     makeEditable(true);
                 } else {
-                    if (isNew() == false) {
+                    if (isNewElement() == false) {
                         List updateble = toUpdate();
                         CRUDdb.updateTableLists(updateble);
                         iListsListActivityContract.onListDetailFragmentButtonClick();
@@ -118,7 +119,7 @@ public class DetailFragmentList  extends Fragment implements View.OnClickListene
                 iListsListActivityContract.onListDetailFragmentButtonClick();
                 break;
         }
-    }
+    }*/
 
     private boolean isEditable() {
         return etName.isEnabled();
@@ -132,16 +133,39 @@ public class DetailFragmentList  extends Fragment implements View.OnClickListene
         etName.setText("");
     }
 
-    private boolean isNew() {
+    private boolean isNewElement() {
         Bundle bundle = getArguments();
         return bundle.getBoolean("editable") == true;
     }
 
-    private List toUpdate(){
+    private List toUpdate() {
         Bundle bundle = getArguments();
         List fromBundle = (List) bundle.getSerializable("list");
         List toUpdate = new List(fromBundle.getId(),
                 etName.getText().toString());
         return toUpdate;
+    }
+
+    @Override
+    public void savePressed() {
+        if (isNewElement() == false) {
+            List updateble = toUpdate();
+            CRUDdb.updateTableLists(updateble);
+            iListsListActivityContract.onListDetailFragmentButtonClick();
+        } else {
+            CRUDdb.insertToTableLists(etName.getText().toString());
+            iListsListActivityContract.onListDetailFragmentButtonClick();
+        }
+    }
+    @Override
+    public void deletePressed(){
+        Bundle bundle = getArguments();
+        CRUDdb.deleteItemLists((List) bundle.getSerializable("list"));
+        iListsListActivityContract.onListDetailFragmentButtonClick();
+    }
+
+    @Override
+    public String getListName(){
+        return list.getItemName();
     }
 }

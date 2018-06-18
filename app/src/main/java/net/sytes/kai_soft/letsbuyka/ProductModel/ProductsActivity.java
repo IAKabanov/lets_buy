@@ -1,5 +1,6 @@
 package net.sytes.kai_soft.letsbuyka.ProductModel;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 
 import net.sytes.kai_soft.letsbuyka.R;
@@ -54,7 +56,7 @@ public class ProductsActivity extends AppCompatActivity implements
             public boolean onQueryTextChange(String newText) {
                 if (listFragment instanceof IProductListContract) {
                     iProductListContract = (IProductListContract) listFragment;
-                    listFragment.onFilterMake(newText);
+                    iProductListContract.onFilterMake(newText);
                 }
 
                 return false;
@@ -67,8 +69,8 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         onDetailFragmentButtonClick();
+        hideKeyboard();
         super.onBackPressed();
-
     }
 
     @Override
@@ -149,14 +151,14 @@ public class ProductsActivity extends AppCompatActivity implements
         // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         // Создаем и добавляем первый фрагмент
-        ft.remove(listFragment);
+        //ft.remove(listFragment);
 
         Bundle bundle = new Bundle();
         bundle.putBoolean("editable", false);
         bundle.putSerializable("product", product);
         detailFragment.setArguments(bundle);
 
-        ft.add(R.id.activityProductsList, detailFragment, "detailFragment");
+        ft.replace(R.id.activityProductsList, detailFragment, "detailFragment");
         // Подтверждаем операцию
         ft.addToBackStack("detailFragment");
         ft.commit();
@@ -222,6 +224,11 @@ public class ProductsActivity extends AppCompatActivity implements
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(toolBar.getWindowToken(), 0);
     }
 
 

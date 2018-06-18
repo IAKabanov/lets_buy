@@ -9,6 +9,6 @@ import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 public interface IListsListActivityContract {
     void onListListFragmentButtonClick();
     void onListDetailFragmentButtonClick();
-    void onListListItemClick(List list);
-    void onListListItemLongClick(long position);
+    void onListListItemClick(long position);
+    void onListListItemLongClick(List list);
 }

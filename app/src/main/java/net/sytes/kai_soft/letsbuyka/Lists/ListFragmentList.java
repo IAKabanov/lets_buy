@@ -13,10 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
+import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ import java.util.ArrayList;
  * Created by Лунтя on 06.06.2018.
  */
 
-public class ListFragmentList extends Fragment implements View.OnClickListener {
+public class ListFragmentList extends Fragment implements View.OnClickListener, IListsListContract {
 
-    private Button goToDetailBtn;
+    //private Button goToDetailBtn;
     private RecyclerView recyclerView;
-    private DataBase db;
+    private DataBase dbList;
     private FloatingActionButton fabAdd;
     IListsListActivityContract iListsListActivityContract;
 
@@ -44,9 +44,9 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
         fabAdd.setOnClickListener(this);
 
         recyclerView = rootView.findViewById(R.id.rvListsList);
-        db = Application.getDB(); //new DataBase(getActivity());
+        dbList = Application.getDB(); //new DataBase(getActivity());
 
-        refresh();
+        refresh(null);
 
         return rootView;
     }
@@ -54,7 +54,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IListsListActivityContract){
+        if (context instanceof IListsListActivityContract) {
             iListsListActivityContract = (IListsListActivityContract) context;
         }
     }
@@ -65,30 +65,36 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
         super.onDetach();
     }
 
-    private void refresh(){
-        SQLiteDatabase db = this.db.getWritableDatabase();
-        ArrayList<List> lists = new ArrayList<>();
+    private void refresh(@Nullable ArrayList<List> newLists) {
 
-        Cursor c = db.query(DataBase.TABLE_NAME_LISTS_LIST, null, null,
-                null, null, null,
-                DataBase.tableLists.TABLE_ID+ " asc");
-        if (c.moveToFirst()) {
+        if (newLists == null) {
 
-            // определяем номера столбцов по имени в выборке
-            int idColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ID);
-            int nameColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
-            do {
-                lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
-                // переход на следующую строку
-                // а если следующей нет (текущая - последняя), то false - выходим из цикла
-            } while (c.moveToNext());
+            SQLiteDatabase db = this.dbList.getWritableDatabase();
+            ArrayList<List> lists = new ArrayList<>();
+
+            Cursor c = db.query(DataBase.TABLE_NAME_LISTS_LIST, null, null,
+                    null, null, null,
+                    DataBase.tableLists.TABLE_ID + " asc");
+            if (c.moveToFirst()) {
+
+                // определяем номера столбцов по имени в выборке
+                int idColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+                do {
+                    lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
+                    // переход на следующую строку
+                    // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                } while (c.moveToNext());
+            } else {
+                c.close();
+            }
             displayRW(lists);
-
-        } else
-            c.close();
+        } else {
+            displayRW(newLists);
+        }
     }
 
-    public void displayRW(ArrayList<List> lists){
+    public void displayRW(ArrayList<List> lists) {
 
         AdapterListsList adapter = new AdapterListsList(lists, getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -104,7 +110,7 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case (R.id.fabAddList):
                 iListsListActivityContract.onListListFragmentButtonClick();
                 break;
@@ -112,4 +118,36 @@ public class ListFragmentList extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onFilterMake(String filter) {
+        setFilter(filter);
+    }
+
+    private void setFilter(String filter) {
+        if (filter.length() == 0) {
+            refresh(null);
+        } else {
+            SQLiteDatabase db = dbList.getWritableDatabase();
+            ArrayList<List> lists = new ArrayList<>();
+
+            Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_LISTS_LIST +
+                            " where " + DataBase.tableLists.TABLE_ITEM_NAME + " like '%"
+                            + filter + "%'",
+                    null);
+            if (c.moveToFirst()) {
+
+                // определяем номера столбцов по имени в выборке
+                int idColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+                do {
+                    lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
+                    // переход на следующую строку
+                    // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                } while (c.moveToNext());
+
+
+            }
+            refresh(lists);
+        }
+    }
 }
