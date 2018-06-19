@@ -40,7 +40,7 @@
         </activity>
 
         <activity android:name=".Lists.ListsListActivity"
-            android:label="list"
+            android:label="LetsBuy"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden">

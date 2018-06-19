@@ -1,6 +1,7 @@
 package net.sytes.kai_soft.letsbuyka.ProductModel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 
+import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
+import net.sytes.kai_soft.letsbuyka.Lists.ListsListActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 
 public class ProductsActivity extends AppCompatActivity implements
@@ -23,7 +26,7 @@ public class ProductsActivity extends AppCompatActivity implements
     ListFragment listFragment;          //Фрагмент списка
     FragmentManager fragmentManager;    //Фрагмент менеджер
     Toolbar toolBar;
-    MenuItem actionSave, actionCancel, actionDelete, actionSearch;//, actionEdit;
+    MenuItem actionSave, actionCancel, actionDelete, actionSearch, actionProduct;
     SearchView searchView;
     IProductDetailContract iProductDetailContract;
     IProductListContract iProductListContract;
@@ -45,6 +48,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionDelete = menu.findItem(R.id.action_delete);
         //actionEdit = menu.findItem(R.id.action_edit);
         actionSearch = menu.findItem(R.id.action_search);
+        actionProduct = menu.findItem(R.id.action_products);
         searchView = (SearchView) actionSearch.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -62,6 +66,8 @@ public class ProductsActivity extends AppCompatActivity implements
                 return false;
             }
         });
+        actionProduct.setVisible(true);
+        actionProduct.setTitle(R.string.action_products_list);
         searchView.setVisibility(View.VISIBLE);
         return true;
     }
@@ -108,6 +114,7 @@ public class ProductsActivity extends AppCompatActivity implements
         //actionEdit.setVisible(false);
         actionSearch.setVisible(false);
         actionSearch.collapseActionView();
+        actionProduct.setVisible(false);
         //searchView.setVisibility(View.GONE);
         toolBar.requestFocus();
 
@@ -135,6 +142,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionDelete.setVisible(false);
         //actionEdit.setVisible(false);
         actionSearch.setVisible(true);
+        actionProduct.setVisible(true);
         //searchView.setVisibility(View.VISIBLE);
         toolBar.setTitle(R.string.products);
 
@@ -165,6 +173,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
         actionSave.setVisible(true);
         actionCancel.setVisible(true);
+        actionProduct.setVisible(false);
 
         if (detailFragment.isNew()){
             actionDelete.setVisible(false);
@@ -204,6 +213,11 @@ public class ProductsActivity extends AppCompatActivity implements
 
             case R.id.action_cancel:
                 onBackPressed();
+                return true;
+
+            case R.id.action_products:
+                Intent intent = new Intent(ProductsActivity.this, ListsListActivity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.action_delete:

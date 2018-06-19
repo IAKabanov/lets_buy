@@ -1,23 +1,23 @@
 <resources>
-    <string name="app_name">LetsBuyka</string>
-    <string name="insert">insert</string>
-    <string name="refresh">refresh</string>
+    <string name="app_name">LetsBuy</string>
+    <string name="insert">Вс</string>
+    <string name="refresh">Обновить</string>
     <string name="add">Добавить</string>
     <string name="name">Название</string>
-    <string name="photo">Photo</string>
+    <string name="photo">Фото</string>
     <string name="save">Сохранить</string>
     <string name="back_to_list">Назад</string>
     <string name="Edit">Редактирование</string>
-    <string name="edit">Edit</string>
+    <string name="edit">Редактирование</string>
     <string name="delete">Удалить</string>
     <string name="id">ID</string>
-    <string name="list">List</string>
-    <string name="namelist">name list</string>
-    <string name="search">Search</string>
-    <string name="action_save">Save</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_edit">Edit</string>
+    <string name="list">Список</string>
+    <string name="namelist">Имя списка</string>
+    <string name="search">Список</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_edit">Редактирование</string>
     <string name="fab_behavior_name">net.sytes.kai_soft.letsbuyka.FABHideOnScroll</string>
     <string name="product">Название</string>
     <string name="description">Комментарий</string>
@@ -26,6 +26,8 @@
     <string name="lists">Мои списки</string>
     <string name="emptyList">Новый список</string>
     <string name="emptyListNow">Список пока пуст.</string>
+    <string name="action_products">Мои продукты</string>
+    <string name="action_products_list">Мои списки</string>
 
     <string-array name="productsList">
         <item>"Абрикос"</item>

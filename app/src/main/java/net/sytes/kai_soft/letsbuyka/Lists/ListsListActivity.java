@@ -19,6 +19,7 @@ import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductDetailContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
+import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.Stack;
@@ -32,7 +33,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
     ListFragmentList listFragment;          //Фрагмент списка
     FragmentManager fragmentManager;    //Фрагмент менеджер
     Toolbar toolBar;
-    MenuItem actionSave, actionCancel, actionDelete, actionSearch;//, actionEdit;
+    MenuItem actionSave, actionCancel, actionDelete, actionSearch, actionProduct;
     SearchView searchView;
     IListsListContract iListsListContract;
     IListsDetailContract iListsDetailContract;
@@ -55,6 +56,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
         actionDelete = menu.findItem(R.id.action_delete);
         //actionEdit = menu.findItem(R.id.action_edit);
         actionSearch = menu.findItem(R.id.action_search);
+        actionProduct = menu.findItem(R.id.action_products);
         searchView = (SearchView) actionSearch.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -72,6 +74,8 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 return false;
             }
         });
+        actionProduct.setVisible(true);
+        actionProduct.setTitle(R.string.action_products);
         searchView.setVisibility(View.VISIBLE);
         return true;
     }
@@ -225,6 +229,11 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 }
                 return true;
 
+            case R.id.action_products:
+                Intent intent = new Intent(ListsListActivity.this, ProductsActivity.class);
+                startActivity(intent);
+                return true;
+
             /*case R.id.action_edit:
                 detailFragment.editPressed();
                 actionEdit.setVisible(false);
@@ -252,6 +261,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 actionDelete.setVisible(false);
                 actionSearch.setVisible(true);
                 actionSearch.collapseActionView();
+                actionProduct.setVisible(true);
                 toolBar.requestFocus();
                 toolBar.setTitle(R.string.lists);
                 break;
@@ -261,6 +271,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 actionCancel.setVisible(true);
                 actionDelete.setVisible(true);
                 actionSearch.setVisible(false);
+                actionProduct.setVisible(false);
                 actionSearch.collapseActionView();
 
                 toolBar.setTitle(list.getItemName());
@@ -273,6 +284,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 actionCancel.setVisible(true);
                 actionDelete.setVisible(false);
                 actionSearch.setVisible(false);
+                actionProduct.setVisible(false);
                 actionSearch.collapseActionView();
                 toolBar.setTitle(R.string.emptyList);
                 toolBar.requestFocus();
