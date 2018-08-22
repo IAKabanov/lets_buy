@@ -42,7 +42,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:background="@color/colorPrimaryDark"
-            android:backgroundTint="@color/colorFabBG"
+            app:backgroundTint="@color/colorFabBG"
             android:src="@drawable/ic_add_black_24dp"
             app:layout_behavior="@string/fab_behavior_name" />
     </android.support.design.widget.CoordinatorLayout>
