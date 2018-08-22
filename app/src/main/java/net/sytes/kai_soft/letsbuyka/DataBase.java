@@ -44,11 +44,8 @@ public class DataBase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         DataBase.tableProducts.createTableProducts(db);
-        Log.i(TAG, "products created");
         DataBase.tableLists.createTableList(db);
-        Log.i(TAG, "lists created");
         DataBase.tableCustomList.createTableCustomList(db);
-        Log.i(TAG, "cust list created");
 
     }
 
@@ -73,6 +70,7 @@ public class DataBase extends SQLiteOpenHelper {
                     + DataBase.tableProducts.TABLE_ITEM_NAME + " text, "
                     + DataBase.tableProducts.TABLE_DESCRIPTION + " text, "
                     + DataBase.tableProducts.TABLE_PHOTO + " text " + " ); ");
+            Log.i(TAG, "products created");
 
             //  Заполнение стандартным набором
             String[] productsArr = mContext.getResources().getStringArray(R.array.productsList);
@@ -81,6 +79,7 @@ public class DataBase extends SQLiteOpenHelper {
                 cv.put(DataBase.tableProducts.TABLE_ITEM_NAME, aProductsArr);
                 db.insert(TABLE_NAME_PRODUCTS_LIST, null, cv);
             }
+            Log.i(TAG, "products filled");
         }
     }
 
@@ -93,6 +92,7 @@ public class DataBase extends SQLiteOpenHelper {
             db.execSQL("create table " + TABLE_NAME_LISTS_LIST + " ( "
                     + DataBase.tableLists.TABLE_ID + " integer primary key autoincrement, "
                     + DataBase.tableLists.TABLE_ITEM_NAME + " text "+ " ); ");
+            Log.i(TAG, "lists created");
         }
 
     }
@@ -122,6 +122,7 @@ public class DataBase extends SQLiteOpenHelper {
                     + DataBase.tableCustomList.TABLE_ID_PRODUCT + " text, "
                     + DataBase.tableCustomList.TABLE_ID_LIST + " text, " +
                     tableCustomList.TABLE_DEPRECATED + " integer " + " ); ");
+            Log.i(TAG, "custom list created");
         }
 
     }
