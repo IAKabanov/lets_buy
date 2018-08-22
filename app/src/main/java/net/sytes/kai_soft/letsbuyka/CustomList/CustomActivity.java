@@ -1,6 +1,8 @@
 package net.sytes.kai_soft.letsbuyka.CustomList;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
@@ -14,7 +16,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 
+import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.Lists.IListsListContract;
 import net.sytes.kai_soft.letsbuyka.Lists.List;
 import net.sytes.kai_soft.letsbuyka.ProductModel.DetailFragment;
@@ -130,7 +134,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         ft.commit();
 
         toolBar = findViewById(R.id.toolbarProduct);
-        toolBar.setTitle(CRUDdb.readListName(id_list));
+        toolBar.setTitle(readListName(id_list));
         setSupportActionBar(toolBar);
 
         nameFragment = new Stack<>();
@@ -185,7 +189,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
             onBackPressed();
 
         } else if (className.equals(ListCustomFragment.class.getName())) {
-            long id = CRUDdb.findIdByListProduct(id_list, product.getId());
+            long id = findIdByListProduct(id_list, product.getId());
             CRUDdb.makeDeprecated(id);
         }
     }
@@ -193,7 +197,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     @Override
     public void onLongListItemClick(Product product, String className) {
         if (className.equals(ListCustomFragment.class.getName())) {
-            long id = CRUDdb.findIdByListProduct(id_list, product.getId());
+            long id = findIdByListProduct(id_list, product.getId());
             CRUDdb.deleteItemCustomList(id);
         }
     }
@@ -216,7 +220,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
                 actionSearch.setVisible(true);
                 actionSearch.collapseActionView();
                 toolBar.requestFocus();
-                toolBar.setTitle(CRUDdb.readListName(id_list));
+                toolBar.setTitle(readListName(id_list));
                 break;
 
             case "listProduct":
@@ -316,4 +320,40 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public static String readListName(long id) {
+
+        //db = Application.getDB(); //Во имя чего?
+
+        SQLiteDatabase db = Application.getDB().getWritableDatabase();
+
+        Cursor c = db.rawQuery("Select * from "
+                + DataBase.TABLE_NAME_LISTS_LIST + " where " + DataBase.tableLists.TABLE_ID + " = "
+                + String.valueOf(id), null);
+        int nameIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+        if(c.moveToFirst()) {
+            return c.getString(nameIndex);
+        }
+        c.close();
+        return "0";
+    }
+
+    /*  Вспомогательная функция для поиска id в custom list по id списка и id продукта*/
+    public static long findIdByListProduct(long id_list, long id_product) {
+        SQLiteDatabase SQLdb = Application.getDB().getWritableDatabase();
+
+        Cursor c = SQLdb.rawQuery("select * from "
+                        + DataBase.TABLE_NAME_CUSTOM_LIST + " where "
+                        + DataBase.tableCustomList.TABLE_ID_PRODUCT + " = "
+                        + String.valueOf(id_product) + " and "
+                        + DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list)
+                , null);
+        int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID);
+        if (c.moveToFirst()){
+            return c.getLong(idColIndex);
+        }
+        c.close();
+        return 0;
+    }
+
 }
