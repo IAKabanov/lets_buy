@@ -1,14 +1,9 @@
 package net.sytes.kai_soft.letsbuyka;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
-
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
-
 /**
  * Created by Лунтя on 08.05.2018.
  */
-
+/*  В этом классе мы открываем базу данных  */
 public class Application extends android.app.Application {
     private static DataBase dataBase;
 
@@ -22,10 +17,4 @@ public class Application extends android.app.Application {
     public static DataBase getDB(){
         return dataBase;
     }
-
-    /**
-     * Created by Лунтя on 20.05.2018.
-     */
-
-
 }

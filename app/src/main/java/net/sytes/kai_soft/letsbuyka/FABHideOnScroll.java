@@ -2,8 +2,6 @@ package net.sytes.kai_soft.letsbuyka;
 
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
