@@ -6,9 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
 import net.sytes.kai_soft.letsbuyka.Lists.ListsListActivity;
-import net.sytes.kai_soft.letsbuyka.ProductModel.DetailFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity;
 
 /**
