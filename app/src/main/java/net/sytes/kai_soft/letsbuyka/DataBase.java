@@ -13,13 +13,13 @@ import android.util.Log;
 
 /*  Синглтоновый класс. Здесь происходит создание, получение и апгрейд бд   */
 public class DataBase extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "LetsBuy.db";
+    private static final String DATABASE_NAME = "Lets124Buy.db";
 
     public static final String TABLE_NAME_PRODUCTS_LIST = "products";
     public static final String TABLE_NAME_LISTS_LIST = "lists";
     public static final String TABLE_NAME_CUSTOM_LIST = "customList";
 
-    private static final String TAG = "DataBase";
+    private static final String TAG = "DataBasePisos";
 
     private static DataBase instance;
     private static Context mContext;
@@ -30,11 +30,12 @@ public class DataBase extends SQLiteOpenHelper {
 
     public static DataBase getInstance(Context context){
 
-        Log.i(TAG, "got instance");
+        Log.i(TAG, "getting instance");
         mContext = context;
         if (instance == null){
             instance = new DataBase(context);
         }
+        Log.i(TAG, "got instance");
         return instance;
 
     }

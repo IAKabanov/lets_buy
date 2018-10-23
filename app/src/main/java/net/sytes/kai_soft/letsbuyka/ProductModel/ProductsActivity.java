@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
 import net.sytes.kai_soft.letsbuyka.Lists.ListsListActivity;
 import net.sytes.kai_soft.letsbuyka.R;
-
+/*  Активити со списками продуктов  */
 public class ProductsActivity extends AppCompatActivity implements
         IProductListActivityContract{
 

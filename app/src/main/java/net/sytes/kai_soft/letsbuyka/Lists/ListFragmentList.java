@@ -25,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by Лунтя on 06.06.2018.
  */
-
+/*  Фрагмент списка списков */
 public class ListFragmentList extends Fragment implements View.OnClickListener, IListsListContract {
 
     //private Button goToDetailBtn;
@@ -40,14 +40,12 @@ public class ListFragmentList extends Fragment implements View.OnClickListener, 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lists_list, container, false);
 
-        //goToDetailBtn = rootView.findViewById(R.id.addBtn);
-        //goToDetailBtn.setOnClickListener(this);
         fabAdd = rootView.findViewById(R.id.fabAddList);
         fabAdd.setOnClickListener(this);
         emptyList = rootView.findViewById(R.id.emptyList);
 
         recyclerView = rootView.findViewById(R.id.rvListsList);
-        dbList = Application.getDB(); //new DataBase(getActivity());
+        dbList = Application.getDB();
 
         refresh(null);
 

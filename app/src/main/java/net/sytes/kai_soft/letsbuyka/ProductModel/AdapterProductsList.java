@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * Created by Лунтя on 07.04.2018.
  */
@@ -33,10 +35,13 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
     private static String className;
     static IListFragment iListFragment;
 
+    private String TAG = "LModAdapterProductsList";
+
 
     public AdapterProductsList(ArrayList<Product> products,
                                @Nullable ArrayList<Integer> deprecatedList,
                                Context context, android.support.v4.app.Fragment fragment, String className) {
+        Log.i(TAG, "init()");
         this.products = products;
         this.className = className;
         this.deprecatedList = deprecatedList;
@@ -54,6 +59,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.i(TAG, "onCreateViewHolder()");
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_products_list_item, parent, false);
 
@@ -63,6 +69,8 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        Log.i(TAG, "onBindViewHolder()");
+
         Product product = products.get(position);
 
        // holder.tvID.setText(String.valueOf(product.getId()));
@@ -106,6 +114,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
 
         MyViewHolder(View itemView) {
             super(itemView);
+            Log.i(TAG, "MyViewHolder::getItemCount()");
            // tvID = itemView.findViewById(R.id.tvIDProduct);
             tvName = itemView.findViewById(R.id.tvNameProduct);
             tvDesc = itemView.findViewById(R.id.tvDescProduct);

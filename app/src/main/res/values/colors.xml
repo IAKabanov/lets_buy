@@ -5,6 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorFabBG">#6200EA</color>
     <color name="textColorPrimary">#000000</color>
-    <color name="colorTextSecondory">#BDBDBD</color>
+    <color name="colorTextSecondary">#BDBDBD</color>
     <color name="backgroundAdapter">#FFFDE7</color>
 </resources>

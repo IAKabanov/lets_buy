@@ -27,7 +27,7 @@ import java.util.Stack;
 /**
  * Created by Лунтя on 01.06.2018.
  */
-
+/*  Активити с выбором списка   */
 public class ListsListActivity extends AppCompatActivity implements IListsListActivityContract {
     DetailFragmentList detailFragment;      //Фрагмент детализации
     ListFragmentList listFragment;          //Фрагмент списка
