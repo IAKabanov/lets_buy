@@ -51,7 +51,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
         recyclerViewDeprecated = rootView.findViewById(R.id.rvDeprecatedProductsList);
-        dbProduct = Application.getDB();
+        dbProduct = Application.Companion.getDB();
 
         currentListID = getArguments().getLong("pos", 0);
         //refresh(currentListID, null);

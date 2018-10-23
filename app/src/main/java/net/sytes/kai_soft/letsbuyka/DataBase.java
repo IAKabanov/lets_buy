@@ -28,7 +28,7 @@ public class DataBase extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
 
-    public static DataBase getInstance(Context context){
+    public static DataBase getInstance(Application context){
 
         Log.i(TAG, "getting instance");
         mContext = context;

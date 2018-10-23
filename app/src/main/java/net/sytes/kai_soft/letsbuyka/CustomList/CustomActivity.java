@@ -323,7 +323,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
         //db = Application.getDB(); //Во имя чего?
 
-        SQLiteDatabase db = Application.getDB().getWritableDatabase();
+        SQLiteDatabase db = Application.Companion.getDB().getWritableDatabase();
 
         Cursor c = db.rawQuery("Select * from "
                 + DataBase.TABLE_NAME_LISTS_LIST + " where " + DataBase.tableLists.TABLE_ID + " = "
@@ -338,7 +338,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
     /*  Вспомогательная функция для поиска id в custom list по id списка и id продукта*/
     public static long findIdByListProduct(long id_list, long id_product) {
-        SQLiteDatabase SQLdb = Application.getDB().getWritableDatabase();
+        SQLiteDatabase SQLdb = Application.Companion.getDB().getWritableDatabase();
 
         Cursor c = SQLdb.rawQuery("select * from "
                         + DataBase.TABLE_NAME_CUSTOM_LIST + " where "

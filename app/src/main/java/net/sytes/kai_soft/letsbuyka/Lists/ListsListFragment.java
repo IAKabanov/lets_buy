@@ -45,7 +45,7 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
         emptyList = rootView.findViewById(R.id.emptyList);
 
         recyclerView = rootView.findViewById(R.id.rvListsList);
-        dbList = Application.getDB();
+        dbList = Application.Companion.getDB();
 
         refresh(null);
 

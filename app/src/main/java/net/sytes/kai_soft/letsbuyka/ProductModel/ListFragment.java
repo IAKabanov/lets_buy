@@ -52,7 +52,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
         emptyList = rootView.findViewById(R.id.emptyList);
 
         recyclerView = rootView.findViewById(R.id.rvProductsList);
-        dbProduct = Application.getDB(); //new DataBase(getActivity());
+        dbProduct = Application.Companion.getDB(); //new DataBase(getActivity());
 
         refresh(null);
 

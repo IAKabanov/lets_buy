@@ -16,7 +16,7 @@ import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 /*  Класс в котором можно производить добавление, считывание, обновление и удаление из таблиц
  *   базы данных */
 public class CRUDdb {
-    private static DataBase db = Application.getDB();   //Экземпляр базы данных
+    private static DataBase db = Application.Companion.getDB();   //Экземпляр базы данных
 
     /*  Добавление продукта в таблицу продуктов. Принимает имя и описание продукта  */
     public static void insertToTableProducts(String name, String description) {
