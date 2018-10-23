@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
+import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by Лунтя on 06.06.2018.
  */
 /*  Фрагмент списка списков */
-public class ListFragmentList extends Fragment implements View.OnClickListener, IListsListContract {
+public class ListsListFragment extends Fragment implements View.OnClickListener, IFilterContract {
 
     //private Button goToDetailBtn;
     private RecyclerView recyclerView;

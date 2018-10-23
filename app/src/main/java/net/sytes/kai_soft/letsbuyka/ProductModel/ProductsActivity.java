@@ -11,11 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 
-import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
+import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.Lists.ListsListActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 /*  Активити со списками продуктов  */
@@ -29,7 +28,7 @@ public class ProductsActivity extends AppCompatActivity implements
     MenuItem actionSave, actionCancel, actionDelete, actionSearch, actionProduct;
     SearchView searchView;
     IProductDetailContract iProductDetailContract;
-    IProductListContract iProductListContract;
+    IFilterContract iFilterContract;
 
 
     @Override
@@ -58,9 +57,9 @@ public class ProductsActivity extends AppCompatActivity implements
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (listFragment instanceof IProductListContract) {
-                    iProductListContract = (IProductListContract) listFragment;
-                    iProductListContract.onFilterMake(newText);
+                if (listFragment instanceof IFilterContract) {
+                    iFilterContract = (IFilterContract) listFragment;
+                    iFilterContract.onFilterMake(newText);
                 }
 
                 return false;

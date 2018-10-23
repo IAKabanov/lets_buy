@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.DataBase;
+import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
  * Created by Лунтя on 07.04.2018.
  */
 
-public class ListFragment extends Fragment implements View.OnClickListener, IProductListContract {
+public class ListFragment extends Fragment implements View.OnClickListener, IFilterContract {
 
    // EditText filter;
     DataBase dbProduct;

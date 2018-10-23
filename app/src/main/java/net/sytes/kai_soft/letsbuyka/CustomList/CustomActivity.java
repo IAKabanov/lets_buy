@@ -19,12 +19,10 @@ import android.view.inputmethod.InputMethodManager;
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.DataBase;
-import net.sytes.kai_soft.letsbuyka.Lists.IListsListContract;
-import net.sytes.kai_soft.letsbuyka.Lists.List;
+import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.DetailFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductDetailContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ListFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
@@ -49,7 +47,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     Stack<String> nameFragment;
     IListFragment iListFragment;
     IProductDetailContract iProductDetailContract;
-    IProductListContract iProductListContract;
+    IFilterContract iFilterContract;
 
 
     long id_list;
@@ -80,9 +78,9 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (nameFragment.peek().equals("listProduct")){
-                    if (listProduct instanceof IProductListContract) {
-                        iProductListContract = (IProductListContract) listProduct;
-                        iProductListContract.onFilterMake(newText);
+                    if (listProduct instanceof IFilterContract) {
+                        iFilterContract = (IFilterContract) listProduct;
+                        iFilterContract.onFilterMake(newText);
                     }
                 }
                 if (nameFragment.peek().equals("listFragment")){

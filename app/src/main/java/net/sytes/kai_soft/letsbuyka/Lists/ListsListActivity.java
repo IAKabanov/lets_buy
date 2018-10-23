@@ -13,12 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductDetailContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
+import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -30,12 +27,12 @@ import java.util.Stack;
 /*  Активити с выбором списка   */
 public class ListsListActivity extends AppCompatActivity implements IListsListActivityContract {
     DetailFragmentList detailFragment;      //Фрагмент детализации
-    ListFragmentList listFragment;          //Фрагмент списка
+    ListsListFragment listFragment;          //Фрагмент списка
     FragmentManager fragmentManager;    //Фрагмент менеджер
     Toolbar toolBar;
     MenuItem actionSave, actionCancel, actionDelete, actionSearch, actionProduct;
     SearchView searchView;
-    IListsListContract iListsListContract;
+    IFilterContract iFilterContract;
     IListsDetailContract iListsDetailContract;
     Stack<String> nameFragment;
     List list;
@@ -66,9 +63,9 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (listFragment instanceof IListsListContract) {
-                    iListsListContract = (IListsListContract) listFragment;
-                    iListsListContract.onFilterMake(newText);
+                if (listFragment instanceof IFilterContract) {
+                    iFilterContract = (IFilterContract) listFragment;
+                    iFilterContract.onFilterMake(newText);
                 }
 
                 return false;
@@ -101,7 +98,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
         //Создали фрагменты
         fragmentManager = getSupportFragmentManager();
         detailFragment = new DetailFragmentList();
-        listFragment = new ListFragmentList();
+        listFragment = new ListsListFragment();
 
         //Начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
