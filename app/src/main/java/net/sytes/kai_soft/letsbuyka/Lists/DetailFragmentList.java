@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
@@ -20,7 +21,7 @@ import net.sytes.kai_soft.letsbuyka.R;
  * Created by Лунтя on 06.06.2018.
  */
 
-public class DetailFragmentList extends Fragment implements IListsDetailContract {
+public class DetailFragmentList extends Fragment implements IMenuContract {
 
     //Button insertBtn, backToListBtn, deleteBtn;
     EditText etName;
@@ -162,10 +163,5 @@ public class DetailFragmentList extends Fragment implements IListsDetailContract
         Bundle bundle = getArguments();
         CRUDdb.deleteItemLists((List) bundle.getSerializable("list"));
         iListsListActivityContract.onListDetailFragmentButtonClick();
-    }
-
-    @Override
-    public String getListName(){
-        return list.getItemName();
     }
 }

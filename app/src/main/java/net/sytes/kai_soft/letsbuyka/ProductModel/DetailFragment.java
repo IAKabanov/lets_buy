@@ -11,13 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.R;
 
 /**
  * Created by Лунтя on 30.04.2018.
  */
 
-public class DetailFragment extends Fragment implements IProductDetailContract {
+public class DetailFragment extends Fragment implements IMenuContract {
 
     //Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr;//, etPhoto;
@@ -151,14 +152,6 @@ public class DetailFragment extends Fragment implements IProductDetailContract {
         }
     }
 
-    @Override
-    public void editPressed(){
-        if (isEditable() == false) {
-            makeEditable(true);
-        }
-    }
-
-    @Override
     public boolean isNew(){
         return isNewProduct();
     }

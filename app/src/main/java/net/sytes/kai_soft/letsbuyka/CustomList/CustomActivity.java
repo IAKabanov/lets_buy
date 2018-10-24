@@ -18,10 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
-import net.sytes.kai_soft.letsbuyka.DataBase;
+import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
+import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.DetailFragment;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductDetailContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ListFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
@@ -46,7 +46,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     SearchView searchView;
     Stack<String> nameFragment;
     IListFragment iListFragment;
-    IProductDetailContract iProductDetailContract;
+    IMenuContract iMenuContract;
     IFilterContract iFilterContract;
 
 
@@ -78,14 +78,14 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (nameFragment.peek().equals("listProduct")){
-                    if (listProduct instanceof IFilterContract) {
-                        iFilterContract = (IFilterContract) listProduct;
+                    if (listProduct != null) {
+                        iFilterContract = listProduct;
                         iFilterContract.onFilterMake(newText);
                     }
                 }
                 if (nameFragment.peek().equals("listFragment")){
-                    if (listFragment instanceof IListFragment) {
-                        iListFragment = (IListFragment) listFragment;
+                    if (listFragment != null) {
+                        iListFragment = listFragment;
                         iListFragment.onFilterMake(newText);
                     }
                 }
@@ -246,7 +246,9 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(toolBar.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(toolBar.getWindowToken(), 0);
+        }
     }
 
 
@@ -287,11 +289,9 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         switch (id) {
             case R.id.action_save:
                 if (detailProduct != null) {
-                    if (detailProduct instanceof IProductDetailContract) {
-                        iProductDetailContract = (IProductDetailContract) detailProduct;
-                        detailProduct.savePressed();
-                        onBackPressed();
-                    }
+                    iMenuContract = detailProduct;
+                    detailProduct.savePressed();
+                    onBackPressed();
                 }
                 return true;
 
@@ -301,11 +301,9 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
             case R.id.action_delete:
                 if (detailProduct != null) {
-                    if (detailProduct instanceof IProductDetailContract) {
-                        iProductDetailContract = (IProductDetailContract) detailProduct;
-                        detailProduct.deletePressed();
-                        onBackPressed();
-                    }
+                    iMenuContract = detailProduct;
+                    detailProduct.deletePressed();
+                    onBackPressed();
                 }
                 return true;
 
@@ -326,9 +324,9 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         SQLiteDatabase db = Application.Companion.getDB().getWritableDatabase();
 
         Cursor c = db.rawQuery("Select * from "
-                + DataBase.TABLE_NAME_LISTS_LIST + " where " + DataBase.tableLists.TABLE_ID + " = "
+                + Constants.TABLE_NAME_LISTS_LIST + " where " + Constants.TABLE_ID + " = "
                 + String.valueOf(id), null);
-        int nameIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+        int nameIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
         if(c.moveToFirst()) {
             return c.getString(nameIndex);
         }
@@ -341,12 +339,12 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         SQLiteDatabase SQLdb = Application.Companion.getDB().getWritableDatabase();
 
         Cursor c = SQLdb.rawQuery("select * from "
-                        + DataBase.TABLE_NAME_CUSTOM_LIST + " where "
-                        + DataBase.tableCustomList.TABLE_ID_PRODUCT + " = "
+                        + Constants.TABLE_NAME_CUSTOM_LIST + " where "
+                        + Constants.TABLE_ID_PRODUCT + " = "
                         + String.valueOf(id_product) + " and "
-                        + DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list)
+                        + Constants.TABLE_ID_LIST + " = " + String.valueOf(id_list)
                 , null);
-        int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID);
+        int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
         if (c.moveToFirst()){
             return c.getLong(idColIndex);
         }

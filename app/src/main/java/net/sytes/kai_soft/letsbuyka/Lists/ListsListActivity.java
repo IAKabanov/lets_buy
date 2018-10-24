@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
+import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -33,7 +34,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
     MenuItem actionSave, actionCancel, actionDelete, actionSearch, actionProduct;
     SearchView searchView;
     IFilterContract iFilterContract;
-    IListsDetailContract iListsDetailContract;
+    IMenuContract iMenuContract;
     Stack<String> nameFragment;
     List list;
 
@@ -204,8 +205,8 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
         switch (id) {
             case R.id.action_save:
                 if (detailFragment != null) {
-                    if (detailFragment instanceof IListsDetailContract) {
-                        iListsDetailContract = (IListsDetailContract) detailFragment;
+                    if (detailFragment instanceof IMenuContract) {
+                        iMenuContract = (IMenuContract) detailFragment;
                         detailFragment.savePressed();
                         onBackPressed();
                     }
@@ -218,8 +219,8 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
 
             case R.id.action_delete:
                 if (detailFragment != null) {
-                    if (detailFragment instanceof IListsDetailContract) {
-                        iListsDetailContract = (IListsDetailContract) detailFragment;
+                    if (detailFragment instanceof IMenuContract) {
+                        iMenuContract = (IMenuContract) detailFragment;
                         detailFragment.deletePressed();
                         onBackPressed();
                     }

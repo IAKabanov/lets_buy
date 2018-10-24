@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
+import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
 import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
@@ -88,17 +89,17 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
             String selectionArgs = getIDForList(pos, db);
             if (selectionArgs.length() > 0) {
                 Cursor c = db.rawQuery("select * from "
-                        + DataBase.TABLE_NAME_PRODUCTS_LIST + " where "
-                        + DataBase.tableProducts.TABLE_ID
+                        + Constants.TABLE_NAME_PRODUCTS_LIST + " where "
+                        + Constants.TABLE_ID
                         + " in " + selectionArgs, null);
 
 
                 if (c.moveToFirst()) {
 
                     // определяем номера столбцов по имени в выборке
-                    int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
-                    int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
-                    int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                    int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
+                    int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
+                    int descColIndex = c.getColumnIndex(Constants.TABLE_DESCRIPTION);
                     //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
 
 
@@ -131,17 +132,17 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
             String selectionArgsDeprec = getIDDeprecatedForList(pos, db);
             if (selectionArgsDeprec.length() > 0) {
                 Cursor c = db.rawQuery("select * from "
-                        + DataBase.TABLE_NAME_PRODUCTS_LIST + " where "
-                        + DataBase.tableProducts.TABLE_ID
+                        + Constants.TABLE_NAME_PRODUCTS_LIST + " where "
+                        + Constants.TABLE_ID
                         + " in " + selectionArgsDeprec, null);
 
 
                 if (c.moveToFirst()) {
 
                     // определяем номера столбцов по имени в выборке
-                    int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
-                    int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
-                    int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                    int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
+                    int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
+                    int descColIndex = c.getColumnIndex(Constants.TABLE_DESCRIPTION);
                     //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
 
 
@@ -177,13 +178,13 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     }
 
     private String getIDForList(long id_list, SQLiteDatabase db) {
-        Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_CUSTOM_LIST + " where "
-                        + DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list)
-                + " and " + DataBase.tableCustomList.TABLE_DEPRECATED + " = "
+        Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_CUSTOM_LIST + " where "
+                        + Constants.TABLE_ID_LIST + " = " + String.valueOf(id_list)
+                + " and " + Constants.TABLE_DEPRECATED + " = "
                 + String.valueOf(CustomList.DEPRECATED_FALSE), null);
 
         if (c.moveToFirst()) {
-            int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
+            int idColIndex = c.getColumnIndex(Constants.TABLE_ID_PRODUCT);
             StringBuffer id = new StringBuffer();
             ArrayList<Long> _id = new ArrayList<>();
             id.append("(");
@@ -204,13 +205,13 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     }
 
     private String getIDDeprecatedForList(long id_list, SQLiteDatabase db) {
-        Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_CUSTOM_LIST + " where "
-                + DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list)
-                + " and " + DataBase.tableCustomList.TABLE_DEPRECATED + " = "
+        Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_CUSTOM_LIST + " where "
+                + Constants.TABLE_ID_LIST + " = " + String.valueOf(id_list)
+                + " and " + Constants.TABLE_DEPRECATED + " = "
                 + String.valueOf(CustomList.DEPRECATED_TRUE), null);
 
         if (c.moveToFirst()) {
-            int idColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
+            int idColIndex = c.getColumnIndex(Constants.TABLE_ID_PRODUCT);
             StringBuffer id = new StringBuffer();
             ArrayList<Long> _id = new ArrayList<>();
             id.append("(");
@@ -232,12 +233,12 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
 
     private ArrayList<Integer> getDeprecatedForList(long id_list, SQLiteDatabase db) {
         Cursor c = db.rawQuery("select * from " +
-                DataBase.TABLE_NAME_CUSTOM_LIST + " where " + DataBase.tableCustomList.TABLE_ID_LIST +
-                " = " + String.valueOf(id_list) + " and " + DataBase.tableCustomList.TABLE_DEPRECATED + " = " +
+                Constants.TABLE_NAME_CUSTOM_LIST + " where " + Constants.TABLE_ID_LIST +
+                " = " + String.valueOf(id_list) + " and " + Constants.TABLE_DEPRECATED + " = " +
                 String.valueOf(CustomList.DEPRECATED_TRUE), null);
 
         if (c.moveToFirst()) {
-            int deprColIndex = c.getColumnIndex(DataBase.tableCustomList.TABLE_ID_PRODUCT);
+            int deprColIndex = c.getColumnIndex(Constants.TABLE_ID_PRODUCT);
             ArrayList<Integer> deprecatedList = new ArrayList<>();
             do {
                 deprecatedList.add(c.getInt(deprColIndex));
@@ -272,16 +273,16 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
             ArrayList<Product> products = new ArrayList<>();
             String selectionArgs = getIDForList(currentListID, db);
 
-            Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_PRODUCTS_LIST +
-                            " where " + DataBase.tableProducts.TABLE_ITEM_NAME + " like '%"
-                            + s + "%' and " + DataBase.tableProducts.TABLE_ID +" in " + selectionArgs,
+            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_PRODUCTS_LIST +
+                            " where " + Constants.TABLE_ITEM_NAME + " like '%"
+                            + s + "%' and " + Constants.TABLE_ID +" in " + selectionArgs,
                     null);
             if (c.moveToFirst()) {
 
                 // определяем номера столбцов по имени в выборке
-                int idColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ID);
-                int nameColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_ITEM_NAME);
-                int descColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_DESCRIPTION);
+                int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
+                int descColIndex = c.getColumnIndex(Constants.TABLE_DESCRIPTION);
                 //int photoColIndex = c.getColumnIndex(DataBase.tableProducts.TABLE_PHOTO);
 
 

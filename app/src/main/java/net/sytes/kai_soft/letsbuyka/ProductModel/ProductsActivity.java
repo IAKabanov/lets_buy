@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 
 
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
+import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.Lists.ListsListActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 /*  Активити со списками продуктов  */
@@ -27,7 +28,7 @@ public class ProductsActivity extends AppCompatActivity implements
     Toolbar toolBar;
     MenuItem actionSave, actionCancel, actionDelete, actionSearch, actionProduct;
     SearchView searchView;
-    IProductDetailContract iProductDetailContract;
+    IMenuContract iMenuContract;
     IFilterContract iFilterContract;
 
 
@@ -202,8 +203,8 @@ public class ProductsActivity extends AppCompatActivity implements
         switch (id) {
             case R.id.action_save:
                 if (detailFragment != null) {
-                    if (detailFragment instanceof IProductDetailContract) {
-                        iProductDetailContract = (IProductDetailContract) detailFragment;
+                    if (detailFragment instanceof IMenuContract) {
+                        iMenuContract = (IMenuContract) detailFragment;
                         detailFragment.savePressed();
                         onBackPressed();
                     }
@@ -221,8 +222,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
             case R.id.action_delete:
                 if (detailFragment != null) {
-                    if (detailFragment instanceof IProductDetailContract) {
-                        iProductDetailContract = (IProductDetailContract) detailFragment;
+                    if (detailFragment instanceof IMenuContract) {
+                        iMenuContract = (IMenuContract) detailFragment;
                         detailFragment.deletePressed();
                         onBackPressed();
                     }

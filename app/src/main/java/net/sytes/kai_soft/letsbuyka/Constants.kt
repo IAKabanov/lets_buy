@@ -2,7 +2,7 @@ package net.sytes.kai_soft.letsbuyka
 
 class Constants {
     companion object {
-        const val DATABASE_NAME = "LetsBuy.db"
+        const val DATABASE_NAME = "LetsBuy12.db"
         const val TABLE_NAME_PRODUCTS_LIST = "products"
         const val TABLE_NAME_LISTS_LIST = "lists"
         const val TABLE_NAME_CUSTOM_LIST = "customList"

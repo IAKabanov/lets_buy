@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
+import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.R;
@@ -73,14 +74,14 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
             SQLiteDatabase db = this.dbList.getWritableDatabase();
             ArrayList<List> lists = new ArrayList<>();
 
-            Cursor c = db.query(DataBase.TABLE_NAME_LISTS_LIST, null, null,
+            Cursor c = db.query(Constants.TABLE_NAME_LISTS_LIST, null, null,
                     null, null, null,
-                    DataBase.tableLists.TABLE_ID + " asc");
+                    Constants.TABLE_ID + " asc");
             if (c.moveToFirst()) {
 
                 // определяем номера столбцов по имени в выборке
-                int idColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ID);
-                int nameColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+                int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
                 do {
                     lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
                     // переход на следующую строку
@@ -136,15 +137,15 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
             SQLiteDatabase db = dbList.getWritableDatabase();
             ArrayList<List> lists = new ArrayList<>();
 
-            Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_LISTS_LIST +
-                            " where " + DataBase.tableLists.TABLE_ITEM_NAME + " like '%"
+            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_LISTS_LIST +
+                            " where " + Constants.TABLE_ITEM_NAME + " like '%"
                             + filter + "%'",
                     null);
             if (c.moveToFirst()) {
 
                 // определяем номера столбцов по имени в выборке
-                int idColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ID);
-                int nameColIndex = c.getColumnIndex(DataBase.tableLists.TABLE_ITEM_NAME);
+                int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
+                int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
                 do {
                     lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
                     // переход на следующую строку

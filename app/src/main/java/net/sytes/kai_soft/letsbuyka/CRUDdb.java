@@ -26,10 +26,10 @@ public class CRUDdb {
 
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        cv.put(DataBase.tableProducts.TABLE_ITEM_NAME, name);
-        cv.put(DataBase.tableProducts.TABLE_DESCRIPTION, description);
+        cv.put(Constants.TABLE_ITEM_NAME, name);
+        cv.put(Constants.TABLE_DESCRIPTION, description);
 
-        db.insert(DataBase.TABLE_NAME_PRODUCTS_LIST, null, cv);
+        db.insert(Constants.TABLE_NAME_PRODUCTS_LIST, null, cv);
     }
 
     /*  Обновление элемента списка в таблице продуктов  */
@@ -40,12 +40,12 @@ public class CRUDdb {
 
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        cv.put(DataBase.tableProducts.TABLE_ITEM_NAME, product.getItemName());
-        cv.put(DataBase.tableProducts.TABLE_DESCRIPTION, product.getDescription());
+        cv.put(Constants.TABLE_ITEM_NAME, product.getItemName());
+        cv.put(Constants.TABLE_DESCRIPTION, product.getDescription());
         //cv.put(DataBase.tableProducts.TABLE_PHOTO, product.getFirstImagePath());
 
-        db.update(DataBase.TABLE_NAME_PRODUCTS_LIST, cv,
-                DataBase.tableProducts.TABLE_ID + " = ?",
+        db.update(Constants.TABLE_NAME_PRODUCTS_LIST, cv,
+                Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(product.getId())});
     }
 
@@ -53,8 +53,8 @@ public class CRUDdb {
     public static void deleteItemProducts(Product product) {
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        db.delete(DataBase.TABLE_NAME_PRODUCTS_LIST,
-                DataBase.tableProducts.TABLE_ID + " = ?",
+        db.delete(Constants.TABLE_NAME_PRODUCTS_LIST,
+                Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(product.getId())});
     }
 
@@ -67,9 +67,9 @@ public class CRUDdb {
 
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        cv.put(DataBase.tableLists.TABLE_ITEM_NAME, name);
+        cv.put(Constants.TABLE_ITEM_NAME, name);
 
-        db.insert(DataBase.TABLE_NAME_LISTS_LIST, null, cv);
+        db.insert(Constants.TABLE_NAME_LISTS_LIST, null, cv);
     }
 
     /*  Обновление списка в таблице списков    */
@@ -80,10 +80,10 @@ public class CRUDdb {
 
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        cv.put(DataBase.tableLists.TABLE_ITEM_NAME, list.getItemName());
+        cv.put(Constants.TABLE_ITEM_NAME, list.getItemName());
 
-        db.update(DataBase.TABLE_NAME_LISTS_LIST, cv,
-                DataBase.tableLists.TABLE_ID + " = ?",
+        db.update(Constants.TABLE_NAME_LISTS_LIST, cv,
+                Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(list.getId())});
     }
 
@@ -91,7 +91,7 @@ public class CRUDdb {
     public static void deleteItemLists(List list) {
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        db.delete(DataBase.TABLE_NAME_LISTS_LIST, DataBase.tableLists.TABLE_ID + " = ?",
+        db.delete(Constants.TABLE_NAME_LISTS_LIST, Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(list.getId())});
     }
 
@@ -107,18 +107,18 @@ public class CRUDdb {
         /*  Здесь идёт проверка на наличие такой записи в этом пользовательском списке.
          *   Если такая запись есть, то её добавлять не нужно.*/
         Cursor c = SQLdb.rawQuery("select * from " +
-                        DataBase.TABLE_NAME_CUSTOM_LIST + " where " +
-                        DataBase.tableCustomList.TABLE_ID_LIST + " = " + String.valueOf(id_list) +
-                        " and " + DataBase.tableCustomList.TABLE_ID_PRODUCT + " = " +
+                        Constants.TABLE_NAME_CUSTOM_LIST + " where " +
+                        Constants.TABLE_ID_LIST + " = " + String.valueOf(id_list) +
+                        " and " + Constants.TABLE_ID_PRODUCT + " = " +
                         String.valueOf(id_product),
                 null);
         if (c.moveToFirst() == false) {
-            cv.put(DataBase.tableCustomList.TABLE_ID_LIST, id_list);
-            cv.put(DataBase.tableCustomList.TABLE_ID_PRODUCT, id_product);
-            cv.put(DataBase.tableCustomList.TABLE_DEPRECATED,
+            cv.put(Constants.TABLE_ID_LIST, id_list);
+            cv.put(Constants.TABLE_ID_PRODUCT, id_product);
+            cv.put(Constants.TABLE_DEPRECATED,
                     CustomList.DEPRECATED_FALSE);
             // вставляем запись и получаем ее ID
-            SQLdb.insert(DataBase.TABLE_NAME_CUSTOM_LIST, null, cv);
+            SQLdb.insert(Constants.TABLE_NAME_CUSTOM_LIST, null, cv);
         }
         c.close();
     }
@@ -127,7 +127,7 @@ public class CRUDdb {
     public static void deleteItemCustomList(long id) {
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        db.delete(DataBase.TABLE_NAME_CUSTOM_LIST, DataBase.tableLists.TABLE_ID + " = ?",
+        db.delete(Constants.TABLE_NAME_CUSTOM_LIST, Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(id)});
     }
 
@@ -140,22 +140,22 @@ public class CRUDdb {
 
         SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
 
-        Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_CUSTOM_LIST + " where " +
-                DataBase.tableCustomList.TABLE_ID + " = " + String.valueOf(id), null);
+        Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_CUSTOM_LIST + " where " +
+                Constants.TABLE_ID + " = " + String.valueOf(id), null);
 
-        int idDeprecatedColumn = c.getColumnIndex(DataBase.tableCustomList.TABLE_DEPRECATED);
+        int idDeprecatedColumn = c.getColumnIndex(Constants.TABLE_DEPRECATED);
         if (c.moveToFirst()) {
             /*Если элемент не был зачёркнут, зачёркиваем. Или наоборот*/
             if (c.getLong(idDeprecatedColumn) == CustomList.DEPRECATED_TRUE) {
-                cv.put(DataBase.tableCustomList.TABLE_DEPRECATED,
+                cv.put(Constants.TABLE_DEPRECATED,
                         CustomList.DEPRECATED_FALSE);
             } else {
-                cv.put(DataBase.tableCustomList.TABLE_DEPRECATED,
+                cv.put(Constants.TABLE_DEPRECATED,
                         CustomList.DEPRECATED_TRUE);
             }
 
-            db.update(DataBase.TABLE_NAME_CUSTOM_LIST, cv,
-                    DataBase.tableCustomList.TABLE_ID + " = ?",
+            db.update(Constants.TABLE_NAME_CUSTOM_LIST, cv,
+                    Constants.TABLE_ID + " = ?",
                     new String[]{String.valueOf(id)});
         }
         c.close();
