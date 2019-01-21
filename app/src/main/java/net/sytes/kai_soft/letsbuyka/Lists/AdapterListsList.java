@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -55,7 +56,7 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
         private TextView tvName;
         private boolean longClicked = false;
 
-        private LinearLayout llItem;
+        private RelativeLayout llItem;
 
         MyViewHolder(View itemView) {
             super(itemView);

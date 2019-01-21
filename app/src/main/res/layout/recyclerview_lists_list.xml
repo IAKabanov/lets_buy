@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/recyclerViewListsListItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="3dp"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
-        android:backgroundTint="@color/backgroundAdapter"
-        android:background="@drawable/item_background">
+        android:background="@drawable/item_background"
+        android:backgroundTint="@color/backgroundAdapter">
 
-       <!-- <TextView
-            android:id="@+id/tvIDList"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/id"
-            android:textSize="20sp" /> -->
-        <EditText
+        <!-- <TextView
+             android:id="@+id/tvIDList"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="@string/id"
+             android:textSize="20sp" /> -->
+        <!-- <EditText
             android:id="@+id/etNameList"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:hint="@string/emptyList"
             android:textSize="20sp"
-            android:visibility="gone"/>
-
+            android:visibility="gone"/> -->
 
         <TextView
             android:id="@+id/tvNameList"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/list"
             android:layout_margin="3dp"
+            android:text="@string/list"
             android:textSize="20sp"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
-    </LinearLayout>
+        <!-- <Button
+            android:id="@+id/btnDeleteFromRV"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ic_delete_black_50dp"
+            android:visibility="visible"
+            android:layout_marginRight="-80dp" />
+
+        <Button
+            android:id="@+id/btnEditFromRV"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="visible"
+            android:layout_toStartOf="@id/btnDeleteFromRV"
+            android:layout_toLeftOf="@id/btnDeleteFromRV"
+            android:background="@drawable/ic_edit_black_50dp" /> -->
+
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
+

@@ -3,6 +3,7 @@ package net.sytes.kai_soft.letsbuyka;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
 
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomList;
 import net.sytes.kai_soft.letsbuyka.Lists.List;
@@ -159,6 +160,23 @@ public class CRUDdb {
                     new String[]{String.valueOf(id)});
         }
         c.close();
+    }
+
+    public static void fillProducts(Context context, SQLiteDatabase db){
+
+        ContentValues cv = new ContentValues();
+
+        //db = Application.getDB();  // Хз зачем я это сделал
+
+        String[] products = context.getResources().getStringArray(R.array.productsList);
+
+        for (String name:products) {
+            cv.put(Constants.TABLE_ITEM_NAME, name);
+            cv.put(Constants.TABLE_DESCRIPTION, "");
+            db.insert(Constants.TABLE_NAME_PRODUCTS_LIST, null, cv);
+        }
+
+
     }
 
 }

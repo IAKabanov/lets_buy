@@ -3,6 +3,7 @@ package net.sytes.kai_soft.letsbuyka.Lists;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,16 +11,20 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.SwipeController;
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.R;
+import net.sytes.kai_soft.letsbuyka.SwipeControllerActions;
 
 import java.util.ArrayList;
 
@@ -35,6 +40,7 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
     private DataBase dbList;
     private FloatingActionButton fabAdd;
     IListsListActivityContract iListsListActivityContract;
+    SwipeController swipeController = null;
 
     @Nullable
     @Override
@@ -46,6 +52,8 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
         emptyList = rootView.findViewById(R.id.emptyList);
 
         recyclerView = rootView.findViewById(R.id.rvListsList);
+
+
         dbList = Application.Companion.getDB();
 
         refresh(null);
@@ -108,10 +116,53 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
         recyclerView.setAdapter(adapter);
-        //recyclerView.setHasFixedSize(true); // необязательно
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
+
+        swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                CRUDdb.deleteItemLists(lists.get(position));
+                lists.remove(position);
+                refresh(lists);
+            }
+
+            @Override
+            public void onLeftClicked(int position) {
+                super.onLeftClicked(position);
+            }
+        });
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+
+
+
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
+
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // необязательно
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(itemAnimator);
+
+        //RecyclerTouchListener touchListener = new RecyclerTouchListener(this.getActivity(), recyclerView);
+        /*touchListener.setClickable(new RecyclerTouchListener.OnRowClickListener() {
+            @Override
+            public void onRowClicked(int position) {
+                Toast.makeText(getContext(),"onRowClicked", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onIndependentViewClicked(int independentViewID, int position) {
+                Toast.makeText(getContext(),"onIndependentViewClicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+                .setSwipeOptionViews(R.id.delete_task, R.id.edit_task);*/
+
     }
 
     @Override
@@ -154,6 +205,7 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
 
 
             }
+            c.close();
             refresh(lists);
         }
     }

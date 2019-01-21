@@ -35,7 +35,6 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
 
                     /* Заполняем первоначальными значениями    */
                     Log.i(tag, "Filling products")
-                    //CRUDdb.fillProducts(aContext, db)
                 }
             }
         }
@@ -62,6 +61,7 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
                             + Constants.TABLE_ID_LIST + " text, " +
                             Constants.TABLE_DEPRECATED + " integer " + " ); ")
                     Log.i(tag, "Custom list created")
+
                 }
             }
         }
@@ -78,6 +78,7 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
             DataBase.Companion.TableProducts.createTableProducts(db)
             DataBase.Companion.TableLists.createTableList(db)
             DataBase.Companion.TableCustomList.createTableCustomList(db)
+            CRUDdb.fillProducts(aContext, db)
         }
         else{
             Log.w(tag, "did not created, db == null")
