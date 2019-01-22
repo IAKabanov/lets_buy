@@ -9,6 +9,10 @@ import net.sytes.kai_soft.letsbuyka.CustomList.CustomList;
 import net.sytes.kai_soft.letsbuyka.Lists.List;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+
 /**
  * Created by Лунтя on 06.06.2018.
  */
@@ -71,6 +75,41 @@ public class CRUDdb {
         cv.put(Constants.TABLE_ITEM_NAME, name);
 
         db.insert(Constants.TABLE_NAME_LISTS_LIST, null, cv);
+    }
+
+    /*  Получение элементов из таблицы списков  */
+
+    public static ArrayList<List> readFromTableLists(@Nullable String filter){
+        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+
+        ArrayList<List> lists = new ArrayList<>();
+        Cursor c;
+        if (filter == null){
+            c = db.query(Constants.TABLE_NAME_LISTS_LIST, null, null,
+                    null, null, null,
+                    Constants.TABLE_ID + " asc");
+        } else {
+            c = db.rawQuery("select * from " + Constants.TABLE_NAME_LISTS_LIST +
+                            " where " + Constants.TABLE_ITEM_NAME + " like '%"
+                            + filter + "%'",
+                    null);
+        }
+
+        if (c.moveToFirst()) {
+
+            // определяем номера столбцов по имени в выборке
+            int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
+            int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
+            do {
+                lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
+                // переход на следующую строку
+                // а если следующей нет (текущая - последняя), то false - выходим из цикла
+            } while (c.moveToNext());
+        } else {
+            c.close();
+        }
+
+        return lists;
     }
 
     /*  Обновление списка в таблице списков    */

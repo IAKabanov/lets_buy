@@ -28,6 +28,9 @@
     <string name="emptyListNow">Список пока пуст.</string>
     <string name="action_products">Мои продукты</string>
     <string name="action_products_list">Мои списки</string>
+    <string name="deleteList">Удалить список?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
 
     <string-array name="productsList">
         <item>"Абрикос"</item>

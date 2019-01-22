@@ -5,13 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
+import net.sytes.kai_soft.letsbuyka.IListActivityContract;
 
 import java.util.ArrayList;
 
@@ -22,11 +21,11 @@ import java.util.ArrayList;
 public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyViewHolder> {
 
     private static ArrayList<List> lists;
-    static IListsListActivityContract iListsListActivityContract;
+    static IListActivityContract iListActivityContract;
 
     public AdapterListsList(ArrayList<List> lists, Context context) {
         this.lists = lists;
-        iListsListActivityContract = (IListsListActivityContract) context;
+        iListActivityContract = (IListActivityContract) context;
     }
 
     @Override
@@ -50,8 +49,8 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
         return this.lists.size();
     }
 
-    static class  MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            View.OnLongClickListener{
+    static class  MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener/*,
+            View.OnLongClickListener*/{
        // private TextView tvID;
         private TextView tvName;
         private boolean longClicked = false;
@@ -64,25 +63,17 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
             tvName = itemView.findViewById(R.id.tvNameList);
             llItem = itemView.findViewById(R.id.recyclerViewListsListItem);
             llItem.setOnClickListener(this);
-            llItem.setOnLongClickListener(this);
+            //llItem.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (longClicked == false) {
                 long pos = lists.get(getAdapterPosition()).getId();
-                iListsListActivityContract.onListListItemClick(pos);
+                iListActivityContract.onListItemClick(pos);
 
             }
             longClicked = false;
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            longClicked = true;
-            List list = lists.get(getAdapterPosition());
-            iListsListActivityContract.onListListItemLongClick(list);
-            return false;
         }
     }
 

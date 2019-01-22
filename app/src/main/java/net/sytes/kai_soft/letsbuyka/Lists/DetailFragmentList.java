@@ -7,15 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
-import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
-import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
+import net.sytes.kai_soft.letsbuyka.IListActivityContract;
 
 /**
  * Created by Лунтя on 06.06.2018.
@@ -27,7 +24,7 @@ public class DetailFragmentList extends Fragment implements IMenuContract {
     EditText etName;
     List list;
     //DataBase dbProduct;
-    IListsListActivityContract iListsListActivityContract;
+    IListActivityContract iListActivityContract;
 
     @Nullable
     @Override
@@ -81,47 +78,17 @@ public class DetailFragmentList extends Fragment implements IMenuContract {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IListsListActivityContract) {
-            iListsListActivityContract = (IListsListActivityContract) context;
+        if (context instanceof IListActivityContract) {
+            iListActivityContract = (IListActivityContract) context;
         }
     }
 
 
     @Override
     public void onDetach() {
-        iListsListActivityContract = null;
+        iListActivityContract = null;
         super.onDetach();
     }
-
-    /*@Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-           case (R.id.insertListBtn):
-                //insertBtn.setText(R.string.save);
-                if (isEditable() == false) {
-                    makeEditable(true);
-                } else {
-                    if (isNewElement() == false) {
-                        List updateble = toUpdate();
-                        CRUDdb.updateTableLists(updateble);
-                        iListsListActivityContract.onListDetailFragmentButtonClick();
-                    } else {
-                        CRUDdb.insertToTableLists(etName.getText().toString());
-                        iListsListActivityContract.onListDetailFragmentButtonClick();
-                    }
-                }
-                break;
-            case (R.id.backToListListBtn):
-                iListsListActivityContract.onListDetailFragmentButtonClick();
-                break;
-            case (R.id.deleteListBtn):
-                Bundle bundle = getArguments();
-                CRUDdb.deleteItemLists((List) bundle.getSerializable("list"));
-                iListsListActivityContract.onListDetailFragmentButtonClick();
-                break;
-        }
-    }*/
-
     private boolean isEditable() {
         return etName.isEnabled();
     }
@@ -152,16 +119,16 @@ public class DetailFragmentList extends Fragment implements IMenuContract {
         if (isNewElement() == false) {
             List updateble = toUpdate();
             CRUDdb.updateTableLists(updateble);
-            iListsListActivityContract.onListDetailFragmentButtonClick();
+            iListActivityContract.onDetailFragmentButtonClick();
         } else {
             CRUDdb.insertToTableLists(etName.getText().toString());
-            iListsListActivityContract.onListDetailFragmentButtonClick();
+            iListActivityContract.onDetailFragmentButtonClick();
         }
     }
     @Override
     public void deletePressed(){
         Bundle bundle = getArguments();
         CRUDdb.deleteItemLists((List) bundle.getSerializable("list"));
-        iListsListActivityContract.onListDetailFragmentButtonClick();
+        iListActivityContract.onDetailFragmentButtonClick();
     }
 }

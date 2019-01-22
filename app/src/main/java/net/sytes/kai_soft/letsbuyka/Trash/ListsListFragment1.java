@@ -1,6 +1,8 @@
-package net.sytes.kai_soft.letsbuyka.Lists;
+package net.sytes.kai_soft.letsbuyka.Trash;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
@@ -18,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.IListActivityContract;
+import net.sytes.kai_soft.letsbuyka.Lists.AdapterListsList;
+import net.sytes.kai_soft.letsbuyka.Lists.List;
 import net.sytes.kai_soft.letsbuyka.SwipeController;
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.Constants;
@@ -32,14 +37,14 @@ import java.util.ArrayList;
  * Created by Лунтя on 06.06.2018.
  */
 /*  Фрагмент списка списков */
-public class ListsListFragment extends Fragment implements View.OnClickListener, IFilterContract {
+public class ListsListFragment1 extends Fragment implements View.OnClickListener, IFilterContract {
 
     //private Button goToDetailBtn;
     private RecyclerView recyclerView;
     private TextView emptyList;
     private DataBase dbList;
     private FloatingActionButton fabAdd;
-    IListsListActivityContract iListsListActivityContract;
+    IListActivityContract iListActivityContract;
     SwipeController swipeController = null;
 
     @Nullable
@@ -64,14 +69,14 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IListsListActivityContract) {
-            iListsListActivityContract = (IListsListActivityContract) context;
+        if (context instanceof IListActivityContract) {
+            iListActivityContract = (IListActivityContract) context;
         }
     }
 
     @Override
     public void onDetach() {
-        iListsListActivityContract = null;
+        iListActivityContract = null;
         super.onDetach();
     }
 
@@ -79,25 +84,8 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
 
         if (newLists == null) {
 
-            SQLiteDatabase db = this.dbList.getWritableDatabase();
-            ArrayList<List> lists = new ArrayList<>();
+            ArrayList<List> lists = CRUDdb.readFromTableLists(null);
 
-            Cursor c = db.query(Constants.TABLE_NAME_LISTS_LIST, null, null,
-                    null, null, null,
-                    Constants.TABLE_ID + " asc");
-            if (c.moveToFirst()) {
-
-                // определяем номера столбцов по имени в выборке
-                int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
-                int nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
-                do {
-                    lists.add(new List(c.getInt(idColIndex), c.getString(nameColIndex)));
-                    // переход на следующую строку
-                    // а если следующей нет (текущая - последняя), то false - выходим из цикла
-                } while (c.moveToNext());
-            } else {
-                c.close();
-            }
             if (lists.size() == 0){
                 emptyList.setVisibility(View.VISIBLE);
             }else{
@@ -126,15 +114,33 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
 
         swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
-            public void onRightClicked(int position) {
-                CRUDdb.deleteItemLists(lists.get(position));
-                lists.remove(position);
-                refresh(lists);
+            public void onRightSwiped(int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(getString(R.string.delete))
+                        .setMessage(getString(R.string.deleteList))
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                swipeController.setNeedSwipeBack(true);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                adapter.notifyItemRemoved(position);
+                                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+                                CRUDdb.deleteItemLists(lists.get(position));
+                                lists.remove(position);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
 
             @Override
-            public void onLeftClicked(int position) {
-                super.onLeftClicked(position);
+            public void onLeftSwiped(int position) {
+                iListActivityContract.onListItemLongClick(lists.get(position));
             }
         });
 
@@ -170,7 +176,7 @@ public class ListsListFragment extends Fragment implements View.OnClickListener,
 
         switch (v.getId()) {
             case (R.id.fabAddList):
-                iListsListActivityContract.onListListFragmentButtonClick();
+                iListActivityContract.onListFragmentButtonClick();
                 break;
         }
 

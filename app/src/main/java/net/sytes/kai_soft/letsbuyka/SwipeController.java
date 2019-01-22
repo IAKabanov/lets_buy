@@ -29,6 +29,8 @@ public class SwipeController extends Callback {
 
     private int direct = -1;
 
+    private boolean needSwipeBack = false;
+
     private static final float buttonWidth = 1;
 
     public SwipeController(SwipeControllerActions buttonsActions) {
@@ -48,20 +50,29 @@ public class SwipeController extends Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         if (direction == RIGHT){
-            buttonsActions.onLeftClicked(viewHolder.getAdapterPosition());
+            buttonsActions.onLeftSwiped(viewHolder.getAdapterPosition());
         }else if (direction == LEFT){
-            buttonsActions.onRightClicked(viewHolder.getAdapterPosition());
+            buttonsActions.onRightSwiped(viewHolder.getAdapterPosition());
         }
 
+        buttonShowedState = ButtonsState.GONE;
+
+        currentItemViewHolder = null;
+
+        direct = -1;
     }
 
     @Override
     public int convertToAbsoluteDirection(int flags, int layoutDirection) {
-        /*if (swipeBack) {
-            //swipeBack = buttonShowedState != ButtonsState.GONE;
-            return 0;
-        }*/
+        if (swipeBack) {
+            swipeBack = false;
+            //return 0;
+        }
         return super.convertToAbsoluteDirection(flags, layoutDirection);
+    }
+
+    public void setNeedSwipeBack(boolean needSwipeBack){
+        this.needSwipeBack = needSwipeBack;
     }
 
     @Override
@@ -88,7 +99,6 @@ public class SwipeController extends Callback {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 swipeBack = event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_UP;
                 if (dX < -buttonWidth) direct = LEFT;
                 else if (dX > buttonWidth) direct = RIGHT;
@@ -132,17 +142,7 @@ public class SwipeController extends Callback {
                     });
                     //setItemsClickable(recyclerView, true);
                     swipeBack = false;
-
-                    if (buttonsActions != null && buttonInstance != null && buttonInstance.contains(event.getX(), event.getY())) {
-                        if (buttonShowedState == ButtonsState.LEFT_VISIBLE) {
-                            buttonsActions.onLeftClicked(viewHolder.getAdapterPosition());
-                        }
-                        else if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
-                            buttonsActions.onRightClicked(viewHolder.getAdapterPosition());
-                        }
-                    }
                     buttonShowedState = ButtonsState.GONE;
-                    currentItemViewHolder = null;
                 }
                 return false;
             }
@@ -157,7 +157,6 @@ public class SwipeController extends Callback {
 
     private void drawButtons(Canvas c, RecyclerView.ViewHolder viewHolder) {
 
-        float buttonWidthWithoutPadding = buttonWidth - 20;
         float corners = 16;
 
         View itemView = viewHolder.itemView;

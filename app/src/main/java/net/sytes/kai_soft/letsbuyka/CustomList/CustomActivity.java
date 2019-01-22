@@ -104,7 +104,6 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     public void onBackPressed() {
         nameFragment.pop();
         refreshToolbar();
-        //onListDetailFragmentButtonClick();
         hideKeyboard();
         super.onBackPressed();
     }

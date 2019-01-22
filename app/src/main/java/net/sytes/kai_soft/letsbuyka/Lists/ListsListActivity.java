@@ -19,14 +19,21 @@ import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
+import net.sytes.kai_soft.letsbuyka.IListActivityContract;
 
+import java.util.Objects;
 import java.util.Stack;
 
 /**
  * Created by Лунтя on 01.06.2018.
  */
 /*  Активити с выбором списка   */
-public class ListsListActivity extends AppCompatActivity implements IListsListActivityContract {
+public class ListsListActivity extends AppCompatActivity implements IListActivityContract {
+
+    private static final String tagListFragment = "listFragment";
+    private static final String tagDetailFragment = "detailFragment";
+    private static final String tagDetailFragmentNew = "detailFragmentNew";
+
     DetailFragmentList detailFragment;      //Фрагмент детализации
     ListsListFragment listFragment;          //Фрагмент списка
     FragmentManager fragmentManager;    //Фрагмент менеджер
@@ -40,19 +47,13 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolBar.setNavigationOnClickListener(v -> onBackPressed());
 
         getMenuInflater().inflate(R.menu.save_menu, menu);
         actionSave = menu.findItem(R.id.action_save);
         actionCancel = menu.findItem(R.id.action_cancel);
         actionDelete = menu.findItem(R.id.action_delete);
-        //actionEdit = menu.findItem(R.id.action_edit);
         actionSearch = menu.findItem(R.id.action_search);
         actionProduct = menu.findItem(R.id.action_products);
         searchView = (SearchView) actionSearch.getActionView();
@@ -64,8 +65,8 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (listFragment instanceof IFilterContract) {
-                    iFilterContract = (IFilterContract) listFragment;
+                if (listFragment != null) {
+                    iFilterContract = listFragment;
                     iFilterContract.onFilterMake(newText);
                 }
 
@@ -81,7 +82,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
     @Override
     public void onBackPressed() {
         //refreshToolbar(nameFragment.peek());
-        onListDetailFragmentButtonClick();
+        onDetailFragmentButtonClick();
         hideKeyboard();
         super.onBackPressed();
     }
@@ -104,16 +105,16 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
         //Начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
         //Создаем и добавляем первый фрагмент
-        ft.add(R.id.activityListsList, listFragment, "listFragment");
+        ft.add(R.id.activityListsList, listFragment, tagListFragment);
         //Подтверждаем операцию
         ft.commit();
 
         nameFragment = new Stack<>();
-        nameFragment.push("listFragment");
+        nameFragment.push(tagListFragment);
     }
 
     @Override
-    public void onListListFragmentButtonClick() {
+    public void onListFragmentButtonClick() {
 
         // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -125,23 +126,23 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
         detailFragment.setArguments(bundle);
         bundle = null;
 
-        ft.replace(R.id.activityListsList, detailFragment, "detailFragmentNew");
-        ft.addToBackStack("detailFragmentNew");
+        ft.replace(R.id.activityListsList, detailFragment, tagDetailFragmentNew);
+        ft.addToBackStack(tagDetailFragmentNew);
         // Подтверждаем операцию
         ft.commit();
-        nameFragment.push("detailFragmentNew");
+        nameFragment.push(tagDetailFragmentNew);
         refreshToolbar();
     }
 
     @Override
-    public void onListDetailFragmentButtonClick() {
+    public void onDetailFragmentButtonClick() {
         //nameFragment.push("listFragment");
         refreshToolbar();
 
     }
 
     @Override
-    public void onListListItemClick(long position) {
+    public void onListItemClick(long position) {
 
         Intent intent = new Intent(ListsListActivity.this, CustomActivity.class);
 
@@ -150,11 +151,9 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
     }
 
     @Override
-    public void onListListItemLongClick(List list) {
+    public void onListItemLongClick(List list) {
 
         this.list = list;
-
-
 
         // начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -166,11 +165,11 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
         bundle.putSerializable("list", list);
         detailFragment.setArguments(bundle);
 
-        ft.replace(R.id.activityListsList, detailFragment, "detailFragment");
-        ft.addToBackStack("detailFragment");
+        ft.replace(R.id.activityListsList, detailFragment, tagDetailFragment);
+        ft.addToBackStack(tagDetailFragment);
         // Подтверждаем операцию
         ft.commit();
-        nameFragment.push("detailFragment");
+        nameFragment.push(tagDetailFragment);
         refreshToolbar();
 
         /*actionSave.setVisible(true);
@@ -248,12 +247,12 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
             actualFragment = nameFragment.pop();
 
         }else{
-            actualFragment = "listFragment";
+            actualFragment = tagListFragment;
         }
 
         switch (actualFragment) {
 
-            case "listFragment":
+            case tagListFragment:
                 actionSave.setVisible(false);
                 actionCancel.setVisible(false);
                 actionDelete.setVisible(false);
@@ -264,7 +263,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 toolBar.setTitle(R.string.lists);
                 break;
 
-            case "detailFragment":
+            case tagDetailFragment:
                 actionSave.setVisible(true);
                 actionCancel.setVisible(true);
                 actionDelete.setVisible(true);
@@ -277,7 +276,7 @@ public class ListsListActivity extends AppCompatActivity implements IListsListAc
                 toolBar.requestFocus();
                 break;
 
-            case "detailFragmentNew":
+            case tagDetailFragmentNew:
                 actionSave.setVisible(true);
                 actionCancel.setVisible(true);
                 actionDelete.setVisible(false);
