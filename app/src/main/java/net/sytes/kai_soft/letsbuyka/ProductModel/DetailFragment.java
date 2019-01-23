@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
@@ -68,7 +67,7 @@ public class DetailFragment extends Fragment implements IMenuContract {
         } else {
             Product product = (Product) bundle.getSerializable("product");
 
-            etName.setText(product.getItemName());
+            etName.setText(product.getName());
             etDescr.setText(product.getDescription());
   //          etPhoto.setText(product.getFirstImagePath());
 
@@ -134,10 +133,10 @@ public class DetailFragment extends Fragment implements IMenuContract {
 
         if (isNewProduct() == false) {
             Product updateble = toUpdate();
-            CRUDdb.updateTableProducts(updateble);
+            CRUDdb.Companion.updateTableProducts(updateble);
             //IProductListActivityContract.onDetailFragmentButtonClick();
         } else {
-            CRUDdb.insertToTableProducts(etName.getText().toString(),
+            CRUDdb.Companion.insertToTableProducts(etName.getText().toString(),
                     etDescr.getText().toString());
             //IProductListActivityContract.onDetailFragmentButtonClick();
         }
@@ -147,7 +146,7 @@ public class DetailFragment extends Fragment implements IMenuContract {
     public void deletePressed(){
         Bundle bundle = getArguments();
         if (isNewProduct() == false) {
-            CRUDdb.deleteItemProducts((Product) bundle.getSerializable("product"));
+            CRUDdb.Companion.deleteItemProducts((Product) bundle.getSerializable("product"));
             //IProductListActivityContract.onDetailFragmentButtonClick();
         }
     }

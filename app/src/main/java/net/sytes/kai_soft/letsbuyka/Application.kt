@@ -9,14 +9,14 @@ class Application: android.app.Application() {
         private lateinit var context: Application
 
         fun getDB(): DataBase{
-            Log.i(tag, "Took database")
+            Log.i(tag, "getDB()")
             return dataBase
         }
     }
 
 
     override fun onCreate() {
-        Log.i(tag, "onCreate")
+        Log.i(tag, "onCreate()")
         context = this
         dataBase = DataBase.getInstance(context)
         super.onCreate()

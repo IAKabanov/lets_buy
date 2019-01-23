@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 
 public class List implements Serializable {
-    private long id;
+    private int id;
     private String itemName;
 
-    public List(long id, String itemName){
+    public List(int id, String itemName){
         this.id = id;
         this.itemName = itemName;
     }
 
-    public long getId(){
+    public int getId(){
         return this.id;
     }
 
@@ -26,4 +26,8 @@ public class List implements Serializable {
         this.itemName = itemName;
     }
 
+    @Override
+    public String toString() {
+        return getId() + ", " + getItemName();
+    }
 }

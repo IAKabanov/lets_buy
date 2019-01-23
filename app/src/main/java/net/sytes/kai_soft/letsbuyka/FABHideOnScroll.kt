@@ -8,12 +8,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 
+/*  Floating action button animation    */
 class FABHideOnScroll(context: Context, attrs: AttributeSet): FloatingActionButton.Behavior() {
     private var isAnimationRun = false
 
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: FloatingActionButton, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
-        /*  Здесь запускается анимация  */
         if (!isAnimationRun) {
             animate(child, dyConsumed)
             isAnimationRun = true

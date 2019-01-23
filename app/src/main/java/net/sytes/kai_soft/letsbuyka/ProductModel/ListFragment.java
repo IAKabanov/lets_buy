@@ -10,13 +10,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
@@ -80,7 +76,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
             SQLiteDatabase db = dbProduct.getWritableDatabase();
             ArrayList<Product> products = new ArrayList<>();
 
-            Cursor c = db.query(Constants.TABLE_NAME_PRODUCTS_LIST, null, null,
+            Cursor c = db.query(Constants.TABLE_NAME_PRODUCTS, null, null,
                     null, null, null, Constants.TABLE_ITEM_NAME);
             if (c.moveToFirst()) {
 
@@ -145,7 +141,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
             SQLiteDatabase db = dbProduct.getWritableDatabase();
             ArrayList<Product> products = new ArrayList<>();
 
-            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_PRODUCTS_LIST +
+            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_PRODUCTS +
                             " where " + Constants.TABLE_ITEM_NAME + " like '%"
                             + s + "%'",
                     null);
@@ -188,10 +184,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
                     SQLiteDatabase db = dbProduct.getWritableDatabase();
                     ArrayList<Product> products = new ArrayList<>();
 
-                    Cursor c = db.rawQuery("select * from " + DataBase.TABLE_NAME_PRODUCTS_LIST +
-                                    " where " + DataBase.tableProducts.TABLE_ITEM_NAME + " like '%"
-                                    + s.toString() + "%'",
-                            null);
+
                     if (c.moveToFirst()) {
 
                         // определяем номера столбцов по имени в выборке

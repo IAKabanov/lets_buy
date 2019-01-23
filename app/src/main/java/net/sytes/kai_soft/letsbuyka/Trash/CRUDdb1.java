@@ -1,13 +1,16 @@
-package net.sytes.kai_soft.letsbuyka;
+package net.sytes.kai_soft.letsbuyka.Trash;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
 
-import net.sytes.kai_soft.letsbuyka.CustomList.CustomList;
+import net.sytes.kai_soft.letsbuyka.Application;
+import net.sytes.kai_soft.letsbuyka.Constants;
+import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.Lists.List;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
+import net.sytes.kai_soft.letsbuyka.R;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +23,7 @@ import java.util.ArrayList;
 
 /*  Класс в котором можно производить добавление, считывание, обновление и удаление из таблиц
  *   базы данных */
-public class CRUDdb {
+public class CRUDdb1 {
     private static DataBase db = Application.Companion.getDB();   //Экземпляр базы данных
 
     /*  Добавление продукта в таблицу продуктов. Принимает имя и описание продукта  */
@@ -29,12 +32,12 @@ public class CRUDdb {
 
         //db = Application.getDB();  // Хз зачем я это сделал
 
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
         cv.put(Constants.TABLE_ITEM_NAME, name);
         cv.put(Constants.TABLE_DESCRIPTION, description);
 
-        db.insert(Constants.TABLE_NAME_PRODUCTS_LIST, null, cv);
+        db.insert(Constants.TABLE_NAME_PRODUCTS, null, cv);
     }
 
     /*  Обновление элемента списка в таблице продуктов  */
@@ -43,22 +46,22 @@ public class CRUDdb {
 
         //db = Application.getDB(); // Зачем я опять это сделал?!
 
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
-        cv.put(Constants.TABLE_ITEM_NAME, product.getItemName());
+        cv.put(Constants.TABLE_ITEM_NAME, product.getName());
         cv.put(Constants.TABLE_DESCRIPTION, product.getDescription());
         //cv.put(DataBase.tableProducts.TABLE_PHOTO, product.getFirstImagePath());
 
-        db.update(Constants.TABLE_NAME_PRODUCTS_LIST, cv,
+        db.update(Constants.TABLE_NAME_PRODUCTS, cv,
                 Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(product.getId())});
     }
 
     /*  Удаление элемента списка из таблицы продуктов   */
     public static void deleteItemProducts(Product product) {
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
-        db.delete(Constants.TABLE_NAME_PRODUCTS_LIST,
+        db.delete(Constants.TABLE_NAME_PRODUCTS,
                 Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(product.getId())});
     }
@@ -70,26 +73,26 @@ public class CRUDdb {
 
         //db = Application.getDB(); //И ещё раз хз.
 
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
         cv.put(Constants.TABLE_ITEM_NAME, name);
 
-        db.insert(Constants.TABLE_NAME_LISTS_LIST, null, cv);
+        db.insert(Constants.TABLE_NAME_LISTS, null, cv);
     }
 
     /*  Получение элементов из таблицы списков  */
 
     public static ArrayList<List> readFromTableLists(@Nullable String filter){
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
         ArrayList<List> lists = new ArrayList<>();
         Cursor c;
         if (filter == null){
-            c = db.query(Constants.TABLE_NAME_LISTS_LIST, null, null,
+            c = db.query(Constants.TABLE_NAME_LISTS, null, null,
                     null, null, null,
                     Constants.TABLE_ID + " asc");
         } else {
-            c = db.rawQuery("select * from " + Constants.TABLE_NAME_LISTS_LIST +
+            c = db.rawQuery("select * from " + Constants.TABLE_NAME_LISTS +
                             " where " + Constants.TABLE_ITEM_NAME + " like '%"
                             + filter + "%'",
                     null);
@@ -118,20 +121,20 @@ public class CRUDdb {
 
         //db = Application.getDB(); //Чёт плохо как-то...
 
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
         cv.put(Constants.TABLE_ITEM_NAME, list.getItemName());
 
-        db.update(Constants.TABLE_NAME_LISTS_LIST, cv,
+        db.update(Constants.TABLE_NAME_LISTS, cv,
                 Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(list.getId())});
     }
 
     /*  Удаление списка из таблицы списков */
     public static void deleteItemLists(List list) {
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
-        db.delete(Constants.TABLE_NAME_LISTS_LIST, Constants.TABLE_ID + " = ?",
+        db.delete(Constants.TABLE_NAME_LISTS, Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(list.getId())});
     }
 
@@ -142,7 +145,7 @@ public class CRUDdb {
 
         //db = Application.getDB(); //...
 
-        SQLiteDatabase SQLdb = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase SQLdb = CRUDdb1.db.getWritableDatabase();
 
         /*  Здесь идёт проверка на наличие такой записи в этом пользовательском списке.
          *   Если такая запись есть, то её добавлять не нужно.*/
@@ -156,7 +159,7 @@ public class CRUDdb {
             cv.put(Constants.TABLE_ID_LIST, id_list);
             cv.put(Constants.TABLE_ID_PRODUCT, id_product);
             cv.put(Constants.TABLE_DEPRECATED,
-                    CustomList.DEPRECATED_FALSE);
+                    Constants.DEPRECATED_FALSE);
             // вставляем запись и получаем ее ID
             SQLdb.insert(Constants.TABLE_NAME_CUSTOM_LIST, null, cv);
         }
@@ -165,7 +168,7 @@ public class CRUDdb {
 
     /*  Удаление элемента из таблицы пользовательских списков   */
     public static void deleteItemCustomList(long id) {
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
         db.delete(Constants.TABLE_NAME_CUSTOM_LIST, Constants.TABLE_ID + " = ?",
                 new String[]{String.valueOf(id)});
@@ -178,7 +181,7 @@ public class CRUDdb {
 
         //db = Application.getDB(); //Почему, мистер Андерсон, почему?
 
-        SQLiteDatabase db = CRUDdb.db.getWritableDatabase();
+        SQLiteDatabase db = CRUDdb1.db.getWritableDatabase();
 
         Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_CUSTOM_LIST + " where " +
                 Constants.TABLE_ID + " = " + String.valueOf(id), null);
@@ -186,12 +189,12 @@ public class CRUDdb {
         int idDeprecatedColumn = c.getColumnIndex(Constants.TABLE_DEPRECATED);
         if (c.moveToFirst()) {
             /*Если элемент не был зачёркнут, зачёркиваем. Или наоборот*/
-            if (c.getLong(idDeprecatedColumn) == CustomList.DEPRECATED_TRUE) {
+            if (c.getLong(idDeprecatedColumn) == Constants.DEPRECATED_TRUE) {
                 cv.put(Constants.TABLE_DEPRECATED,
-                        CustomList.DEPRECATED_FALSE);
+                        Constants.DEPRECATED_FALSE);
             } else {
                 cv.put(Constants.TABLE_DEPRECATED,
-                        CustomList.DEPRECATED_TRUE);
+                        Constants.DEPRECATED_TRUE);
             }
 
             db.update(Constants.TABLE_NAME_CUSTOM_LIST, cv,
@@ -212,7 +215,7 @@ public class CRUDdb {
         for (String name:products) {
             cv.put(Constants.TABLE_ITEM_NAME, name);
             cv.put(Constants.TABLE_DESCRIPTION, "");
-            db.insert(Constants.TABLE_NAME_PRODUCTS_LIST, null, cv);
+            db.insert(Constants.TABLE_NAME_PRODUCTS, null, cv);
         }
 
 

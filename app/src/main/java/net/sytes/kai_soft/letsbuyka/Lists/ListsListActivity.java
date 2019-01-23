@@ -142,7 +142,7 @@ public class ListsListActivity extends AppCompatActivity implements IListActivit
     }
 
     @Override
-    public void onListItemClick(long position) {
+    public void onListItemClick(int position) {
 
         Intent intent = new Intent(ListsListActivity.this, CustomActivity.class);
 
@@ -185,8 +185,6 @@ public class ListsListActivity extends AppCompatActivity implements IListActivit
         actionSearch.setVisible(false);
         actionSearch.collapseActionView();
         //searchView.setVisibility(View.GONE);
-
-        toolBar.setTitle(list.getItemName());
 
         toolBar.requestFocus();*/
 

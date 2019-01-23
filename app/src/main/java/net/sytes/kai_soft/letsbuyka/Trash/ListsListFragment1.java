@@ -84,7 +84,7 @@ public class ListsListFragment1 extends Fragment implements View.OnClickListener
 
         if (newLists == null) {
 
-            ArrayList<List> lists = CRUDdb.readFromTableLists(null);
+            ArrayList<List> lists = CRUDdb.Companion.readFromTableLists(null);
 
             if (lists.size() == 0){
                 emptyList.setVisibility(View.VISIBLE);
@@ -121,7 +121,7 @@ public class ListsListFragment1 extends Fragment implements View.OnClickListener
                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                swipeController.setNeedSwipeBack(true);
+                                //swipeController.setNeedSwipeBack(true);
                                 adapter.notifyDataSetChanged();
                             }
                         })
@@ -130,7 +130,7 @@ public class ListsListFragment1 extends Fragment implements View.OnClickListener
                             public void onClick(DialogInterface dialog, int which) {
                                 adapter.notifyItemRemoved(position);
                                 adapter.notifyItemRangeChanged(position, adapter.getItemCount());
-                                CRUDdb.deleteItemLists(lists.get(position));
+                                CRUDdb.Companion.deleteItemLists(lists.get(position));
                                 lists.remove(position);
                             }
                         });
@@ -194,7 +194,7 @@ public class ListsListFragment1 extends Fragment implements View.OnClickListener
             SQLiteDatabase db = dbList.getWritableDatabase();
             ArrayList<List> lists = new ArrayList<>();
 
-            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_LISTS_LIST +
+            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_LISTS +
                             " where " + Constants.TABLE_ITEM_NAME + " like '%"
                             + filter + "%'",
                     null);

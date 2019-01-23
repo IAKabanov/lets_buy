@@ -13,14 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.ProductModel.AdapterProductsList;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -36,7 +34,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
     DataBase dbProduct;
     RecyclerView recyclerView, recyclerViewDeprecated;
     ICustomListActivityContract iCustomListActivityContract;
-    long currentListID;
+    int currentListID;
     public final String CLASS_NAME = getClass().getName();
 
     @Nullable
@@ -54,7 +52,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         recyclerViewDeprecated = rootView.findViewById(R.id.rvDeprecatedProductsList);
         dbProduct = Application.Companion.getDB();
 
-        currentListID = getArguments().getLong("pos", 0);
+        currentListID = getArguments().getInt("pos", 0);
         //refresh(currentListID, null);
         refreshProductRW(currentListID, null);
         refreshDeprecatedRW(currentListID, null);
@@ -76,20 +74,20 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         super.onDetach();
     }
 
-    private void refresh(long pos, ArrayList<Product> newProducts) {
+    private void refresh(int pos, ArrayList<Product> newProducts) {
         refreshProductRW(pos, newProducts);
         refreshDeprecatedRW(pos, newProducts);
 
     }
 
-    private void refreshProductRW(long pos, ArrayList<Product> newProducts){
+    private void refreshProductRW(int pos, ArrayList<Product> newProducts){
         SQLiteDatabase db = dbProduct.getWritableDatabase();
         if (newProducts == null) {
             ArrayList<Product> products = new ArrayList<>();
             String selectionArgs = getIDForList(pos, db);
             if (selectionArgs.length() > 0) {
                 Cursor c = db.rawQuery("select * from "
-                        + Constants.TABLE_NAME_PRODUCTS_LIST + " where "
+                        + Constants.TABLE_NAME_PRODUCTS + " where "
                         + Constants.TABLE_ID
                         + " in " + selectionArgs, null);
 
@@ -124,7 +122,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void refreshDeprecatedRW(long pos, ArrayList<Product> newProducts){
+    private void refreshDeprecatedRW(int pos, ArrayList<Product> newProducts){
         SQLiteDatabase db = dbProduct.getWritableDatabase();
         ArrayList<Integer> deprecatedList = getDeprecatedForList(pos, db);
         if (newProducts == null) {
@@ -132,7 +130,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
             String selectionArgsDeprec = getIDDeprecatedForList(pos, db);
             if (selectionArgsDeprec.length() > 0) {
                 Cursor c = db.rawQuery("select * from "
-                        + Constants.TABLE_NAME_PRODUCTS_LIST + " where "
+                        + Constants.TABLE_NAME_PRODUCTS + " where "
                         + Constants.TABLE_ID
                         + " in " + selectionArgsDeprec, null);
 
@@ -177,19 +175,19 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         rv.setItemAnimator(itemAnimator);
     }
 
-    private String getIDForList(long id_list, SQLiteDatabase db) {
+    private String getIDForList(int id_list, SQLiteDatabase db) {
         Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_CUSTOM_LIST + " where "
                         + Constants.TABLE_ID_LIST + " = " + String.valueOf(id_list)
                 + " and " + Constants.TABLE_DEPRECATED + " = "
-                + String.valueOf(CustomList.DEPRECATED_FALSE), null);
+                + String.valueOf(Constants.DEPRECATED_FALSE), null);
 
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(Constants.TABLE_ID_PRODUCT);
             StringBuffer id = new StringBuffer();
-            ArrayList<Long> _id = new ArrayList<>();
+            ArrayList<Integer> _id = new ArrayList<>();
             id.append("(");
             do {
-                id.append(c.getLong(idColIndex));
+                id.append(c.getInt(idColIndex));
                 id.append(",");
             } while (c.moveToNext());
             id.deleteCharAt(id.lastIndexOf(","));
@@ -204,19 +202,19 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         return "";
     }
 
-    private String getIDDeprecatedForList(long id_list, SQLiteDatabase db) {
+    private String getIDDeprecatedForList(int id_list, SQLiteDatabase db) {
         Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_CUSTOM_LIST + " where "
                 + Constants.TABLE_ID_LIST + " = " + String.valueOf(id_list)
                 + " and " + Constants.TABLE_DEPRECATED + " = "
-                + String.valueOf(CustomList.DEPRECATED_TRUE), null);
+                + String.valueOf(Constants.DEPRECATED_TRUE), null);
 
         if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex(Constants.TABLE_ID_PRODUCT);
             StringBuffer id = new StringBuffer();
-            ArrayList<Long> _id = new ArrayList<>();
+            ArrayList<Integer> _id = new ArrayList<>();
             id.append("(");
             do {
-                id.append(c.getLong(idColIndex));
+                id.append(c.getInt(idColIndex));
                 id.append(",");
             } while (c.moveToNext());
             id.deleteCharAt(id.lastIndexOf(","));
@@ -231,11 +229,11 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
         return "";
     }
 
-    private ArrayList<Integer> getDeprecatedForList(long id_list, SQLiteDatabase db) {
+    private ArrayList<Integer> getDeprecatedForList(int id_list, SQLiteDatabase db) {
         Cursor c = db.rawQuery("select * from " +
                 Constants.TABLE_NAME_CUSTOM_LIST + " where " + Constants.TABLE_ID_LIST +
                 " = " + String.valueOf(id_list) + " and " + Constants.TABLE_DEPRECATED + " = " +
-                String.valueOf(CustomList.DEPRECATED_TRUE), null);
+                String.valueOf(Constants.DEPRECATED_TRUE), null);
 
         if (c.moveToFirst()) {
             int deprColIndex = c.getColumnIndex(Constants.TABLE_ID_PRODUCT);
@@ -273,7 +271,7 @@ public class ListCustomFragment extends Fragment implements View.OnClickListener
             ArrayList<Product> products = new ArrayList<>();
             String selectionArgs = getIDForList(currentListID, db);
 
-            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_PRODUCTS_LIST +
+            Cursor c = db.rawQuery("select * from " + Constants.TABLE_NAME_PRODUCTS +
                             " where " + Constants.TABLE_ITEM_NAME + " like '%"
                             + s + "%' and " + Constants.TABLE_ID +" in " + selectionArgs,
                     null);

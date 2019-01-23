@@ -68,12 +68,8 @@ public class AdapterListsList extends RecyclerView.Adapter<AdapterListsList.MyVi
 
         @Override
         public void onClick(View v) {
-            if (longClicked == false) {
-                long pos = lists.get(getAdapterPosition()).getId();
-                iListActivityContract.onListItemClick(pos);
-
-            }
-            longClicked = false;
+            int pos = lists.get(getAdapterPosition()).getId();
+            iListActivityContract.onListItemClick(pos);
         }
     }
 

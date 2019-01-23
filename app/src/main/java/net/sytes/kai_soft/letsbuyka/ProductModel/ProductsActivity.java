@@ -186,7 +186,7 @@ public class ProductsActivity extends AppCompatActivity implements
         actionSearch.collapseActionView();
         //searchView.setVisibility(View.GONE);
 
-        toolBar.setTitle(product.getItemName());
+        toolBar.setTitle(product.getName());
 
         toolBar.requestFocus();
 

@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
+
+/*  Class for creating, updating and getting database  */
 class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
                factory: SQLiteDatabase.CursorFactory? = null,
                version: Int = 1):
@@ -24,66 +26,64 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
             return instance as DataBase
         }
 
+        /*  Inner class for creating "products" */
         class TableProducts{
             companion object {
                 internal fun createTableProducts(db: SQLiteDatabase){
-                    db.execSQL("create table " + Constants.TABLE_NAME_PRODUCTS_LIST + " ( "
+                    Log.i(tag, "createTableProducts()")
+
+                    db.execSQL("create table " + Constants.TABLE_NAME_PRODUCTS + " ( "
                             + Constants.TABLE_ID + " integer primary key autoincrement, "
                             + Constants.TABLE_ITEM_NAME + " text, "
                             + Constants.TABLE_DESCRIPTION + " text " + " ); ")
-                    Log.i(tag, "Products created")
-
-                    /* Заполняем первоначальными значениями    */
-                    Log.i(tag, "Filling products")
+                    CRUDdb.fillProducts(aContext, db)
                 }
             }
         }
 
+        /*  Inner class for creating "lists" */
         class TableLists{
             companion object {
-                /*  Таблица со списками. Создание   */
                 internal fun createTableList(db: SQLiteDatabase){
-                    db.execSQL("create table " + Constants.TABLE_NAME_LISTS_LIST + " ( "
+                    Log.i(tag, "createTableList()")
+
+                    db.execSQL("create table " + Constants.TABLE_NAME_LISTS + " ( "
                             + Constants.TABLE_ID + " integer primary key autoincrement, "
                             + Constants.TABLE_ITEM_NAME + " text " + " ); ")
-                    Log.i(tag, "Lists created")
                 }
             }
         }
 
+        /*  Inner class for creating "custom lists" */
         class TableCustomList{
             companion object {
-                // Создание таблицы
                 internal fun createTableCustomList(db: SQLiteDatabase){
+                    Log.i(tag, "createTableCustomList()")
+
                     db.execSQL("create table " + Constants.TABLE_NAME_CUSTOM_LIST + " ( "
                             + Constants.TABLE_ID + " integer primary key autoincrement, "
                             + Constants.TABLE_ID_PRODUCT + " text, "
                             + Constants.TABLE_ID_LIST + " text, " +
                             Constants.TABLE_DEPRECATED + " integer " + " ); ")
-                    Log.i(tag, "Custom list created")
 
                 }
             }
         }
     }
 
-
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
-        Log.i("DB", "upgraded")
+        Log.i(tag, "onUpgrade()")
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.i(tag, "onCreate")
+        Log.i(tag, "onCreate()")
         if (db != null){
             DataBase.Companion.TableProducts.createTableProducts(db)
             DataBase.Companion.TableLists.createTableList(db)
             DataBase.Companion.TableCustomList.createTableCustomList(db)
-            CRUDdb.fillProducts(aContext, db)
         }
         else{
             Log.w(tag, "did not created, db == null")
         }
     }
-
-
 }

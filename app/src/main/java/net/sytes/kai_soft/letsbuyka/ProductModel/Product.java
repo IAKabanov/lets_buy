@@ -1,7 +1,6 @@
 package net.sytes.kai_soft.letsbuyka.ProductModel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by Лунтя on 07.04.2018.
@@ -9,27 +8,27 @@ import java.util.ArrayList;
 
 public class Product implements Serializable{
 
-    private long id;
-    private String itemName;
+    private int id;
+    private String name;
     private String description;
     private String imagePaths;
 
-    public Product(long id, String itemName, String description){
+    public Product(int id, String name, String description){
         this.id = id;
-        this.itemName = itemName;
+        this.name = name;
         this.description = description;
         this.imagePaths = imagePaths;
     }
 
-    public long getId(){
+    public int getId(){
         return this.id;
     }
 
-    public String getItemName(){
-        return this.itemName;
+    public String getName(){
+        return this.name;
     }
-    public void setItemName(String itemName){
-        this.itemName = itemName;
+    public void setName(String name){
+        this.name = name;
     }
 
     public String getDescription(){
@@ -49,6 +48,8 @@ public class Product implements Serializable{
         this.imagePaths = imagePaths;
     }
 
-
-
+    @Override
+    public String toString() {
+        return getId() + ", " + getName() + ", " + getDescription();
+    }
 }

@@ -9,6 +9,4 @@ import java.io.Serializable;
 public class CustomList implements Serializable {
     private long id, id_product, id_list;
     private int deprecated;
-    public static final int DEPRECATED_TRUE = 1;
-    public static final int DEPRECATED_FALSE = 2;
 }

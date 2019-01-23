@@ -50,7 +50,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     IFilterContract iFilterContract;
 
 
-    long id_list;
+    int id_list;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,7 +120,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         detailProduct = new DetailFragment();
 
         listFragment.setArguments(getIntent().getExtras());
-        id_list = getIntent().getExtras().getLong("pos", 1);
+        id_list = getIntent().getExtras().getInt("pos", 1);
 
         //Начинаем транзакцию
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -168,7 +168,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     @Override
     public void onListItemClick(Product product, String className) {
         if (className.equals(ListFragment.class.getName())) {
-            CRUDdb.insertToTableCustomList(id_list, product.getId());
+            CRUDdb.Companion.insertToTableCustomList(id_list, product.getId());
 
             /*fragmentManager = getSupportFragmentManager();
             //detailFragment = new DetailCustomFragment();
@@ -186,16 +186,16 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
             onBackPressed();
 
         } else if (className.equals(ListCustomFragment.class.getName())) {
-            long id = findIdByListProduct(id_list, product.getId());
-            CRUDdb.makeDeprecated(id);
+            int id = findIdByListProduct(id_list, product.getId());
+            CRUDdb.Companion.makeDeprecated(id);
         }
     }
 
     @Override
     public void onLongListItemClick(Product product, String className) {
         if (className.equals(ListCustomFragment.class.getName())) {
-            long id = findIdByListProduct(id_list, product.getId());
-            CRUDdb.deleteItemCustomList(id);
+            int id = findIdByListProduct(id_list, product.getId());
+            CRUDdb.Companion.deleteItemCustomList(id);
         }
     }
 
@@ -323,7 +323,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         SQLiteDatabase db = Application.Companion.getDB().getWritableDatabase();
 
         Cursor c = db.rawQuery("Select * from "
-                + Constants.TABLE_NAME_LISTS_LIST + " where " + Constants.TABLE_ID + " = "
+                + Constants.TABLE_NAME_LISTS + " where " + Constants.TABLE_ID + " = "
                 + String.valueOf(id), null);
         int nameIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME);
         if(c.moveToFirst()) {
@@ -334,7 +334,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     }
 
     /*  Вспомогательная функция для поиска id в custom list по id списка и id продукта*/
-    public static long findIdByListProduct(long id_list, long id_product) {
+    public static int findIdByListProduct(long id_list, long id_product) {
         SQLiteDatabase SQLdb = Application.Companion.getDB().getWritableDatabase();
 
         Cursor c = SQLdb.rawQuery("select * from "
@@ -345,7 +345,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
                 , null);
         int idColIndex = c.getColumnIndex(Constants.TABLE_ID);
         if (c.moveToFirst()){
-            return c.getLong(idColIndex);
+            return c.getInt(idColIndex);
         }
         c.close();
         return 0;

@@ -118,17 +118,17 @@ public class DetailFragmentList extends Fragment implements IMenuContract {
     public void savePressed() {
         if (isNewElement() == false) {
             List updateble = toUpdate();
-            CRUDdb.updateTableLists(updateble);
+            CRUDdb.Companion.updateTableLists(updateble);
             iListActivityContract.onDetailFragmentButtonClick();
         } else {
-            CRUDdb.insertToTableLists(etName.getText().toString());
+            CRUDdb.Companion.insertToTableLists(etName.getText().toString());
             iListActivityContract.onDetailFragmentButtonClick();
         }
     }
     @Override
     public void deletePressed(){
         Bundle bundle = getArguments();
-        CRUDdb.deleteItemLists((List) bundle.getSerializable("list"));
+        CRUDdb.Companion.deleteItemLists((List) bundle.getSerializable("list"));
         iListActivityContract.onDetailFragmentButtonClick();
     }
 }

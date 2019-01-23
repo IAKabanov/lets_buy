@@ -2,7 +2,6 @@ package net.sytes.kai_soft.letsbuyka.Lists
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Canvas
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -24,13 +23,16 @@ import net.sytes.kai_soft.letsbuyka.SwipeControllerActions
 
 import java.util.ArrayList
 
+/*  */
 class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyList: TextView
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var iListActivityContract: IListActivityContract
-    internal lateinit var swipeController: SwipeController
+    private lateinit var actialList: ArrayList<List>
+    private lateinit var swipeController: SwipeController
+    private lateinit var adapter: AdapterListsList
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (inflater != null){
@@ -58,21 +60,21 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     private fun refresh(newLists: ArrayList<List>? = null){
         if (newLists == null){
-            val lists = CRUDdb.readFromTableLists(null)
+             actialList = CRUDdb.readFromTableLists()
 
-            if (lists.size == 0){
+            if (actialList.size == 0){
                 emptyList.visibility = View.VISIBLE
             } else {
                 emptyList.visibility = View.GONE
             }
-            displayRV(lists)
+            displayRV(actialList)
         } else {
             displayRV(newLists)
         }
     }
 
     private fun displayRV(lists: ArrayList<List>){
-        val adapter = AdapterListsList(lists, activity)
+        adapter = AdapterListsList(lists, activity)
         val linearLayoutManager = LinearLayoutManager(activity)
         val itemAnimator = DefaultItemAnimator()
 
@@ -108,11 +110,11 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
             }
         })
 
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        /*recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
                 swipeController.onDraw(c)
             }
-        })
+        })*/
 
         val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -120,8 +122,6 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.itemAnimator = itemAnimator
-        
-
     }
 
     override fun onClick(v: View?) {
@@ -133,6 +133,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     }
 
     override fun onFilterMake(newFilter: String?) {
+        adapter.notifyDataSetChanged()
         if (newFilter != null){
             setFilter(newFilter)
         }
@@ -140,6 +141,8 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     }
 
     private fun setFilter(filter: String){
+        //previousList = (actialList.clone()) as ArrayList<List>?
+
         if (filter.isEmpty()){
             refresh()
         } else {
@@ -147,8 +150,4 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
             refresh(lists)
         }
     }
-
-
-
-
 }
