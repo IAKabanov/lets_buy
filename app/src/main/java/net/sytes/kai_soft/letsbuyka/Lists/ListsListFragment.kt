@@ -23,14 +23,14 @@ import net.sytes.kai_soft.letsbuyka.SwipeControllerActions
 
 import java.util.ArrayList
 
-/*  */
+/* Lists fragment   */
 class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyList: TextView
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var iListActivityContract: IListActivityContract
-    private lateinit var actialList: ArrayList<List>
+    private lateinit var actualList: ArrayList<List>
     private lateinit var swipeController: SwipeController
     private lateinit var adapter: AdapterListsList
 
@@ -58,21 +58,23 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
         super.onAttach(context)
     }
 
+    /*  It gets list of lists and invokes displayRV method  */
     private fun refresh(newLists: ArrayList<List>? = null){
         if (newLists == null){
-             actialList = CRUDdb.readFromTableLists()
+             actualList = CRUDdb.readFromTableLists()
 
-            if (actialList.size == 0){
+            if (actualList.size == 0){
                 emptyList.visibility = View.VISIBLE
             } else {
                 emptyList.visibility = View.GONE
             }
-            displayRV(actialList)
+            displayRV(actualList)
         } else {
             displayRV(newLists)
         }
     }
 
+    /*  It shows recyclerView with data which refresh method found  */
     private fun displayRV(lists: ArrayList<List>){
         adapter = AdapterListsList(lists, activity)
         val linearLayoutManager = LinearLayoutManager(activity)
@@ -83,7 +85,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
         swipeController = SwipeController(object : SwipeControllerActions(){
             override fun onRightSwiped(position: Int) {
                 val builder = AlertDialog.Builder(context)
-                builder.setTitle(getString(R.string.delete))
+                builder.setTitle(getString(R.string.deleting))
                         .setMessage(getString(R.string.deleteList))
                         .setPositiveButton(R.string.yes) { _, _ ->
                             adapter.notifyItemRemoved(position)
@@ -141,8 +143,6 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     }
 
     private fun setFilter(filter: String){
-        //previousList = (actialList.clone()) as ArrayList<List>?
-
         if (filter.isEmpty()){
             refresh()
         } else {

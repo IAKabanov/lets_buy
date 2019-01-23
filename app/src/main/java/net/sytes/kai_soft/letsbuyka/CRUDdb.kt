@@ -178,8 +178,8 @@ class CRUDdb {
         }
 
         /*  Crossing out element*/
-        fun makeDeprecated(id: Int) {
-            Log.i(tag, "makeDeprecated($id)")
+        fun makeCrossed(id: Int) {
+            Log.i(tag, "makeCrossed($id)")
 
             val dataBase = CRUDdb.dataBase.writableDatabase
             val cv = ContentValues()

@@ -187,7 +187,7 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
 
         } else if (className.equals(ListCustomFragment.class.getName())) {
             int id = findIdByListProduct(id_list, product.getId());
-            CRUDdb.Companion.makeDeprecated(id);
+            CRUDdb.Companion.makeCrossed(id);
         }
     }
 

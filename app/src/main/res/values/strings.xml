@@ -10,9 +10,10 @@
     <string name="Edit">Редактирование</string>
     <string name="edit">Редактирование</string>
     <string name="delete">Удалить</string>
+    <string name="deleting">Удаление</string>
     <string name="id">ID</string>
     <string name="list">Список</string>
-    <string name="namelist">Имя списка</string>
+    <string name="nameList">Имя списка</string>
     <string name="search">Список</string>
     <string name="action_save">Сохранить</string>
     <string name="action_cancel">Отмена</string>
