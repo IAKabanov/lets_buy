@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,10 @@ import java.util.ArrayList
 /* Lists fragment   */
 class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
+    companion object {
+        const val myTag = "letsbuy_listsFragment"
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyList: TextView
     private lateinit var fabAdd: FloatingActionButton
@@ -35,6 +40,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     private lateinit var adapter: AdapterListsList
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.i(myTag, "onCreateView()")
         if (inflater != null){
             val rootView = inflater.inflate(R.layout.fragment_lists_list, container, false)
             fabAdd = rootView.findViewById(R.id.fabAddList)
@@ -52,6 +58,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     }
 
     override fun onAttach(context: Context?) {
+        Log.i(myTag, "onAttach()")
         if (context is IListActivityContract){
             iListActivityContract = context
         }
@@ -60,6 +67,12 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     /*  It gets list of lists and invokes displayRV method  */
     private fun refresh(newLists: ArrayList<List>? = null){
+        if (newLists == null){
+            Log.i(myTag, "refresh(null)")
+        } else {
+            Log.i(myTag, "refresh(newLists)")
+        }
+
         if (newLists == null){
              actualList = CRUDdb.readFromTableLists()
 
@@ -76,6 +89,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     /*  It shows recyclerView with data which refresh method found  */
     private fun displayRV(lists: ArrayList<List>){
+        Log.i(myTag, "displayRV()")
         adapter = AdapterListsList(lists, activity)
         val linearLayoutManager = LinearLayoutManager(activity)
         val itemAnimator = DefaultItemAnimator()
@@ -84,6 +98,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
         swipeController = SwipeController(object : SwipeControllerActions(){
             override fun onRightSwiped(position: Int) {
+                Log.i(myTag, "onRightSwiped()")
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle(getString(R.string.deleting))
                         .setMessage(getString(R.string.deleteList))
@@ -108,6 +123,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
             }
 
             override fun onLeftSwiped(position: Int) {
+                Log.i(myTag, "onLeftSwiped()")
                 iListActivityContract.onListItemLongClick(lists[position])
             }
         }, context)
@@ -123,12 +139,16 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     override fun onClick(v: View?) {
         if (v != null){
             when (v.id){
-                R.id.fabAddList -> iListActivityContract.onListFragmentButtonClick()
+                R.id.fabAddList ->{
+                    Log.i(myTag, "onClick(fabAddList)")
+                    iListActivityContract.onListFragmentButtonClick()
+                }
             }
         }
     }
 
     override fun onFilterMake(newFilter: String?) {
+        Log.i(myTag, "onFilterMake($newFilter)")
         adapter.notifyDataSetChanged()
         if (newFilter != null){
             setFilter(newFilter)
@@ -137,6 +157,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     }
 
     private fun setFilter(filter: String){
+        Log.i(myTag, "onFilterMake($filter)")
         if (filter.isEmpty()){
             refresh()
         } else {

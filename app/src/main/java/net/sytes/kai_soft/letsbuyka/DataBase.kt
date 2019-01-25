@@ -13,12 +13,12 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
         SQLiteOpenHelper(context, name, factory, version) {
 
     companion object {
-        private const val tag = "letsbuy_DataBase"
+        private const val myTag = "letsbuy_DataBase"
         private var instance: DataBase? = null
         private lateinit var aContext: Application
 
         fun getInstance(context: Application): DataBase{
-            Log.i(tag, "getInstance()")
+            Log.i(myTag, "getInstance()")
             if (instance == null){
                 instance = DataBase(context)
                 aContext = context
@@ -30,7 +30,7 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
         class TableProducts{
             companion object {
                 internal fun createTableProducts(db: SQLiteDatabase){
-                    Log.i(tag, "createTableProducts()")
+                    Log.i(myTag, "createTableProducts()")
 
                     db.execSQL("create table " + Constants.TABLE_NAME_PRODUCTS + " ( "
                             + Constants.TABLE_ID + " integer primary key autoincrement, "
@@ -45,7 +45,7 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
         class TableLists{
             companion object {
                 internal fun createTableList(db: SQLiteDatabase){
-                    Log.i(tag, "createTableList()")
+                    Log.i(myTag, "createTableList()")
 
                     db.execSQL("create table " + Constants.TABLE_NAME_LISTS + " ( "
                             + Constants.TABLE_ID + " integer primary key autoincrement, "
@@ -58,7 +58,7 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
         class TableCustomList{
             companion object {
                 internal fun createTableCustomList(db: SQLiteDatabase){
-                    Log.i(tag, "createTableCustomList()")
+                    Log.i(myTag, "createTableCustomList()")
 
                     db.execSQL("create table " + Constants.TABLE_NAME_CUSTOM_LIST + " ( "
                             + Constants.TABLE_ID + " integer primary key autoincrement, "
@@ -72,18 +72,18 @@ class DataBase(context: Context, name: String = Constants.DATABASE_NAME,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
-        Log.i(tag, "onUpgrade()")
+        Log.i(myTag, "onUpgrade()")
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.i(tag, "onCreate()")
+        Log.i(myTag, "onCreate()")
         if (db != null){
             DataBase.Companion.TableProducts.createTableProducts(db)
             DataBase.Companion.TableLists.createTableList(db)
             DataBase.Companion.TableCustomList.createTableCustomList(db)
         }
         else{
-            Log.w(tag, "did not created, db == null")
+            Log.w(myTag, "did not created, db == null")
         }
     }
 }

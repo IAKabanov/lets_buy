@@ -14,11 +14,11 @@ import net.sytes.kai_soft.letsbuyka.ProductModel.Product
 class CRUDdb {
     companion object {
         private val dataBase: DataBase = Application.getDB()
-        private const val tag = "letsbuy_CRUDdb"
+        private const val myTag = "letsbuy_CRUDdb"
 
         /*  Add product */
         fun insertToTableProducts(name: String, description: String) {
-            Log.i(tag, "insertToTableProducts($name, $description)")
+            Log.i(myTag, "insertToTableProducts($name, $description)")
 
             val cv = ContentValues()
 
@@ -32,7 +32,7 @@ class CRUDdb {
 
         /*  Update product  */
         fun updateTableProducts(product: Product) {
-            Log.i(tag, "updateTableProducts($product)")
+            Log.i(myTag, "updateTableProducts($product)")
 
             val cv = ContentValues()
 
@@ -48,7 +48,7 @@ class CRUDdb {
 
         /*  Delete product  */
         fun deleteItemProducts(product: Product) {
-            Log.i(tag, "deleteItemProducts($product)")
+            Log.i(myTag, "deleteItemProducts($product)")
 
             val db = CRUDdb.dataBase.writableDatabase
 
@@ -59,7 +59,7 @@ class CRUDdb {
 
         /*  Initial filling products. Works only first start    */
         fun fillProducts(context: Context, dataBase: SQLiteDatabase) {
-            Log.i(tag, "fillProducts()")
+            Log.i(myTag, "fillProducts()")
 
             val cv = ContentValues()
 
@@ -75,7 +75,7 @@ class CRUDdb {
 
         /*  Add list    */
         fun insertToTableLists(name: String) {
-            Log.i(tag, "insertToTableLists($name)")
+            Log.i(myTag, "insertToTableLists($name)")
 
             val cv = ContentValues()
 
@@ -89,7 +89,7 @@ class CRUDdb {
         /*  Read from "lists" with filter   */
         @SuppressLint("Recycle")
         fun readFromTableLists(filter: String? = null): ArrayList<List> {
-            Log.i(tag, "readFromTableLists($filter)")
+            Log.i(myTag, "readFromTableLists($filter)")
 
             val dataBase = CRUDdb.dataBase.readableDatabase
 
@@ -118,7 +118,7 @@ class CRUDdb {
 
         /*  Update list */
         fun updateTableLists(list: List) {
-            Log.i(tag, "updateTableLists($list)")
+            Log.i(myTag, "updateTableLists($list)")
 
             val cv = ContentValues()
 
@@ -133,7 +133,7 @@ class CRUDdb {
 
         /*  Delete list */
         fun deleteItemLists(list: List) {
-            Log.i(tag, "deleteItemLists($list)")
+            Log.i(myTag, "deleteItemLists($list)")
 
             val dataBase = CRUDdb.dataBase.writableDatabase
 
@@ -144,7 +144,7 @@ class CRUDdb {
 
         /*  Add element to custom list  */
         fun insertToTableCustomList(idList: Int, idProduct: Int) {
-            Log.i(tag, "insertToTableCustomList($idList,$idProduct)")
+            Log.i(myTag, "insertToTableCustomList($idList,$idProduct)")
 
             val dataBase = CRUDdb.dataBase.writableDatabase
 
@@ -168,7 +168,7 @@ class CRUDdb {
 
         /*  Delete element from custom list */
         fun deleteItemCustomList(id: Int) {
-            Log.i(tag, "deleteItemCustomList($id)")
+            Log.i(myTag, "deleteItemCustomList($id)")
 
             val dataBase = CRUDdb.dataBase.writableDatabase
 
@@ -179,7 +179,7 @@ class CRUDdb {
 
         /*  Crossing out element*/
         fun makeCrossed(id: Int) {
-            Log.i(tag, "makeCrossed($id)")
+            Log.i(myTag, "makeCrossed($id)")
 
             val dataBase = CRUDdb.dataBase.writableDatabase
             val cv = ContentValues()
