@@ -112,7 +112,7 @@ public class ListsListFragment1 extends Fragment implements View.OnClickListener
             }
         });
 
-        swipeController = new SwipeController(new SwipeControllerActions() {
+        /*swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
             public void onRightSwiped(int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -142,7 +142,7 @@ public class ListsListFragment1 extends Fragment implements View.OnClickListener
             public void onLeftSwiped(int position) {
                 iListActivityContract.onListItemLongClick(lists.get(position));
             }
-        });
+        });*/
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(recyclerView);

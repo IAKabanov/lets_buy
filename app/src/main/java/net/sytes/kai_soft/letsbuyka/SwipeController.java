@@ -1,12 +1,18 @@
 package net.sytes.kai_soft.letsbuyka;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import android.view.MotionEvent;
 import android.view.View;
+
 
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 
@@ -18,21 +24,17 @@ enum ButtonsState {
 
 public class SwipeController extends Callback {
     private boolean swipeBack = false;
-
     private ButtonsState buttonShowedState = ButtonsState.GONE;
-
     private RectF buttonInstance = null;
-
     private RecyclerView.ViewHolder currentItemViewHolder = null;
-
     private SwipeControllerActions buttonsActions = null;
-
     private int direct = -1;
-
     private static final float buttonWidth = 720;
+    private Context context;
 
-    public SwipeController(SwipeControllerActions buttonsActions) {
+    public SwipeController(SwipeControllerActions buttonsActions, Context context) {
         this.buttonsActions = buttonsActions;
+        this.context = context;
     }
 
     @Override
@@ -52,11 +54,11 @@ public class SwipeController extends Callback {
         }else if (direction == LEFT){
             buttonsActions.onRightSwiped(viewHolder.getAdapterPosition());
         }
+    }
 
+    public void reInit(){
         buttonShowedState = ButtonsState.GONE;
-
         currentItemViewHolder = null;
-
         direct = -1;
     }
 
@@ -156,7 +158,7 @@ public class SwipeController extends Callback {
 
     private void drawButtons(Canvas c, RecyclerView.ViewHolder viewHolder) {
 
-        float corners = 16;
+        float corners = 20;
 
         View itemView = viewHolder.itemView;
         Paint p = new Paint();
@@ -166,13 +168,13 @@ public class SwipeController extends Callback {
 
         if (direct == RIGHT){
             p.setColor(Color.BLUE);
-            c.drawRoundRect(leftButton, corners, corners, p);
-            drawText("EDIT", c, leftButton, p);
+            c.drawRoundRect(leftButton, corners, corners, p);;
+            drawIcons(c, leftButton, p);
         }
         else if(direct == LEFT){
             p.setColor(Color.RED);
             c.drawRoundRect(rightButton, corners, corners, p);
-            drawText("DELETE", c, rightButton, p);
+            drawIcons(c, rightButton, p);
         }
 
         buttonInstance = null;
@@ -186,15 +188,48 @@ public class SwipeController extends Callback {
         }
     }
 
+
     private void drawText(String text, Canvas c, RectF button, Paint p) {
         float textSize = 60;
+        float textMargin = 15;
         p.setColor(Color.WHITE);
         p.setAntiAlias(true);
         p.setTextSize(textSize);
-
         float textWidth = p.measureText(text);
-        c.drawText(text, button.centerX()-(textWidth/2), button.centerY()+(textSize/2), p);
+        if (direct == LEFT){
+            c.drawText(text, button.right - textWidth - textMargin, button.centerY()+(textSize/2), p);
+        } else if (direct == RIGHT){
+            c.drawText(text, button.left + textMargin, button.centerY()+(textSize/2), p);
+        }
     }
+
+    private void drawIcons(Canvas c, RectF button, Paint p){
+        float bitmapWidth = context.getResources().getDrawable(R.drawable.ic_delete_black_50dp).getIntrinsicWidth();
+        float bitmapMargin = 15;
+        p.setColor(Color.WHITE);
+        Bitmap bitmapSource;
+        if (direct == LEFT){
+            bitmapSource = getBitmapFromDrawable(context.getResources().getDrawable(R.drawable.ic_delete_black_50dp));
+            c.drawBitmap(bitmapSource, button.right - bitmapWidth - bitmapMargin, button.top, p);
+        } else if (direct == RIGHT){
+            bitmapSource = getBitmapFromDrawable(context.getResources().getDrawable(R.drawable.ic_edit_black_50dp));
+            c.drawBitmap(bitmapSource, button.left + bitmapMargin, button.top, p);
+        }
+    }
+
+    private Bitmap getBitmapFromDrawable(Drawable drawable){
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
 
     public void onDraw(Canvas c) {
         if (currentItemViewHolder != null) {

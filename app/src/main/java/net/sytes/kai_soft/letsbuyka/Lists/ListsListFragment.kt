@@ -110,13 +110,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
             override fun onLeftSwiped(position: Int) {
                 iListActivityContract.onListItemLongClick(lists[position])
             }
-        })
-
-        /*recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
-                swipeController.onDraw(c)
-            }
-        })*/
+        }, context)
 
         val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(recyclerView)
