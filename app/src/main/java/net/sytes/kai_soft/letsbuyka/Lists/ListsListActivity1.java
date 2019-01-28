@@ -28,7 +28,7 @@ import java.util.Stack;
  * Created by Лунтя on 01.06.2018.
  */
 /*  Активити с выбором списка   */
-public class ListsListActivity extends AppCompatActivity implements IListActivityContract {
+public class ListsListActivity1 extends AppCompatActivity implements IListActivityContract {
 
     private static final String tagListFragment = "listFragment";
     private static final String tagDetailFragment = "detailFragment";
@@ -91,7 +91,7 @@ public class ListsListActivity extends AppCompatActivity implements IListActivit
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lists_list);
+        setContentView(R.layout.activity_lists);
 
         toolBar = findViewById(R.id.toolbarProduct);
         toolBar.setTitle(R.string.lists);
@@ -144,7 +144,7 @@ public class ListsListActivity extends AppCompatActivity implements IListActivit
     @Override
     public void onListItemClick(int position) {
 
-        Intent intent = new Intent(ListsListActivity.this, CustomActivity.class);
+        Intent intent = new Intent(ListsListActivity1.this, CustomActivity.class);
 
         intent.putExtra("pos", position);
         startActivity(intent);
@@ -225,7 +225,7 @@ public class ListsListActivity extends AppCompatActivity implements IListActivit
                 return true;
 
             case R.id.action_products:
-                Intent intent = new Intent(ListsListActivity.this, ProductsActivity.class);
+                Intent intent = new Intent(ListsListActivity1.this, ProductsActivity.class);
                 startActivity(intent);
                 return true;
 

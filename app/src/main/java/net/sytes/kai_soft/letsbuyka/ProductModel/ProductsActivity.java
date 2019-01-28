@@ -16,7 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
-import net.sytes.kai_soft.letsbuyka.Lists.ListsListActivity;
+import net.sytes.kai_soft.letsbuyka.Lists.ListsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 /*  Активити со списками продуктов  */
 public class ProductsActivity extends AppCompatActivity implements
@@ -216,7 +216,7 @@ public class ProductsActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.action_products:
-                Intent intent = new Intent(ProductsActivity.this, ListsListActivity.class);
+                Intent intent = new Intent(ProductsActivity.this, ListsActivity.class);
                 startActivity(intent);
                 return true;
 

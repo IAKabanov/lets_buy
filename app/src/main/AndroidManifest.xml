@@ -35,7 +35,7 @@
 
         </activity>
 
-        <activity android:name=".Lists.ListsListActivity"
+        <activity android:name=".Lists.ListsActivity"
             android:label="LetsBuy"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
