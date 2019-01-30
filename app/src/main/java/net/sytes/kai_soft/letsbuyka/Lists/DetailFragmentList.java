@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
@@ -130,5 +132,12 @@ public class DetailFragmentList extends Fragment implements IMenuContract {
         Bundle bundle = getArguments();
         CRUDdb.Companion.deleteItemLists((List) bundle.getSerializable("list"));
         iListActivityContract.onDetailFragmentButtonClick();
+
+    }
+
+    @Override
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etName.getWindowToken(), 0);
     }
 }

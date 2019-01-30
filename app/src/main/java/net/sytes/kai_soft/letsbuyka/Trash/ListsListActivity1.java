@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka.Lists;
+package net.sytes.kai_soft.letsbuyka.Trash;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import android.view.inputmethod.InputMethodManager;
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
+import net.sytes.kai_soft.letsbuyka.Lists.DetailFragmentList;
+import net.sytes.kai_soft.letsbuyka.Lists.List;
+import net.sytes.kai_soft.letsbuyka.Lists.ListsListFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 import net.sytes.kai_soft.letsbuyka.IListActivityContract;

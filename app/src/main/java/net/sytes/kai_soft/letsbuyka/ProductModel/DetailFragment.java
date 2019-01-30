@@ -154,4 +154,9 @@ public class DetailFragment extends Fragment implements IMenuContract {
     public boolean isNew(){
         return isNewProduct();
     }
+
+    @Override
+    public void hideKeyboard() {
+
+    }
 }
