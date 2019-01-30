@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka.Lists;
+package net.sytes.kai_soft.letsbuyka.Trash;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
+import net.sytes.kai_soft.letsbuyka.Lists.List;
 import net.sytes.kai_soft.letsbuyka.R;
 import net.sytes.kai_soft.letsbuyka.IListActivityContract;
 
@@ -20,7 +21,7 @@ import net.sytes.kai_soft.letsbuyka.IListActivityContract;
  * Created by Лунтя on 06.06.2018.
  */
 
-public class DetailFragmentList extends Fragment implements IMenuContract {
+public class DetailFragmentList1 extends Fragment implements IMenuContract {
 
     //Button insertBtn, backToListBtn, deleteBtn;
     EditText etName;

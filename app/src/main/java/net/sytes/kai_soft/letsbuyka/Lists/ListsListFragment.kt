@@ -28,7 +28,7 @@ import java.util.ArrayList
 class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     companion object {
-        const val myTag = "letsbuy_listsFragment"
+        const val myTag = "letsbuy_LlistFragment"
     }
 
     private lateinit var recyclerView: RecyclerView
