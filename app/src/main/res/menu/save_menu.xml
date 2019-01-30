@@ -39,6 +39,13 @@
         android:title="@string/action_products"
         app:showAsAction="never"
         android:visible="false"/>
+
+    <item
+        android:id="@+id/action_firebase"
+        android:orderInCategory="50"
+        android:title="Тест фиребасе"
+        app:showAsAction="never"
+        android:visible="false"/>
   <!--  <item
         android:id="@+id/action_edit"
         android:orderInCategory="100"

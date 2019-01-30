@@ -10,13 +10,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import net.sytes.kai_soft.letsbuyka.*
 
 import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity
-import net.sytes.kai_soft.letsbuyka.IFilterContract
-import net.sytes.kai_soft.letsbuyka.IMenuContract
 import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity
-import net.sytes.kai_soft.letsbuyka.R
-import net.sytes.kai_soft.letsbuyka.IListActivityContract
 
 import java.util.Stack
 
@@ -44,6 +41,11 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
     private lateinit var iMenuContract: IMenuContract
     private lateinit var nameFragment: Stack<String>
     private lateinit var list: List
+
+
+
+
+    private lateinit var actionFB: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(myTag, "onCreate()")
@@ -98,6 +100,12 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
             actionProduct.isVisible = true
             actionProduct.setTitle(R.string.action_products)
             searchView.visibility = View.VISIBLE
+
+
+            actionFB = menu.findItem(R.id.action_firebase)
+            actionFB.isVisible = true
+
+
             return true
         }
         return super.onCreateOptionsMenu(menu)
@@ -187,6 +195,16 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
                     startActivity(intent)
                     return true
                 }
+
+
+                R.id.action_firebase -> {
+                    val intent = Intent(this@ListsActivity, FBActivity::class.java)
+                    startActivity(intent)
+                    return true
+                }
+
+
+
                 else -> {
                     return super.onOptionsItemSelected(item)
                 }
@@ -211,6 +229,15 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
                 actionDelete.isVisible = false
                 actionSearch.isVisible = true
                 actionProduct.isVisible = true
+
+
+
+
+                actionFB.isVisible = true
+
+
+
+
                 actionSearch.collapseActionView()
                 toolbar.requestFocus()
                 toolbar.setTitle(R.string.lists)

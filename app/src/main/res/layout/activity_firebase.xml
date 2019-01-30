@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/fbTVStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/fbTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Тут могла быть ваша реклама"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/fbET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/fbBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Post" />
+
+    <RadioGroup
+        android:id="@+id/fbRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/fbRadioBtnProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/fbRadioBtnMess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message" />
+
+        <RadioButton
+            android:id="@+id/fbRadioBtnAnothMess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Another message"/>
+
+    </RadioGroup>
+
+
+</LinearLayout>
