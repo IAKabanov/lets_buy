@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1027473767174",
+    "firebase_url": "https://letsbuyka.firebaseio.com",
+    "project_id": "letsbuyka",
+    "storage_bucket": "letsbuyka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027473767174:android:10d8c6ffc0b9ab87",
+        "android_client_info": {
+          "package_name": "net.sytes.kai_soft.letsbuyka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027473767174-9q6a13p1k60emkebb5e1iv82e7tks7v8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.sytes.kai_soft.letsbuyka",
+            "certificate_hash": "1343590296c7b3cf5a271326a485f298c99f8462"
+          }
+        },
+        {
+          "client_id": "1027473767174-lnq13li20k3450it0gn5q8eccprnu4gb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDILNdSZLV7LDpyiBGqh0wJV8YARMTHqnA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027473767174-lnq13li20k3450it0gn5q8eccprnu4gb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

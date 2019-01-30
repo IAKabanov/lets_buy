@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka.Lists;
+package net.sytes.kai_soft.letsbuyka.Trash;
 
 import java.io.Serializable;
 
@@ -6,11 +6,11 @@ import java.io.Serializable;
  * Created by Лунтя on 06.06.2018.
  */
 
-public class List implements Serializable {
+public class List1 implements Serializable {
     private int id;
     private String itemName;
 
-    public List(int id, String itemName){
+    public List1(int id, String itemName){
         this.id = id;
         this.itemName = itemName;
     }

@@ -42,11 +42,6 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
     private lateinit var nameFragment: Stack<String>
     private lateinit var list: List
 
-
-
-
-    private lateinit var actionFB: MenuItem
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(myTag, "onCreate()")
         super.onCreate(savedInstanceState)
@@ -100,18 +95,13 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
             actionProduct.isVisible = true
             actionProduct.setTitle(R.string.action_products)
             searchView.visibility = View.VISIBLE
-
-
-            actionFB = menu.findItem(R.id.action_firebase)
-            actionFB.isVisible = true
-
-
             return true
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onBackPressed() {
+        Log.i(myTag, "onBackPressed()")
         onDetailFragmentButtonClick()
         super.onBackPressed()
     }
@@ -170,48 +160,42 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        Log.i(myTag, "onOptionsItemSelected()")
         if (item != null) {
             val id = item.itemId
 
             when (id) {
                 R.id.action_save -> {
+                    Log.i(myTag, "onOptionsItemSelected() -> action_save")
                     iMenuContract = detailFragment
                     detailFragment.savePressed()
                     onBackPressed()
                     return true
                 }
                 R.id.action_cancel -> {
+                    Log.i(myTag, "onOptionsItemSelected() -> action_cancel")
                     onBackPressed()
                     return true
                 }
                 R.id.action_delete -> {
+                    Log.i(myTag, "onOptionsItemSelected() -> action_delete")
                     iMenuContract = detailFragment
                     detailFragment.deletePressed()
                     onBackPressed()
                     return true
                 }
                 R.id.action_products -> {
+                    Log.i(myTag, "onOptionsItemSelected() -> action_products")
                     val intent = Intent(this@ListsActivity, ProductsActivity::class.java)
                     startActivity(intent)
                     return true
                 }
-
-
-                R.id.action_firebase -> {
-                    val intent = Intent(this@ListsActivity, FBActivity::class.java)
-                    startActivity(intent)
-                    return true
-                }
-
-
-
                 else -> {
+                    Log.w(myTag, "onOptionsItemSelected() -> else")
                     return super.onOptionsItemSelected(item)
                 }
             }
         }
-
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -224,25 +208,18 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
         }
         when (actualFragment) {
             tagListFragment -> {
+                Log.i(myTag, "refreshToolbar() -> list fragment")
                 actionSave.isVisible = false
                 actionCancel.isVisible = false
                 actionDelete.isVisible = false
                 actionSearch.isVisible = true
                 actionProduct.isVisible = true
-
-
-
-
-                actionFB.isVisible = true
-
-
-
-
                 actionSearch.collapseActionView()
                 toolbar.requestFocus()
                 toolbar.setTitle(R.string.lists)
             }
             tagDetailFragment -> {
+                Log.i(myTag, "refreshToolbar() -> detail fragment")
                 actionSave.isVisible = true
                 actionCancel.isVisible = true
                 actionDelete.isVisible = true
@@ -253,6 +230,7 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
                 toolbar.title = list.itemName
             }
             tagDetailFragmentNew -> {
+                Log.i(myTag, "refreshToolbar() -> new detail fragment")
                 actionSave.isVisible = true
                 actionCancel.isVisible = true
                 actionDelete.isVisible = false
