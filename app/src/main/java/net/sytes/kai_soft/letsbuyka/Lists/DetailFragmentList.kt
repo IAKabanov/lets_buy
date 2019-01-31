@@ -15,6 +15,7 @@ import net.sytes.kai_soft.letsbuyka.IMenuContract
 import net.sytes.kai_soft.letsbuyka.R
 import net.sytes.kai_soft.letsbuyka.IListActivityContract
 
+/*  Detail fragment for selected list   */
 class DetailFragmentList: Fragment(), IMenuContract {
     companion object {
         private const val myTag = "letsbuy_LDetailFragment"

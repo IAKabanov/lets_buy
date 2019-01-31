@@ -37,7 +37,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     private lateinit var iListActivityContract: IListActivityContract
     private lateinit var actualList: ArrayList<List>
     private lateinit var swipeController: SwipeController
-    private lateinit var adapter: AdapterListsList
+    private lateinit var adapter: AdapterLists
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.i(myTag, "onCreateView()")
@@ -90,7 +90,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     /*  It shows recyclerView with data which refresh method found  */
     private fun displayRV(lists: ArrayList<List>){
         Log.i(myTag, "displayRV()")
-        adapter = AdapterListsList(lists, activity)
+        adapter = AdapterLists(lists, activity)
         val linearLayoutManager = LinearLayoutManager(activity)
         val itemAnimator = DefaultItemAnimator()
 
