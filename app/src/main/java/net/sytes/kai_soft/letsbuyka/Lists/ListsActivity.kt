@@ -79,6 +79,8 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
             actionDelete = menu.findItem(R.id.action_delete)
             actionSearch = menu.findItem(R.id.action_search)
             actionProduct = menu.findItem(R.id.action_products)
+            val temp = menu.findItem(R.id.action_firebase)
+            temp.isVisible = true
             searchView = actionSearch.actionView as SearchView
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -190,6 +192,14 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
                     startActivity(intent)
                     return true
                 }
+
+                R.id.action_firebase -> {
+                    Log.i(myTag, "onOptionsItemSelected() -> action_products")
+                    val intent = Intent(this@ListsActivity, FBActivity::class.java)
+                    startActivity(intent)
+                    return true
+                }
+
                 else -> {
                     Log.w(myTag, "onOptionsItemSelected() -> else")
                     return super.onOptionsItemSelected(item)
