@@ -3,10 +3,7 @@ package net.sytes.kai_soft.letsbuyka
 import net.sytes.kai_soft.letsbuyka.Lists.List
 
 /*  Interface for activity  */
-interface IListActivityContract {
+interface IActivityContract {
     fun onListFragmentButtonClick()
     fun onDetailFragmentButtonClick()
-    fun onListItemClick(position: Int)
-    fun onListItemLongClick(list: List)
-
 }

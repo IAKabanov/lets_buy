@@ -13,7 +13,7 @@ import android.widget.EditText
 import net.sytes.kai_soft.letsbuyka.CRUDdb
 import net.sytes.kai_soft.letsbuyka.IMenuContract
 import net.sytes.kai_soft.letsbuyka.R
-import net.sytes.kai_soft.letsbuyka.IListActivityContract
+import net.sytes.kai_soft.letsbuyka.IActivityContract
 
 /*  Detail fragment for selected list   */
 class DetailFragmentList: Fragment(), IMenuContract {
@@ -23,7 +23,7 @@ class DetailFragmentList: Fragment(), IMenuContract {
 
     private lateinit var etName: EditText
     private lateinit var list: List
-    private lateinit var iListActivityContract: IListActivityContract
+    private lateinit var iActivityContract: IActivityContract
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.i(myTag, "onCreateView()")
@@ -47,8 +47,8 @@ class DetailFragmentList: Fragment(), IMenuContract {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is IListActivityContract){
-            iListActivityContract = context
+        if (context is IActivityContract){
+            iActivityContract = context
         }
     }
 
@@ -71,17 +71,17 @@ class DetailFragmentList: Fragment(), IMenuContract {
         if (!isNewElement()){
             val updatable = toUpdate()
             CRUDdb.updateTableLists(updatable)
-            iListActivityContract.onDetailFragmentButtonClick()
+            iActivityContract.onDetailFragmentButtonClick()
         } else {
             CRUDdb.insertToTableLists(etName.text.toString())
-            iListActivityContract.onDetailFragmentButtonClick()
+            iActivityContract.onDetailFragmentButtonClick()
         }
     }
 
     override fun deletePressed() {
         val bundle = arguments
         CRUDdb.deleteItemLists(bundle.getSerializable("list") as List)
-        iListActivityContract.onDetailFragmentButtonClick()
+        iActivityContract.onDetailFragmentButtonClick()
     }
 
     override fun hideKeyboard() {

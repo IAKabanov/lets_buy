@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
+import net.sytes.kai_soft.letsbuyka.IActivityContract;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.R;
 
@@ -22,7 +23,8 @@ public class DetailFragment extends Fragment implements IMenuContract {
     //Button insertBtn, backToListBtn, deleteBtn;
     EditText etName, etDescr;//, etPhoto;
 
-    IProductListActivityContract IProductListActivityContract;
+    IActivityContract iActivityContract;
+    IPRContract iPRContract;
 
 
 
@@ -83,15 +85,12 @@ public class DetailFragment extends Fragment implements IMenuContract {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IProductListActivityContract) {
-            IProductListActivityContract = (IProductListActivityContract) context;
+        if (context instanceof IActivityContract) {
+            iActivityContract = (IActivityContract) context;
         }
-    }
-
-    @Override
-    public void onDetach() {
-        IProductListActivityContract = null;
-        super.onDetach();
+        if (context instanceof IPRContract) {
+            iPRContract = (IPRContract) context;
+        }
     }
 
     private boolean isEditable() {

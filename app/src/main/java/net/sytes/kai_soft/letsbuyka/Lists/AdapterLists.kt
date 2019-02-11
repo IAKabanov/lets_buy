@@ -11,7 +11,7 @@ import android.widget.TextView
 
 
 import net.sytes.kai_soft.letsbuyka.R
-import net.sytes.kai_soft.letsbuyka.IListActivityContract
+import net.sytes.kai_soft.letsbuyka.IActivityContract
 
 import java.util.ArrayList
 
@@ -20,7 +20,8 @@ class AdapterLists(_lists: ArrayList<List>, context: Context):
 
     companion object {
         private lateinit var lists: ArrayList<List>
-        private lateinit var iListActivityContract: IListActivityContract
+        private lateinit var iActivityContract: IActivityContract
+        private lateinit var iLAListContract: ILAListContract
         private const val myTag = "letsbuy_LAdapter"
 
         class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
@@ -34,14 +35,17 @@ class AdapterLists(_lists: ArrayList<List>, context: Context):
             override fun onClick(v: View?) {
                 val pos = lists[adapterPosition].id
                 Log.i(myTag, "AdapterLists -> MyViewHolder -> onClick(position = $pos)")
-                iListActivityContract.onListItemClick(pos)
+                iLAListContract.onListItemClick(pos)
             }
         }
     }
     init {
         lists = _lists
-        if (context is IListActivityContract){
-            iListActivityContract = context
+        if (context is IActivityContract){
+            iActivityContract = context
+        }
+        if (context is ILAListContract){
+            iLAListContract = context
         }
     }
 

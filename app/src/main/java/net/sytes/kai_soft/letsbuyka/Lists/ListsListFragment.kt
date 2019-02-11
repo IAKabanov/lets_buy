@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import net.sytes.kai_soft.letsbuyka.CRUDdb
-import net.sytes.kai_soft.letsbuyka.IListActivityContract
+import net.sytes.kai_soft.letsbuyka.IActivityContract
 import net.sytes.kai_soft.letsbuyka.SwipeController
 import net.sytes.kai_soft.letsbuyka.IFilterContract
 import net.sytes.kai_soft.letsbuyka.R
@@ -34,7 +34,8 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyList: TextView
     private lateinit var fabAdd: FloatingActionButton
-    private lateinit var iListActivityContract: IListActivityContract
+    private lateinit var iActivityContract: IActivityContract
+    private lateinit var iLAListContract: ILAListContract
     private lateinit var actualList: ArrayList<List>
     private lateinit var swipeController: SwipeController
     private lateinit var adapter: AdapterLists
@@ -59,8 +60,11 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
     override fun onAttach(context: Context?) {
         Log.i(myTag, "onAttach()")
-        if (context is IListActivityContract){
-            iListActivityContract = context
+        if (context is IActivityContract){
+            iActivityContract = context
+        }
+        if (context is ILAListContract){
+            iLAListContract = context
         }
         super.onAttach(context)
     }
@@ -124,7 +128,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
             override fun onLeftSwiped(position: Int) {
                 Log.i(myTag, "onLeftSwiped()")
-                iListActivityContract.onListItemLongClick(lists[position])
+                iLAListContract.onListItemLongClick(lists[position])
             }
         }, context)
 
@@ -141,7 +145,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
             when (v.id){
                 R.id.fabAddList ->{
                     Log.i(myTag, "onClick(fabAddList)")
-                    iListActivityContract.onListFragmentButtonClick()
+                    iActivityContract.onListFragmentButtonClick()
                 }
             }
         }

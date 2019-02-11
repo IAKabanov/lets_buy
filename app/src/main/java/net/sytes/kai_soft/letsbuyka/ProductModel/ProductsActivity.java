@@ -14,13 +14,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 
+import net.sytes.kai_soft.letsbuyka.IActivityContract;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.Lists.ListsActivity;
 import net.sytes.kai_soft.letsbuyka.R;
 /*  Активити со списками продуктов  */
 public class ProductsActivity extends AppCompatActivity implements
-        IProductListActivityContract{
+        IActivityContract, IPRContract {
 
     DetailFragment detailFragment;      //Фрагмент детализации
     ListFragment listFragment;          //Фрагмент списка

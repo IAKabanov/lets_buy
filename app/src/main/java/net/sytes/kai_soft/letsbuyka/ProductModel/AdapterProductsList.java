@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.CustomList.IListFragment;
 import net.sytes.kai_soft.letsbuyka.CustomList.ListCustomFragment;
+import net.sytes.kai_soft.letsbuyka.IActivityContract;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
 
     private ArrayList<Product> products;
     private static ArrayList<Integer> deprecatedList;
-    static IProductListActivityContract iProductListActivityContract;
+    static IPRContract iPRContract;
     private static String className;
     static IListFragment iListFragment;
 
@@ -40,8 +41,8 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
         this.products = products;
         this.className = className;
         this.deprecatedList = deprecatedList;
-        if (context instanceof IProductListActivityContract) {
-            iProductListActivityContract = (IProductListActivityContract) context;
+        if (context instanceof IPRContract) {
+            iPRContract = (IPRContract) context;
         }
 
         if (fragment != null) {
@@ -130,13 +131,12 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
                 switch (v.getId()) {
                     case (R.id.recyclerViewListItem):
                         Product product = products.get(getAdapterPosition());
-                        if (iProductListActivityContract != null) {
-                            iProductListActivityContract.onListItemClick(product, className);
+                        if (iPRContract != null) {
+                            iPRContract.onListItemClick(product, className);
                         }
                         if (iListFragment != null) {
                             iListFragment.onItemClick();
                         }
-
                 }
             }
             longClicked = false;
@@ -150,8 +150,8 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
                 case (R.id.recyclerViewListItem):
                     if (products.size() > 0) {
                         Product product = products.get(getAdapterPosition());
-                        if (iProductListActivityContract != null) {
-                            iProductListActivityContract.onLongListItemClick(product, className);
+                        if (iPRContract != null) {
+                            iPRContract.onLongListItemClick(product, className);
                         }
                         if (iListFragment != null) {
                             iListFragment.onItemClick();

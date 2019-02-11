@@ -18,7 +18,7 @@ import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity
 import java.util.Stack
 
 /*  Activity, which need to interact with lists   */
-class ListsActivity : AppCompatActivity(), IListActivityContract {
+class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
 
     companion object {
         const val myTag = "letsbuy_listsActivity"

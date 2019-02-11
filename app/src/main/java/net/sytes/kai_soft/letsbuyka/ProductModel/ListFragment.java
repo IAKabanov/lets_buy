@@ -19,6 +19,7 @@ import android.widget.TextView;
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.DataBase;
+import net.sytes.kai_soft.letsbuyka.IActivityContract;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.R;
 import net.sytes.kai_soft.letsbuyka.SwipeController;
@@ -36,7 +37,8 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
     DataBase dbProduct;
     TextView emptyList;
     RecyclerView recyclerView;
-    IProductListActivityContract iProductListActivityContract;
+    IActivityContract iActivityContract;
+    IPRContract iPRContract;
     FloatingActionButton fabAdd;
     public final String CLASS_NAME = getClass().getName();
 
@@ -64,15 +66,12 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IProductListActivityContract) {
-            iProductListActivityContract = (IProductListActivityContract) context;
+        if (context instanceof IActivityContract) {
+            iActivityContract = (IActivityContract) context;
         }
-    }
-
-    @Override
-    public void onDetach() {
-        iProductListActivityContract = null;
-        super.onDetach();
+        if (context instanceof IPRContract) {
+            iPRContract = (IPRContract) context;
+        }
     }
 
     private void refresh(@Nullable ArrayList<Product> newProducts) {
@@ -150,7 +149,7 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.fabAdd):
-                iProductListActivityContract.onListFragmentButtonClick();
+                iActivityContract.onListFragmentButtonClick();
                 fabAdd.requestFocus();
                 break;
         }
