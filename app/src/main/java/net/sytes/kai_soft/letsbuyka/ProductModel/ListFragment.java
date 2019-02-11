@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import net.sytes.kai_soft.letsbuyka.Constants;
 import net.sytes.kai_soft.letsbuyka.DataBase;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.R;
+import net.sytes.kai_soft.letsbuyka.SwipeController;
+import net.sytes.kai_soft.letsbuyka.SwipeControllerActions;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,8 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
     IProductListActivityContract iProductListActivityContract;
     FloatingActionButton fabAdd;
     public final String CLASS_NAME = getClass().getName();
+
+    SwipeController swipeController;
 
     @Nullable
     @Override
@@ -116,6 +121,23 @@ public class ListFragment extends Fragment implements View.OnClickListener, IFil
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
 
         recyclerView.setAdapter(adapter);
+        swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onLeftSwiped(int position) {
+                int a;
+                super.onLeftSwiped(position);
+            }
+
+            @Override
+            public void onRightSwiped(int position) {
+                int a;
+                super.onRightSwiped(position);
+            }
+        }, getContext());
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         //recyclerView.setHasFixedSize(true); // необязательно
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // необязательно
         recyclerView.setLayoutManager(linearLayoutManager);

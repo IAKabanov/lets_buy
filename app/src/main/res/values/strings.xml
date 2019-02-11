@@ -32,6 +32,14 @@
     <string name="deleteList">Удалить список?</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
+    <string name="e_mail">E-Mail: </string>
+    <string name="password">Пароль:</string>
+    <string name="logIn">Войти</string>
+    <string name="hintPassword">••••••••••••••••••</string>
+    <string name="hintEMail">example@example.com</string>
+    <string name="wrongLogPass">Логин или пароль введен неправильно</string>
+    <string name="signUp"><u>Зарегистрироваться</u></string>
+    <string name="forgotPassword"><u>Забыли пароль?</u></string>
 
     <string-array name="productsList">
         <item>"Абрикос"</item>

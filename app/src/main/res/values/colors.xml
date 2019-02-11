@@ -7,4 +7,5 @@
     <color name="textColorPrimary">#000000</color>
     <color name="colorTextSecondary">#BDBDBD</color>
     <color name="backgroundAdapter">#FFFDE7</color>
+    <color name="hyperlink">#0000FF</color>
 </resources>

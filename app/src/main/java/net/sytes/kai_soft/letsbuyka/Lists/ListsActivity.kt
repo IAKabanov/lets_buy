@@ -29,6 +29,7 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
 
     private lateinit var detailFragment: DetailFragmentList    //Фрагмент детализации
     private lateinit var listFragment: ListsListFragment          //Фрагмент списка
+    private lateinit var logInFragment: LogInFragment
     private lateinit var fragmentManager: FragmentManager    //Фрагмент менеджер
     private lateinit var toolbar: Toolbar
     private lateinit var actionSave: MenuItem
@@ -36,6 +37,7 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
     private lateinit var actionDelete: MenuItem
     private lateinit var actionSearch: MenuItem
     private lateinit var actionProduct: MenuItem
+    private lateinit var actionLogIn: MenuItem
     private lateinit var searchView: SearchView
     private lateinit var iFilterContract: IFilterContract
     private lateinit var iMenuContract: IMenuContract
@@ -54,6 +56,7 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
         fragmentManager = supportFragmentManager
         detailFragment = DetailFragmentList()
         listFragment = ListsListFragment()
+        logInFragment = LogInFragment()
 
         val ft = fragmentManager.beginTransaction()
         ft.add(R.id.activityListsList, listFragment, tagListFragment)
@@ -79,6 +82,7 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
             actionDelete = menu.findItem(R.id.action_delete)
             actionSearch = menu.findItem(R.id.action_search)
             actionProduct = menu.findItem(R.id.action_products)
+            actionLogIn = menu.findItem(R.id.action_logIn)
             val temp = menu.findItem(R.id.action_firebase)
             temp.isVisible = true
             searchView = actionSearch.actionView as SearchView
@@ -198,6 +202,14 @@ class ListsActivity : AppCompatActivity(), IListActivityContract {
                     val intent = Intent(this@ListsActivity, FBActivity::class.java)
                     startActivity(intent)
                     return true
+                }
+
+                R.id.action_logIn -> {
+                    val ft = fragmentManager.beginTransaction()
+
+                    ft.replace(R.id.activityListsList, logInFragment, "logIn")
+                    ft.addToBackStack("logIn")
+                    ft.commit()
                 }
 
                 else -> {
