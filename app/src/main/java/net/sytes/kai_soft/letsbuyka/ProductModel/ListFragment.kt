@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka.Lists
+package net.sytes.kai_soft.letsbuyka.ProductModel
 
 import android.app.AlertDialog
 import android.content.Context
@@ -24,35 +24,30 @@ import net.sytes.kai_soft.letsbuyka.SwipeControllerActions
 
 import java.util.ArrayList
 
-/* Lists fragment   */
-class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
+class ListFragment: Fragment(), View.OnClickListener, IFilterContract{
 
     companion object {
-        const val myTag = "letsbuy_LlistFragment"
+        const val myTag = "letsbuy_PRlistFragment"
     }
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var emptyList: TextView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var iActivityContract: IActivityContract
-    private lateinit var iLAListContract: ILAListContract
-    private lateinit var actualList: ArrayList<List>
+    private lateinit var iPRContract: IPRContract
+    private lateinit var actualProduct: ArrayList<Product>
     private lateinit var swipeController: SwipeController
-    private lateinit var adapter: AdapterLists
+    private lateinit var adapter: AdapterProductsList
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.i(myTag, "onCreateView()")
         if (inflater != null){
-            val rootView = inflater.inflate(R.layout.fragment_lists_list, container, false)
-            fabAdd = rootView.findViewById(R.id.fabAddList)
+            val rootView = inflater.inflate(R.layout.fragment_list, container, false)
+            fabAdd = rootView.findViewById(R.id.fabAdd)
             fabAdd.setOnClickListener(this)
-
             emptyList = rootView.findViewById(R.id.emptyList)
-
-            recyclerView = rootView.findViewById(R.id.rvListsList)
-
+            recyclerView = rootView.findViewById(R.id.rvProductsList)
             refresh()
-
             return rootView
         }
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -63,38 +58,36 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
         if (context is IActivityContract){
             iActivityContract = context
         }
-        if (context is ILAListContract){
-            iLAListContract = context
+        if (context is IPRContract){
+            iPRContract = context
         }
         super.onAttach(context)
     }
 
     /*  It gets list of lists and invokes displayRV method  */
-    private fun refresh(newLists: ArrayList<List>? = null){
+    private fun refresh(newLists: ArrayList<Product>? = null){
         if (newLists == null){
             Log.i(myTag, "refresh(null)")
-        } else {
-            Log.i(myTag, "refresh(newLists)")
-        }
 
-        if (newLists == null){
-             actualList = CRUDdb.readFromTableLists()
+            actualProduct = CRUDdb.readFromTableProducts()
 
-            if (actualList.size == 0){
+            if (actualProduct.size == 0){
                 emptyList.visibility = View.VISIBLE
             } else {
                 emptyList.visibility = View.GONE
             }
-            displayRV(actualList)
+            displayRV(actualProduct)
+
         } else {
+            Log.i(myTag, "refresh(newLists)")
             displayRV(newLists)
         }
     }
 
     /*  It shows recyclerView with data which refresh method found  */
-    private fun displayRV(lists: ArrayList<List>){
+    private fun displayRV(products: ArrayList<Product>){
         Log.i(myTag, "displayRV()")
-        adapter = AdapterLists(lists, activity)
+        adapter = AdapterProductsList(products, null, activity)
         val linearLayoutManager = LinearLayoutManager(activity)
         val itemAnimator = DefaultItemAnimator()
 
@@ -105,14 +98,14 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
                 Log.i(myTag, "onRightSwiped()")
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle(getString(R.string.delete))
-                        .setMessage(getString(R.string.deleteList))
+                        .setMessage(getString(R.string.deleteProduct))
                         .setPositiveButton(R.string.yes) { _, _ ->
                             adapter.notifyItemRemoved(position)
                             adapter.notifyItemRangeChanged(position, adapter.itemCount)
-                            CRUDdb.deleteItemLists(lists[position])
-                            lists.removeAt(position)
+                            CRUDdb.deleteItemProducts(products[position])
+                            products.removeAt(position)
 
-                            if (lists.size == 0){
+                            if (products.size == 0){
                                 emptyList.visibility = View.VISIBLE
                             }else{
                                 emptyList.visibility = View.GONE
@@ -128,7 +121,7 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
 
             override fun onLeftSwiped(position: Int) {
                 Log.i(myTag, "onLeftSwiped()")
-                iLAListContract.onListItemLongClick(lists[position])
+                iPRContract.onListItemLongClick(products[position])
             }
         }, context)
 
@@ -165,8 +158,9 @@ class ListsListFragment: Fragment(), View.OnClickListener, IFilterContract {
         if (filter.isEmpty()){
             refresh()
         } else {
-            val lists = CRUDdb.readFromTableLists(filter)
-            refresh(lists)
+            val products = CRUDdb.readFromTableProducts(filter)
+            refresh(products)
         }
     }
+
 }

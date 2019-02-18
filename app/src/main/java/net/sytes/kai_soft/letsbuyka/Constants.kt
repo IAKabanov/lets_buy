@@ -14,5 +14,7 @@ class Constants {
         const val TABLE_DEPRECATED = "deprecated"
         const val DEPRECATED_TRUE = 1
         const val DEPRECATED_FALSE = 2
+        const val EDITABLE = "editable"
+        const val PRODUCT = "product"
     }
 }

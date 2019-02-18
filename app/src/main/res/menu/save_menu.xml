@@ -51,6 +51,6 @@
         android:orderInCategory="100"
         android:title="LI"
         app:showAsAction="always"
-        android:visible="true"/>
+        android:visible="false"/>
 
 </menu>

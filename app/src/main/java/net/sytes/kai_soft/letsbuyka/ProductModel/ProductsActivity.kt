@@ -1,4 +1,4 @@
-package net.sytes.kai_soft.letsbuyka.Lists
+package net.sytes.kai_soft.letsbuyka.ProductModel
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,15 +10,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import net.sytes.kai_soft.letsbuyka.*
 
-import net.sytes.kai_soft.letsbuyka.CustomList.CustomActivity
-import net.sytes.kai_soft.letsbuyka.ProductModel.ProductsActivity
+import net.sytes.kai_soft.letsbuyka.IActivityContract
+import net.sytes.kai_soft.letsbuyka.IFilterContract
+import net.sytes.kai_soft.letsbuyka.IMenuContract
+import net.sytes.kai_soft.letsbuyka.Lists.ListsActivity
+import net.sytes.kai_soft.letsbuyka.R
+import java.util.*
 
-import java.util.Stack
-
-/*  Activity, which need to interact with lists   */
-class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
+class ProductsActivity: AppCompatActivity(), IActivityContract, IPRContract {
 
     companion object {
         const val myTag = "letsbuy_listsActivity"
@@ -27,9 +27,8 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
         const val tagDetailFragmentNew = "detailFragmentNew"
     }
 
-    private lateinit var detailFragment: DetailFragmentList    //Фрагмент детализации
-    private lateinit var listFragment: ListsListFragment          //Фрагмент списка
-    private lateinit var logInFragment: LogInFragment
+    private lateinit var detailFragment: DetailFragment    //Фрагмент детализации
+    private lateinit var listFragment: ListFragment          //Фрагмент списка
     private lateinit var fragmentManager: FragmentManager    //Фрагмент менеджер
     private lateinit var toolbar: Toolbar
     private lateinit var actionSave: MenuItem
@@ -37,17 +36,16 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
     private lateinit var actionDelete: MenuItem
     private lateinit var actionSearch: MenuItem
     private lateinit var actionProduct: MenuItem
-    private lateinit var actionLogIn: MenuItem
     private lateinit var searchView: SearchView
     private lateinit var iFilterContract: IFilterContract
     private lateinit var iMenuContract: IMenuContract
     private lateinit var nameFragment: Stack<String>
-    private lateinit var list: List
+    private lateinit var product: Product
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(myTag, "onCreate()")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lists)
+        setContentView(R.layout.activity_products_list)
 
         initToolbar()
         initFragments()
@@ -62,14 +60,13 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
     private fun initFragments(){
         Log.i(myTag, "initFragments()")
         fragmentManager = supportFragmentManager
-        detailFragment = DetailFragmentList()
-        listFragment = ListsListFragment()
-        logInFragment = LogInFragment()
+        detailFragment = DetailFragment()
+        listFragment = ListFragment()
     }
     private fun addFirstFragment(){
         Log.i(myTag, "addFirstFragment()")
         val ft = fragmentManager.beginTransaction()
-        ft.add(R.id.activityListsList, listFragment, tagListFragment)
+        ft.add(R.id.activityProductsList, listFragment, tagListFragment)
         ft.commit()
         nameFragment = Stack()
         nameFragment.push(tagListFragment)
@@ -103,7 +100,6 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
         actionCancel = menu.findItem(R.id.action_cancel)
         actionDelete = menu.findItem(R.id.action_delete)
         actionProduct = menu.findItem(R.id.action_products)
-        actionLogIn = menu.findItem(R.id.action_logIn)
         actionSearch = menu.findItem(R.id.action_search)
         searchView = actionSearch.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -117,8 +113,7 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
                 return true
             }
         })
-        actionProduct.isVisible = true
-        actionProduct.setTitle(R.string.action_products)
+        actionProduct.setTitle(R.string.lists)
         searchView.visibility = View.VISIBLE
     }
 
@@ -152,34 +147,6 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
         iMenuContract.hideKeyboard()
     }
 
-    /*  This fun invokes when any item on recycler view has been clicked   */
-    override fun onListItemClick(position: Int) {
-        Log.i(myTag, "onListItemClick($position)")
-        val intent = Intent(this@ListsActivity, CustomActivity::class.java)
-        intent.putExtra("pos", position)
-        startActivity(intent)
-    }
-
-    /*  This fun invokes when element has been swiped right to edit   */
-    override fun onListItemLongClick(list: List) {
-        Log.i(myTag, "onListItemLongClick($list)")
-        this.list = list
-
-        val ft = fragmentManager.beginTransaction()
-        val bundle = Bundle()
-        //bundle.putBoolean("editable", false)
-        bundle.putSerializable("list", list)
-        detailFragment.arguments = bundle
-
-        ft.replace(R.id.activityListsList, detailFragment, tagDetailFragment)
-        ft.addToBackStack(tagDetailFragment)
-        ft.commit()
-
-        nameFragment.push(tagDetailFragment)
-
-        refreshToolbar()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         Log.i(myTag, "onOptionsItemSelected()")
         if (item != null) {
@@ -207,27 +174,10 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
                 }
                 R.id.action_products -> {
                     Log.i(myTag, "onOptionsItemSelected() -> action_products")
-                    val intent = Intent(this@ListsActivity, ProductsActivity::class.java)
-                    refreshToolbar(true)
+                    val intent = Intent(this@ProductsActivity, ListsActivity::class.java)
                     startActivity(intent)
                     return true
                 }
-
-                R.id.action_firebase -> {
-                    Log.i(myTag, "onOptionsItemSelected() -> action_products")
-                    val intent = Intent(this@ListsActivity, FBActivity::class.java)
-                    startActivity(intent)
-                    return true
-                }
-
-                R.id.action_logIn -> {
-                    val ft = fragmentManager.beginTransaction()
-
-                    ft.replace(R.id.activityListsList, logInFragment, "logIn")
-                    ft.addToBackStack("logIn")
-                    ft.commit()
-                }
-
                 else -> {
                     Log.w(myTag, "onOptionsItemSelected() -> else")
                     return super.onOptionsItemSelected(item)
@@ -237,56 +187,73 @@ class ListsActivity : AppCompatActivity(), IActivityContract, ILAListContract {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun refreshToolbar(gotoProductsActivity: Boolean = false) {
+    private fun refreshToolbar() {
         Log.i(myTag, "refreshToolbar()")
-        if (gotoProductsActivity){
-            actionLogIn.isVisible = false
+        val actualFragment = if (nameFragment.size != 0) {
+            nameFragment.pop()
+        } else {
+            tagListFragment
         }
-        else{
-            val actualFragment = if (nameFragment.size != 0) {
-                nameFragment.pop()
-            } else {
-                tagListFragment
+        when (actualFragment) {
+            tagListFragment -> {
+                Log.i(myTag, "refreshToolbar() -> list fragment")
+                actionSave.isVisible = false
+                actionCancel.isVisible = false
+                actionDelete.isVisible = false
+                actionProduct.isVisible = true
+                actionSearch.isVisible = true
+                actionSearch.collapseActionView()
+                toolbar.requestFocus()
+                toolbar.setTitle(R.string.action_products)
             }
-            when (actualFragment) {
-                tagListFragment -> {
-                    Log.i(myTag, "refreshToolbar() -> list fragment")
-                    actionSave.isVisible = false
-                    actionCancel.isVisible = false
-                    actionDelete.isVisible = false
-                    actionSearch.isVisible = true
-                    actionProduct.isVisible = true
-                    actionLogIn.isVisible = true
-                    actionSearch.collapseActionView()
-                    toolbar.requestFocus()
-                    toolbar.setTitle(R.string.lists)
-                }
-                tagDetailFragment -> {
-                    Log.i(myTag, "refreshToolbar() -> detail fragment")
-                    actionSave.isVisible = true
-                    actionCancel.isVisible = true
-                    actionDelete.isVisible = true
-                    actionSearch.isVisible = false
-                    actionProduct.isVisible = false
-                    actionLogIn.isVisible = false
-                    actionSearch.collapseActionView()
-                    toolbar.requestFocus()
-                    toolbar.title = list.itemName
-                }
-                tagDetailFragmentNew -> {
-                    Log.i(myTag, "refreshToolbar() -> new detail fragment")
-                    actionSave.isVisible = true
-                    actionCancel.isVisible = true
-                    actionDelete.isVisible = false
-                    actionSearch.isVisible = false
-                    actionProduct.isVisible = false
-                    actionLogIn.isVisible = false
-                    actionSearch.collapseActionView()
-                    toolbar.requestFocus()
-                    toolbar.setTitle(R.string.emptyList)
-                }
+            tagDetailFragment -> {
+                Log.i(myTag, "refreshToolbar() -> detail fragment")
+                actionSave.isVisible = true
+                actionCancel.isVisible = true
+                actionDelete.isVisible = false
+                actionProduct.isVisible = true
+                actionSearch.isVisible = false
+                actionProduct.isVisible = false
+                actionSearch.collapseActionView()
+                toolbar.requestFocus()
+                toolbar.title = product.name
+            }
+            tagDetailFragmentNew -> {
+                Log.i(myTag, "refreshToolbar() -> new detail fragment")
+                actionSave.isVisible = true
+                actionCancel.isVisible = true
+                actionDelete.isVisible = false
+                actionSearch.isVisible = false
+                actionProduct.isVisible = false
+                actionSearch.collapseActionView()
+                toolbar.requestFocus()
+                toolbar.setTitle(R.string.emptyList)
             }
         }
-
     }
+
+    override fun onListItemClick(product: Product) {
+        return
+    }
+
+    override fun onListItemLongClick(product: Product) {
+        Log.i(myTag, "onListItemLongClick($product)")
+        this.product = product
+
+        val ft = fragmentManager.beginTransaction()
+        val bundle = Bundle()
+        bundle.putBoolean("editable", false)
+        bundle.putSerializable("product", product)
+        detailFragment.arguments = bundle
+
+        ft.replace(R.id.activityProductsList, detailFragment, tagDetailFragment)
+        ft.addToBackStack(tagDetailFragment)
+        ft.commit()
+
+        nameFragment.push(tagDetailFragment)
+
+        refreshToolbar()
+    }
+
+
 }

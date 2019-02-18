@@ -116,6 +116,37 @@ class CRUDdb {
             return lists
         }
 
+        /*  Read from "lists" with filter   */
+        @SuppressLint("Recycle")
+        fun readFromTableProducts(filter: String? = null): ArrayList<Product> {
+            Log.i(myTag, "readFromTableLists($filter)")
+
+            val dataBase = CRUDdb.dataBase.readableDatabase
+
+            val products = ArrayList<Product>()
+            val c = if (filter == null) {
+                dataBase.query(Constants.TABLE_NAME_PRODUCTS, null, null, null, null, null,
+                        Constants.TABLE_ID + " asc")
+            } else {
+                dataBase.rawQuery("select * from " + Constants.TABLE_NAME_PRODUCTS +
+                        " where " + Constants.TABLE_ITEM_NAME + " like '%"
+                        + filter + "%'",
+                        null)
+            }
+
+            if (c.moveToFirst()) {
+                val idColIndex = c.getColumnIndex(Constants.TABLE_ID)
+                val nameColIndex = c.getColumnIndex(Constants.TABLE_ITEM_NAME)
+                val descrColIndex = c.getColumnIndex(Constants.TABLE_DESCRIPTION)
+                do {
+                    products.add(Product(c.getInt(idColIndex), c.getString(nameColIndex),
+                            c.getString(descrColIndex)))
+                } while (c.moveToNext())
+            }
+            c.close()
+            return products
+        }
+
         /*  Update list */
         fun updateTableLists(list: List) {
             Log.i(myTag, "updateTableLists($list)")

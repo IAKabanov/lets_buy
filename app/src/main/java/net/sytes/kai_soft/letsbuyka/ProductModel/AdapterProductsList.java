@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import net.sytes.kai_soft.letsbuyka.CustomList.IListFragment;
 import net.sytes.kai_soft.letsbuyka.CustomList.ListCustomFragment;
-import net.sytes.kai_soft.letsbuyka.IActivityContract;
 import net.sytes.kai_soft.letsbuyka.R;
 
 import java.util.ArrayList;
@@ -50,6 +49,20 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
                 iListFragment = (IListFragment) fragment;
             }
         }
+
+    }
+
+
+    public AdapterProductsList(ArrayList<Product> products,
+                               @Nullable ArrayList<Integer> deprecatedList,
+                               Context context) {
+        Log.i(TAG, "init()");
+        this.products = products;
+        this.deprecatedList = deprecatedList;
+        if (context instanceof IPRContract) {
+            iPRContract = (IPRContract) context;
+        }
+
 
     }
 
@@ -118,9 +131,9 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
             llItem = itemView.findViewById(R.id.recyclerViewListItem);
             llItem.setOnClickListener(this);
 
-            if (className.equals(ListCustomFragment.class.getName())) {
+            /*if (className.equals(ListCustomFragment.class.getName())) {
                 llItem.setOnLongClickListener(this);
-            }
+            }*/
 
 
         }
@@ -132,7 +145,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
                     case (R.id.recyclerViewListItem):
                         Product product = products.get(getAdapterPosition());
                         if (iPRContract != null) {
-                            iPRContract.onListItemClick(product, className);
+                            iPRContract.onListItemClick(product);
                         }
                         if (iListFragment != null) {
                             iListFragment.onItemClick();
@@ -151,7 +164,7 @@ public class AdapterProductsList extends RecyclerView.Adapter<AdapterProductsLis
                     if (products.size() > 0) {
                         Product product = products.get(getAdapterPosition());
                         if (iPRContract != null) {
-                            iPRContract.onLongListItemClick(product, className);
+                            iPRContract.onListItemLongClick(product);
                         }
                         if (iListFragment != null) {
                             iListFragment.onItemClick();

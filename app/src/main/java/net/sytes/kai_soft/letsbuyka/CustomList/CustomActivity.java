@@ -19,13 +19,16 @@ import android.view.inputmethod.InputMethodManager;
 import net.sytes.kai_soft.letsbuyka.Application;
 import net.sytes.kai_soft.letsbuyka.CRUDdb;
 import net.sytes.kai_soft.letsbuyka.Constants;
+import net.sytes.kai_soft.letsbuyka.IActivityContract;
 import net.sytes.kai_soft.letsbuyka.IFilterContract;
 import net.sytes.kai_soft.letsbuyka.IMenuContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.DetailFragment;
-import net.sytes.kai_soft.letsbuyka.ProductModel.IProductListActivityContract;
+import net.sytes.kai_soft.letsbuyka.ProductModel.IPRContract;
 import net.sytes.kai_soft.letsbuyka.ProductModel.ListFragment;
 import net.sytes.kai_soft.letsbuyka.ProductModel.Product;
 import net.sytes.kai_soft.letsbuyka.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Stack;
 
@@ -33,7 +36,7 @@ import java.util.Stack;
  * Created by Лунтя on 06.06.2018.
  */
 
-public class CustomActivity extends AppCompatActivity implements IProductListActivityContract,
+public class CustomActivity extends AppCompatActivity implements IPRContract, IActivityContract,
         ICustomListActivityContract {
 
     //DetailCustomFragment detailFragment;      //Фрагмент детализации
@@ -166,9 +169,9 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
     }
 
     @Override
-    public void onListItemClick(Product product, String className) {
-        if (className.equals(ListFragment.class.getName())) {
-            CRUDdb.Companion.insertToTableCustomList(id_list, product.getId());
+    public void onListItemClick(Product product) {
+        /*if (className.equals(ListFragment.class.getName())) {
+            CRUDdb.Companion.insertToTableCustomList(id_list, product.getId());*/
 
             /*fragmentManager = getSupportFragmentManager();
             //detailFragment = new DetailCustomFragment();
@@ -185,15 +188,15 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
             ft.commit();*/
             onBackPressed();
 
-        } else if (className.equals(ListCustomFragment.class.getName())) {
+        /*} else if (className.equals(ListCustomFragment.class.getName())) {
             int id = findIdByListProduct(id_list, product.getId());
             CRUDdb.Companion.makeCrossed(id);
-        }
+        }*/
     }
 
     @Override
-    public void onLongListItemClick(Product product, String className) {
-        if (className.equals(ListCustomFragment.class.getName())) {
+    public void onListItemLongClick(Product product) {
+        if (/*className.equals(ListCustomFragment.class.getName())*/ true) {
             int id = findIdByListProduct(id_list, product.getId());
             CRUDdb.Companion.deleteItemCustomList(id);
         }
@@ -350,5 +353,4 @@ public class CustomActivity extends AppCompatActivity implements IProductListAct
         c.close();
         return 0;
     }
-
 }

@@ -7,10 +7,8 @@
     <string name="photo">Фото</string>
     <string name="save">Сохранить</string>
     <string name="back_to_list">Назад</string>
-    <string name="Edit">Редактирование</string>
     <string name="edit">Редактирование</string>
     <string name="delete">Удалить</string>
-    <string name="deleting">Удаление</string>
     <string name="id">ID</string>
     <string name="list">Список</string>
     <string name="nameList">Имя списка</string>
@@ -30,6 +28,7 @@
     <string name="action_products">Мои продукты</string>
     <string name="action_products_list">Мои списки</string>
     <string name="deleteList">Удалить список?</string>
+    <string name="deleteProduct">Удалить продукт?</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
     <string name="e_mail">E-Mail: </string>
