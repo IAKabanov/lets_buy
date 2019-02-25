@@ -21,9 +21,6 @@ class Application: android.app.Application() {
         Log.i(myTag, "onCreate()")
         context = this
         dataBase = DataBase.getInstance(context)
-        //val fbDb = FirebaseDatabase.getInstance()
-        mAuth = FirebaseAuth.getInstance()
-        val user = mAuth.currentUser
         super.onCreate()
     }
 }

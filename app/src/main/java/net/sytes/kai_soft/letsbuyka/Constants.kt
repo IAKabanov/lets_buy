@@ -16,5 +16,11 @@ class Constants {
         const val DEPRECATED_FALSE = 2
         const val EDITABLE = "editable"
         const val PRODUCT = "product"
+
+        const val FIREBASE_EXCEPTION_WEAK_PASSWORD = "ERROR_WEAK_PASSWORD"
+        const val FIREBASE_EXCEPTION_INVALID_EMAIL = "ERROR_INVALID_EMAIL"
+        const val FIREBASE_EXCEPTION_EMAIL_ALREADY_IN_USE = "ERROR_EMAIL_ALREADY_IN_USE"
+        const val FIREBASE_EXCEPTION_ = ""
+
     }
 }

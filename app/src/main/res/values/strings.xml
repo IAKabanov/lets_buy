@@ -33,12 +33,23 @@
     <string name="yes">Да</string>
     <string name="e_mail">E-Mail: </string>
     <string name="password">Пароль:</string>
-    <string name="logIn">Войти</string>
-    <string name="hintPassword">••••••••••••••••••</string>
+    <string name="signIn">Войти</string>
+    <string name="signInU"><u>Уже есть аккаунт?</u></string>
+    <string name="signUp">Зарегистрироваться</string>
+    <string name="signUpU"><u>Зарегистрироваться</u></string>
+    <string name="hintPassword">••••••••</string>
     <string name="hintEMail">example@example.com</string>
     <string name="wrongLogPass">Логин или пароль введен неправильно</string>
-    <string name="signUp"><u>Зарегистрироваться</u></string>
     <string name="forgotPassword"><u>Забыли пароль?</u></string>
+    <string name="repeatPassword">Повторите пароль:</string>
+    <string name="passwordsNotSame">Пароли не совпадают</string>
+    <string name="credentialException">Такой e-mail не существует</string>
+    <string name="passwordException">Пароль должен иметь более шести символов</string>
+    <string name="emailAlreadyInUseException">Введённые e-mail уже используется</string>
+    <string name="noNetworkException">Нет интернет-соединения</string>
+    <string name="ok">Ок</string>
+    <string name="verifyEmail">Подтвердите адрес почты</string>
+
 
     <string-array name="productsList">
         <item>"Абрикос"</item>
