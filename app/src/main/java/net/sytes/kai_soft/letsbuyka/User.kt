@@ -35,6 +35,23 @@ class User(val context: Activity, val iUserContract: IUserContract) {
                 })
     }
 
+
+    fun signIn(login: String, password: String) {
+        mAuth.signInWithEmailAndPassword(login, password)
+                .addOnCompleteListener(context, object : OnCompleteListener<AuthResult> {
+                    override fun onComplete(task: Task<AuthResult>) {
+                        if (task.isSuccessful) run {
+                            user = mAuth.currentUser
+                            iUserContract.refreshError()
+                            iUserContract.signInSuccessful()
+                        } else {
+                            iUserContract.refreshError(fbExceptionToString(task.exception))
+                        }
+                    }
+                })
+    }
+
+
     fun sendEmailVerification(context: Activity, user: FirebaseUser?) {
         if (user != null) {
             user.sendEmailVerification()
@@ -48,22 +65,30 @@ class User(val context: Activity, val iUserContract: IUserContract) {
 
 
     private fun fbExceptionToString(exception: Exception?): String? {
-
-
         if (exception != null) {
             if (exception is FirebaseAuthException) {
-                if (exception.errorCode == Constants.FIREBASE_EXCEPTION_WEAK_PASSWORD) {
-                    iUserContract.clearET(false, true, true)
-                    return context.resources.getString(R.string.passwordException)
-                }
-                if (exception.errorCode == Constants.FIREBASE_EXCEPTION_INVALID_EMAIL) {
-                    iUserContract.clearET(true, true, true)
-                    return context.resources.getString(R.string.credentialException)
-                }
+                when (exception.errorCode) {
+                    Constants.FIREBASE_EXCEPTION_WEAK_PASSWORD -> {
+                        iUserContract.clearET(false, true, true)
+                        return context.resources.getString(R.string.passwordException)
+                    }
+                    Constants.FIREBASE_EXCEPTION_INVALID_EMAIL -> {
+                        iUserContract.clearET(true, true, true)
+                        return context.resources.getString(R.string.credentialException)
+                    }
+                    Constants.FIREBASE_EXCEPTION_EMAIL_ALREADY_IN_USE -> {
+                        iUserContract.clearET(false, true, true)
+                        return context.resources.getString(R.string.emailAlreadyInUseException)
+                    }
+                    Constants.FIREBASE_EXCEPTION_USER_NOT_FOUND -> {
+                        iUserContract.clearET(false, true, true)
+                        return context.resources.getString(R.string.wrongLogPass)
+                    }
+                    Constants.FIREBASE_EXCEPTION_WRONG_PASSWORD -> {
+                        iUserContract.clearET(false, true, true)
+                        return context.resources.getString(R.string.wrongLogPass)
+                    }
 
-                if (exception.errorCode == Constants.FIREBASE_EXCEPTION_EMAIL_ALREADY_IN_USE) {
-                    iUserContract.clearET(false, true, true)
-                    return context.resources.getString(R.string.emailAlreadyInUseException)
                 }
             }
             if (exception is FirebaseNetworkException) {

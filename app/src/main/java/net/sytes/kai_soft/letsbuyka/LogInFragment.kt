@@ -63,7 +63,7 @@ class LogInFragment : Fragment(), View.OnClickListener, IUserContract {
         btnSignIn.setOnClickListener(this)
         tvRegister = rootView.findViewById(R.id.fbTvRegister)
         tvRegister.setOnClickListener(this)
-        tvForgetPass = rootView.findViewById(R.id.fbTvForgetPass)
+        tvForgetPass = rootView.findViewById(R.id.fbTvForgotPass)
         tvForgetPass.setOnClickListener(this)
     }
     private fun getMinWidthET(etViews: Array<EditText>): Int {
@@ -137,8 +137,6 @@ class LogInFragment : Fragment(), View.OnClickListener, IUserContract {
     }
 
     override fun eMailHasSent() {
-        //val toast = Toast.makeText(activity, "На адрес ${user.user!!.email} отправлено письмо для подтверждения e-mail", Toast.LENGTH_LONG).show()
-
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.verifyEmail)
                 .setMessage("На адрес ${user.user!!.email} отправлено письмо для подтверждения e-mail")
@@ -149,11 +147,33 @@ class LogInFragment : Fragment(), View.OnClickListener, IUserContract {
 
         val alert = builder.create()
         alert.show()
+    }
 
+    override fun signInSuccessful() {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(R.string.signedIn)
+                .setMessage("Вход в учётную запись успешен")
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    isLoggingIn = true
+                    refreshViews()
+                }
+
+        val alert = builder.create()
+        alert.show()
     }
 
     override fun onClick(v: View?) {
         tvError.visibility = View.GONE
+
+        if (logIn.text.toString().equals("")){
+            refreshError(resources.getString(R.string.emailHasNotGiven))
+            return
+        }
+        if (password.text.toString() == ""){
+            refreshError(resources.getString(R.string.passHasNotGiven))
+            return
+        }
+
         if (v != null) {
             when (v.id) {
                 R.id.fbTvRegister -> {
@@ -162,6 +182,7 @@ class LogInFragment : Fragment(), View.OnClickListener, IUserContract {
                 }
                 R.id.fbSignIn -> {
                     if (isLoggingIn) {
+                        user.signIn(logIn.text.toString(), password.text.toString())
                     } else {
                         if (password.text.toString() == rePassword.text.toString()){
                             user.signUp(logIn.text.toString(), password.text.toString())
@@ -170,6 +191,9 @@ class LogInFragment : Fragment(), View.OnClickListener, IUserContract {
                             clearET(false, true, true)
                         }
                     }
+                }
+                R.id.fbTvForgotPass -> {
+                    
                 }
 
             }

@@ -5,5 +5,6 @@ interface IUserContract {
     fun clearET(logInB: Boolean = false, passwordB: Boolean = false,
                 rePasswordB: Boolean = false)
     fun eMailHasSent()
+    fun signInSuccessful()
 
 }

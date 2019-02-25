@@ -49,6 +49,9 @@
     <string name="noNetworkException">Нет интернет-соединения</string>
     <string name="ok">Ок</string>
     <string name="verifyEmail">Подтвердите адрес почты</string>
+    <string name="signedIn">Вход</string>
+    <string name="emailHasNotGiven">Введите e-mail</string>
+    <string name="passHasNotGiven">Введите пароль</string>
 
 
     <string-array name="productsList">
